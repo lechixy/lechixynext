@@ -1,0 +1,165 @@
+.main {
+    height: 300vh;
+    background: var(--bg-color-gradient);
+    background-position: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.more {
+    margin-top: 50px;
+    font-style: bold;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes hue {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(365deg);
+    }
+}
+
+.social_links {
+    position: relative;
+    top: 250px;
+    margin-bottom: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+.app {
+    height: 90px;
+    width: 90px;
+    margin: 10px 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: var(--app-bg-color);
+    border-radius: 50%;
+    border: 5px solid var(--border-color);
+    transition: border-radius 0.5s, border 0.5s, background 0.5s;
+}
+
+.app:hover {
+    background: var(--app-after-color);
+    border-radius: 25%;
+    border: 10px solid var(--border-color);
+}
+
+.app_instagram {
+    height: 55px;
+    width: 55px;
+    color: var(--app-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.app_instagram:hover {
+    color: var(--instagram-color);
+    transform: rotate(360deg);
+    filter: hue-rotate(365deg);
+}
+
+.app_snapchat {
+    height: 50px;
+    width: 50px;
+    color: var(--app-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.app_snapchat:hover {
+    color: var(--snapchat-color);
+    transform: rotate(360deg);
+    filter: hue-rotate(365deg);
+    text-shadow: 0px 0px 20px var(--snapchat-color);
+}
+
+.app_twitch {
+    height: 50px;
+    width: 50px;
+    color: var(--app-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.app_twitch:hover {
+    color: var(--twitch-color);
+    transform: rotate(360deg);
+    filter: hue-rotate(365deg);
+    text-shadow: 0px 0px 20px var(--twitch-color);
+}
+
+.app_steam {
+    height: 50px;
+    width: 50px;
+    color: var(--app-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.app_steam:hover {
+    color: var(--steam-color);
+    transform: rotate(360deg);
+    filter: hue-rotate(365deg);
+    text-shadow: 0px 0px 20px var(--steam-color);
+}
+
+.app_spotify {
+    height: 50px;
+    width: 50px;
+    color: var(--app-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.app_spotify:hover {
+    color: var(--spotify-color);
+    transform: rotate(360deg);
+    filter: hue-rotate(365deg);
+    text-shadow: 0px 0px 20px var(--spotify-color);
+}
+
+.app_github {
+    height: 50px;
+    width: 50px;
+    color: var(--app-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.app_github:hover {
+    color: var(--github-color);
+    transform: rotate(360deg);
+    filter: hue-rotate(365deg);
+    text-shadow: 0px 0px 20px var(--github-color);
+}
+
+.app_discord {
+    height: 50px;
+    width: 50px;
+    color: var(--app-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.app_discord:hover {
+    color: var(--discord-color);
+    transform: rotate(360deg);
+    filter: hue-rotate(365deg);
+    text-shadow: 0px 0px 20px var(--discord-color);
+}
+
+.made_text {
+    display: flex;
+    color: #ffffff;
+    justify-content: center;
+    padding: 20px;
+    cursor: help;
+    animation: 5s infinite hue linear;
+    p{
+        text-shadow: 0px 0px 10px red;
+    }
+}
