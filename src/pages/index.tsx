@@ -7,48 +7,6 @@ import Head from 'next/head'
 
 export default function Main() {
 
-  //Snowflakes
-  // useEffect(() => {
-  //   console.log('Snowflakes are activated!')
-  //   setInterval(createFlake, 155)
-  //   window.addEventListener("resize", removeParticles)
-
-  //   function createFlake() {
-  //     const snowflake = document.createElement("i");
-  //     snowflake.classList.add('fas')
-  //     snowflake.classList.add('fa-snowflake')
-
-  //     let duration = Math.random() * 10 + 2 + 's';
-
-  //     snowflake.style.left = Math.random() * window.outerWidth + 'px';
-  //     snowflake.style.animationDuration = duration;
-  //     snowflake.style.opacity = Math.random().toString();
-  //     snowflake.style.fontSize = (Math.random() * 4) + 7 + 'px';
-
-  //     document.body.appendChild(snowflake)
-
-  //     let toms = duration.substr(0, duration.length - 1)
-  //     let splitted = toms.split('.')
-  //     let lastms = `${splitted[0]}${splitted[1].substr(0, 1)}00`
-
-  //     setTimeout(() => {
-  //       snowflake.remove()
-  //     }, parseInt(lastms))
-  //   }
-
-  //   function removeParticles() {
-  //     console.log("Cleared all particles because window is resized to another size!")
-  //     let particles = document.querySelectorAll("i")
-
-  //     particles.forEach(x => {
-  //       if (x.classList.contains("fa-snowflake")) {
-  //         x.remove()
-  //         clearTimeout()
-  //       } else return;
-  //     })
-  //   }
-  // })
-
   return (
     <div className={styles.main}>
       <Head>
@@ -77,11 +35,13 @@ export default function Main() {
           <icon.FaDiscord className={styles.app_discord} size={55} />
         </a>
       </div>
-      <div>
-        <h2 id="more" className={styles.more}>Other stuffs</h2>
-
-        <div className={styles.more}>
-          ksurua bakma krdşm burayı yapmaya üşendim az sabır
+      <div className={styles.more}>
+        <h2 id="more" className={styles.more_header}>Other stuffs</h2>
+        <div>
+          <iframe className={styles.youtube} width="560" height="315" src="https://www.youtube.com/embed/KVYup3Qwh8Q?start=173" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+          <p className={styles.more_text}>
+            time flies by... they all sang along
+          </p>
         </div>
       </div>
 
