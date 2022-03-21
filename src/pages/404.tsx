@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from '../utils/styles/404/404.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'

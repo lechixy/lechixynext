@@ -38,7 +38,6 @@ export default function Main() {
       <div className={styles.more}>
         <h2 id="more" className={styles.more_header}>Other stuffs</h2>
         <div>
-          <iframe className={styles.youtube} width="560" height="315" src="https://www.youtube.com/embed/KVYup3Qwh8Q?start=173" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
           <p className={styles.more_text}>
             time flies by... they all sang along
           </p>
