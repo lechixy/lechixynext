@@ -44,3 +44,49 @@
         color: white;
     }
 }
+.discord_panel {
+    height: 400px;
+    width: 500px;
+    background-color: #232323;
+    border-radius: 25px;
+}
+
+.discord_content {
+    display: flex;
+    flex-direction: column;
+    padding: 70px;
+}
+
+.discord_header {
+    margin-top: 20px;
+    font-family: "DM Sans";
+    font-weight: bold;
+}
+
+.discord_header_tag {
+    color: white;
+}
+
+.discord_header_disc {
+    color: #b9bbbe;
+}
+
+.discord_content_profile {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #343434;
+}
+
+.discord_avatar_img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+.discord_content_status {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    span {
+        color: white;
+    }
+}
