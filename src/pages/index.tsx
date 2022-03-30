@@ -1,12 +1,15 @@
-import type { NextPage } from 'next'
 import React, { useEffect } from 'react';
-import styles from '../utils/styles/main/Home.module.scss'
+import styles from '../utils/styles/main/Home.module.scss';
 import socials from '../utils/socials';
-import * as icon from 'react-icons/fa'
-import Head from 'next/head'
+import * as icon from 'react-icons/fa';
+import { GetServerSidePropsContext, NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import { DiscordPanel } from '../components/main/DiscordPanel';
+import { getDiscordProfileSocket } from '../utils/api';
+import { Props } from '../utils/types';
 
-export default function Main() {
-
+const Main: NextPage<Props> = ({ info }) => {
   return (
     <div className={styles.main}>
       <Head>
@@ -35,6 +38,9 @@ export default function Main() {
           <icon.FaDiscord className={styles.app_discord} size={55} />
         </a>
       </div>
+      <div className={styles.discord} id="discord">
+        <DiscordPanel info={info} />
+      </div>
       <div className={styles.more}>
         <h2 id="more" className={styles.more_header}>Other stuffs</h2>
         <div>
@@ -49,4 +55,10 @@ export default function Main() {
       </div>
     </div>
   );
+}
+
+export default Main;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getDiscordProfileSocket(context);
 }
