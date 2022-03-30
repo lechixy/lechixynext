@@ -23,6 +23,7 @@ export const DiscordPanel: FC<Props> = ({ info }) => {
             <div className={styles.discord_content}>
                 <div className={styles.discord_content_profile}>
                     <div className={styles.discord_avatar}>
+                        {/* eslint-disable-next-line @next/next/no-img-element*/}
                         <img
                             src={avatar_url}
                             alt={`${info.data.discord_user.id}`}
