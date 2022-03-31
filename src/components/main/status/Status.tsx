@@ -1,17 +1,33 @@
 import { FC } from 'react';
 import styles from './Status.module.scss'
+import { Props } from '../../../utils/types';
+import Image from 'next/image'
 
-type StatusProp = {
-    status: {
-        type: number;
-        state: string;
-        name: string;
-        id: string;
-        created_at: number
+export const Status: FC<Props> = ({ info }) => {
+
+    let status = info.data.activities[0]
+    if (info.data.listening_to_spotify === true) {
+
+        let spotify = info.data.spotify
+        console.log(spotify)
+        let spotifyact = info.data.activities.find(x => x.type === 2)
+
+        return (
+            <div className={styles.type_2}>
+                <div className={styles.type_2_header}>
+                    <h3>LISTENING TO SPOTIFY</h3>
+                </div>
+                <div className={styles.type_2_spotify}>
+                    <Image className={styles.type_2_spotify_img} src={spotify.album_art_url} alt={`${spotify.album}`} height={120} width={120} />
+                    <div className={styles.type_2_spotify_text}>
+                        <span className={styles.type_2_spotify_text_song}><span className={styles.underline}>{spotify.song}</span></span>
+                        <span className={styles.type_2_spotify_text_artist}>by <span className={styles.underline}>{spotify.artist}</span></span>
+                        <span className={styles.type_2_spotify_text_album}>on <span className={styles.underline}>{spotify.album}</span></span>
+                    </div>
+                </div>
+            </div>
+        )
     }
-}
-
-export const Status: FC<StatusProp> = ({ status }) => {
 
     if (status?.type === 4) {
         return (

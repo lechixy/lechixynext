@@ -1,10 +1,55 @@
 .type_4{
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     text-align: center;
+    justify-content: center;
+    color: white;
     .type_4_head{
         font-weight: bold;
         color: #989898;
         margin-bottom: 5px;
     }
+}
+
+.type_2{
+    margin-top: 20px;
+    display: block;
+    .type_2_header{
+        color: #b9bbbe;
+        margin-bottom: 5px;
+        font-size: 10px;
+    }
+    .type_2_spotify{
+        display: flex;
+        flex-direction: row;
+        .type_2_spotify_img{
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+        }
+        .type_2_spotify_text{
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-top: 5px;
+            .type_2_spotify_text_song{
+                color: white;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            .type_2_spotify_text_artist{
+                color: #dcddde;
+                cursor: pointer;
+            }
+            .type_2_spotify_text_album{
+                color: #dcddde;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.underline:hover{
+    text-decoration: underline;
 }

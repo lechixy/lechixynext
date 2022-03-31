@@ -5,7 +5,17 @@ export type Props = {
 type Respond = {
     success: boolean;
     data: {
-        spotify: string;
+        spotify: {
+            track_id: string
+            timestamps: {
+                start: number;
+                end: number;
+            };
+            song: string;
+            artist: string;
+            album_art_url: string;
+            album: string;
+        };
         listening_to_spotify: boolean;
         discord_user: {
             username: string;
