@@ -13,11 +13,17 @@ export const DiscordPanel: FC<Props> = ({ info }) => {
         dnd: 'rgb(255, 0, 0)',
         offline: 'rgb(136, 136, 136)',
     }
-    let status_color = info.data?.discord_status === 'online'
-        ? status_colors.online : info.data?.discord_status === 'idle'
-            ? status_colors.idle : info.data?.discord_status === 'dnd'
+    let status_color = info.data.discord_status === 'online'
+        ? status_colors.online : info.data.discord_status === 'idle'
+            ? status_colors.idle : info.data.discord_status === 'dnd'
                 ? status_colors.dnd : status_colors.offline;
+    let status_text = info.data.discord_status === 'online'
+        ? 'Online' : info.data.discord_status === 'idle'
+            ? 'Idle' : info.data.discord_status === 'dnd'
+                ? 'Do not disturb' : 'Offline';
     let avatar_url = `https://cdn.discordapp.com/avatars/${info.data.discord_user.id}/${info.data.discord_user.avatar}.png?size=256`
+    let custom_status = info.data.activities.find(x => x.type === 4) ? `${info.data.activities.find(x => x.type === 4)?.state}` : [];
+
 
     return (
         <div className={styles.discord_panel}>
@@ -34,12 +40,13 @@ export const DiscordPanel: FC<Props> = ({ info }) => {
                                 height={100}
                                 width={100}
                             />
-                            <span style={{ 'backgroundColor': `${status_color}` }} className={styles.discord_avatar_status}>
+                            <span style={{ 'backgroundColor': `${status_color}` }} className={styles.discord_avatar_status} title={status_text}>
                             </span>
                         </div>
                         <div className={styles.discord_header}>
                             <span className={styles.discord_header_tag}>{info.data.discord_user.username}</span>
                             <span className={styles.discord_header_disc}>#{info.data.discord_user.discriminator}</span>
+                            <span className={styles.discord_header_status}>{custom_status}</span>
                         </div>
                     </div>
                 </Link>

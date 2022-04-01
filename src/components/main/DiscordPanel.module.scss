@@ -14,15 +14,24 @@
 .discord_header {
     margin-top: 10px;
     font-family: "DM Sans";
-    font-weight: bold;
 }
 
 .discord_header_tag {
     color: white;
+    font-weight: bold;
 }
 
 .discord_header_disc {
     color: #b9bbbe;
+    font-weight: bolder;
+}
+
+.discord_header_status{
+    display: flex;
+    margin-top: 10px;
+    color: #dcddde;
+    font-size: small;
+    font-weight: lighter;
 }
 
 .discord_content_profile {

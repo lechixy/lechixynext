@@ -15,36 +15,55 @@
 .type_2{
     margin-top: 20px;
     display: block;
-    .type_2_header{
+    .header{
         color: #b9bbbe;
         margin-bottom: 5px;
         font-size: 10px;
     }
-    .type_2_spotify{
+    .spotify{
         display: flex;
         flex-direction: row;
-        .type_2_spotify_img{
+        .spotify_img{
             width: 120px;
             height: 120px;
             border-radius: 5px;
         }
-        .type_2_spotify_text{
+        .spotify_text{
             margin-left: 10px;
             display: flex;
             flex-direction: column;
             margin-top: 5px;
-            .type_2_spotify_text_song{
+            .spotify_text_song{
                 color: white;
                 font-weight: 600;
-                cursor: pointer;
             }
-            .type_2_spotify_text_artist{
+            .spotify_text_artist{
                 color: #dcddde;
-                cursor: pointer;
             }
-            .type_2_spotify_text_album{
+            .spotify_text_album{
                 color: #dcddde;
-                cursor: pointer;
+            }
+            .spotify_timestamp_area{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 5px;
+            }
+            .spotify_timestamp{
+                color: #dcddde;
+                font-size: small;
+            }
+            .spotify_statusbar_bg{
+                width: 100%;
+                margin-top: 10px;
+                height: 4px;
+                background-color: rgba(79,84,92,.16);
+                border-radius: 2px;
+            }
+            .spotify_statusbar{
+                background-color: white;
+                border-radius: 2px;
+                height: 100%;
             }
         }
     }
@@ -52,6 +71,7 @@
 
 .underline:hover{
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .offline{
