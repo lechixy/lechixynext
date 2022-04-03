@@ -1,6 +1,37 @@
-.gamestatus{
+.gamestatus {
     display: flex;
+    height: 180px;
+    width: 100%;
     flex-direction: row;
-    justify-content: center;
-    margin-top: 50px;
+    align-items: center;
+    
+    .activity_image {
+        * {
+            border-radius: 5px;
+            object-fit: cover;
+        }
+    }
+    .activity_text{
+        width: 100%;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        cursor: default;
+        .activity_text_title{
+            color: white;
+            font-weight: 600;
+        }
+        .activity_text_details{
+            color: #dcddde;
+        }
+        .activity_text_state{
+            color: #dcddde;
+        }
+        .activity_text_timestamp{
+            color: #dcddde;
+        }
+    }
 }
