@@ -6,7 +6,7 @@ import { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { DiscordPanel } from '../components/main/DiscordPanel';
-import { getDiscordProfileSocket } from '../utils/api';
+import { getDiscordProfile } from '../utils/api';
 import { Props } from '../utils/types';
 
 const Main: NextPage<Props> = ({ info }) => {
@@ -60,5 +60,5 @@ const Main: NextPage<Props> = ({ info }) => {
 export default Main;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getDiscordProfileSocket(context);
+  return getDiscordProfile(context);
 }

@@ -1,8 +1,8 @@
 export type Props = {
-    info: Respond;
+    info: ApiRespond;
 };
 
-type Respond = {
+export type ApiRespond = {
     success: boolean;
     data: {
         spotify: {
@@ -25,15 +25,7 @@ type Respond = {
             avatar: string;
         }
         discord_status: string;
-        activities: [
-            {
-                type: number;
-                state: string;
-                name: string;
-                id: string;
-                created_at: number;
-            }
-        ];
+        activities: [any];
         active_on_discord_web: boolean;
         active_on_discord_mobile: boolean;
         active_on_discord_desktop: boolean;

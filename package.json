@@ -11,11 +11,16 @@
   "dependencies": {
     "@types/ws": "^8.5.3",
     "axios": "^0.26.1",
+    "bufferutil": "^4.0.6",
+    "fs": "^0.0.1-security",
     "moment": "^2.29.1",
+    "net": "^1.0.2",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "sass": "^1.49.9",
+    "tls": "^0.0.1",
+    "utf-8-validate": "^5.0.9",
     "ws": "^8.5.0"
   },
   "devDependencies": {

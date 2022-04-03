@@ -1,50 +1,22 @@
-import WebSocket from 'ws';
 import { TextDecoder } from 'util';
+import WebSocket from 'ws'
 
-let wsServerUrl = 'wss://api.lanyard.rest/socket';
+export let wsServerUrl = 'wss://api.lanyard.rest/socket';
 
-let ws = new WebSocket(wsServerUrl)
-let ab = new TextDecoder();
-let interval = 30000;
-let intervalObject: NodeJS.Timeout;
+export let ws = new WebSocket(wsServerUrl)
+export let ab = new TextDecoder();
+export let interval = 30000;
+export let intervalObject: NodeJS.Timeout;
 
 
-function connect() {
+export function onConnect() {
     ws.on('open', function open() {
         console.log(`Connection established to ${wsServerUrl}`)
-
-        ws.on('close', function close() {
-            ws.removeAllListeners();
-            clearInterval(intervalObject);
-            connect();
-        })
 
         initializeMessage();
     })
 
-    ws.on('message', function message(data: any) {
-        if (typeof data !== 'string') {
-            data = ab.decode(data);
-        }
-        let parsed = JSON.parse(data);
-        convertInfo(parsed);
-        return parsed;
-    })
-}
-
-let data: Object;
-
-//Function for reconnecting to ws server again
-export function sendInfoToClient() {
-    connect();
-    return data === undefined ? null : data;
-}
-
-
-function convertInfo(info: any) {
-    if(info.op === 0){
-        data = info.d
-    }
+    
 }
 
 function send(message: any) {

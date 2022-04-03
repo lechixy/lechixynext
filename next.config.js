@@ -6,6 +6,7 @@ const nextConfig = {
       "static-cdn.jtvnw.net",
       "cdn.discordapp.com",
       "i.scdn.co",
+      "discord.com",
     ]
   }
 }

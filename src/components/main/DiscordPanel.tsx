@@ -9,9 +9,9 @@ export const DiscordPanel: FC<Props> = ({ info }) => {
 
     let status_colors = {
         online: 'rgb(0, 255, 0)',
-        idle: 'rgb(255, 196, 0)',
+        idle: 'rgb(255, 255, 0)',
         dnd: 'rgb(255, 0, 0)',
-        offline: 'rgb(136, 136, 136)',
+        offline: 'rgb(87, 87, 87)',
     }
     let status_color = info.data.discord_status === 'online'
         ? status_colors.online : info.data.discord_status === 'idle'

@@ -8,7 +8,7 @@
 .discord_content {
     display: flex;
     flex-direction: column;
-    padding: 40px;
+    margin: 30px;
 }
 
 .discord_header {
@@ -39,6 +39,12 @@
     border-bottom: 2px solid #343434;
 }
 
+.discord_avatar_img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
 .discord_avatar_status {
     position: relative;
     right: 25px;
@@ -48,10 +54,4 @@
     border-radius: 50%;
     display: inline-block;
     border: 5px solid #232323;
-}
-
-.discord_avatar_img {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
 }
