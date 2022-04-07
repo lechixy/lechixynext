@@ -83,7 +83,7 @@ export const GameActivity: FC<Props> = ({ info }) => {
 
     return (
         <div className={styles.gamestatus}>
-            <div className={styles.activity_image} title={gamestatus?.name}>
+            <div className={styles.activity_image} title={gamestatus?.assets.large_text}>
                 <Image src={gameicon} height={150} width={150} alt={gamestatus?.name} />
             </div>
             <div className={styles.activity_text}>
