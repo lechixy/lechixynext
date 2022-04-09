@@ -80,8 +80,6 @@ export const Spotify: FC<Props> = ({ info }) => {
         return () => clearInterval(interval)
     })
 
-    tracknow = Date.now() - spotify.timestamps.start
-    tracknow_timestamp = `${new Date(tracknow).getMinutes()}:${addZero(new Date(tracknow).getSeconds().toString())}`
 
     return (
         <div className={styles.type_2}>

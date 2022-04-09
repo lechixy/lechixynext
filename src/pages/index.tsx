@@ -43,15 +43,16 @@ const Main: NextPage<Props> = ({ info }) => {
       </div>
       <div className={styles.more}>
         <h2 id="more" className={styles.more_header}>Other stuffs</h2>
-        <div>
-          <p className={styles.more_text}>
-            time flies by... they all sang along
-          </p>
+        <div className={styles.more_text}>
+          <p>{`You should call me "kawaii"`}</p>
+          <p>{`Play it like a hentaii`}</p>
+          <p>{`Moshi moshi, Oni Chi`}</p>
+          <p>{`Yuce, Noshi Kamaji`}</p>
         </div>
       </div>
 
       <div className={styles.made_text}>
-        <p>Made with ❤️ by Melih</p>
+        <p>{`Made with ❤️ by Melih`}</p>
       </div>
     </div>
   );

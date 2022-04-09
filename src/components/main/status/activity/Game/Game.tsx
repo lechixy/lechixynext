@@ -63,7 +63,7 @@ export const GameActivity: FC<Props> = ({ info }) => {
     let gamestatus = info.data.activities.find(x => x.type === 0);
     let gameicon = `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets.large_image}.png`
 
-    let gametime = Date.now() - gamestatus!.timestamps.start
+    let gametime = Date.now() - gamestatus!.timestamps?.start
     let gametimetimestamp = `${new Date(gametime).getMinutes()}:${addZero(new Date(gametime).getSeconds().toString())}`
 
     const [start, setStart] = useState(gametimetimestamp)
@@ -71,7 +71,7 @@ export const GameActivity: FC<Props> = ({ info }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             // eslint-disable-next-line react-hooks/exhaustive-deps
-            gametime = Date.now() - gamestatus!.timestamps.start
+            gametime = Date.now() - gamestatus!.timestamps?.start
             // eslint-disable-next-line react-hooks/exhaustive-deps
             gametimetimestamp = `${new Date(gametime).getMinutes()}:${addZero(new Date(gametime).getSeconds().toString())}`
 
@@ -90,7 +90,7 @@ export const GameActivity: FC<Props> = ({ info }) => {
                 <span className={styles.activity_text_title} title={gamestatus?.name}>{gamestatus?.name}</span>
                 <span className={styles.activity_text_details} title={gamestatus?.details}>{gamestatus?.details}</span>
                 <span className={styles.activity_text_state} title={gamestatus?.state}>{gamestatus?.state}</span>
-                <span className={styles.activity_text_timestamp} title={start+' elapsed'}>{start} elapsed</span>
+                {gametime ? <span className={styles.activity_text_timestamp} title={start+' elapsed'}>{start} elapsed</span> : null}
             </div>
         </div>
     )

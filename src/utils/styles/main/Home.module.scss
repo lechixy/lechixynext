@@ -7,7 +7,7 @@
     justify-content: space-between;
 }
 
-.more{
+.more {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,10 +24,12 @@
     justify-content: center;
 }
 
-.more_text{
+.more_text {
     color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    text-align: center;
     margin-top: 10px;
 }
 
@@ -48,7 +50,6 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
 
 .app {
     height: 90px;
@@ -172,15 +173,18 @@
     display: flex;
     color: #ffffff;
     justify-content: center;
-    padding: 20px;
-    cursor: wait;
+    background-color: red;
+    padding: 30px;
+    cursor: help;
     animation: 5s infinite hue linear;
-    p{
-        text-shadow: 0px 0px 10px red;
+    p {
+        text-shadow: 0px 0px 10px white,
+        0px 0px 20px white,
+        0px 0px 30px white;
     }
 }
 
-.discord{
+.discord {
     display: flex;
     justify-content: center;
 }
