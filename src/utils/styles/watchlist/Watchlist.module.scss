@@ -1,0 +1,39 @@
+.main {
+    height: 300vh;
+    max-height: 600vh;
+    background: var(--bg-color-gradient);
+    background-position: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list_header{
+    margin: 100px 0px;
+    color: white;
+    text-align: center;
+    h1{
+        text-decoration: underline;
+        text-shadow: 0px 0px 10px white, 0px 0px 40px white; 
+    }
+}
+
+.list_container{
+    height: 100%;
+    width: 70%;
+    background: var(--app-bg-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.list_item{
+    height: 250px;
+    width: 250px;
+    background-color: red;
+}

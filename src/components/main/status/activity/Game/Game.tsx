@@ -59,9 +59,8 @@ type GameActivityType = {
 }
 
 export const GameActivity: FC<Props> = ({ info }) => {
-
     let gamestatus = info.data.activities.find(x => x.type === 0);
-    let gameicon = `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets.large_image}.png`
+    let gameicon = `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets?.large_image}.png`
 
     let gametime = Date.now() - gamestatus!.timestamps?.start
     let gametimetimestamp = `${new Date(gametime).getMinutes()}:${addZero(new Date(gametime).getSeconds().toString())}`
@@ -81,13 +80,16 @@ export const GameActivity: FC<Props> = ({ info }) => {
         return () => clearInterval(interval)
     })
 
+    let large_text = gamestatus?.assets?.large_text ? `${gamestatus.assets.large_text}` : undefined;
+    let game_name = gamestatus?.name ? `${gamestatus.name}` : undefined;
+
     return (
         <div className={styles.gamestatus}>
-            <div className={styles.activity_image} title={gamestatus?.assets.large_text}>
-                <Image src={gameicon} height={150} width={150} alt={gamestatus?.name} />
+            <div className={styles.activity_image} title={large_text}>
+                <Image src={gameicon} height={150} width={150} alt={game_name} />
             </div>
             <div className={styles.activity_text}>
-                <span className={styles.activity_text_title} title={gamestatus?.name}>{gamestatus?.name}</span>
+                <span className={styles.activity_text_title} title={game_name}>{game_name}</span>
                 <span className={styles.activity_text_details} title={gamestatus?.details}>{gamestatus?.details}</span>
                 <span className={styles.activity_text_state} title={gamestatus?.state}>{gamestatus?.state}</span>
                 {gametime ? <span className={styles.activity_text_timestamp} title={start+' elapsed'}>{start} elapsed</span> : null}
