@@ -24,7 +24,7 @@ export const Status: FC<Props> = ({ info }) => {
 
     return (
         <div className={styles.offline}>
-            <span>*No activities and doing anything*</span>
+            <span>Well, there is no activity to show you {`>_<`} </span>
         </div>
     )
 }
