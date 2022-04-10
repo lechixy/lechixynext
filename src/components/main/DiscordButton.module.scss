@@ -1,0 +1,43 @@
+.discord_button {
+    margin-top: 10px;
+    color: #fff;
+    background-color: var(--brand-experiment);
+    cursor: pointer;
+    display: flex;
+    box-sizing: border-box;
+    width: auto;
+    height: 32px;
+    min-width: 60px;
+    min-height: 32px;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    padding: 2px 16px;
+    align-items: center;
+    outline: 0;
+    text-rendering: optimizeLegibility;
+    font-family: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    transition: background-color .17s ease,color .17s ease;
+}
+
+.discord_button:hover{
+    background-color: #4157c0;
+}
+
+.discord_button_container{
+    display: flex;
+    justify-content: center;
+}
+
+.discord_button_container_text{
+    margin: 0 auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.discord_button_container_svg{
+    margin-left: 8px;
+}

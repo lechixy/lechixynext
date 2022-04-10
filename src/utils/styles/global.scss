@@ -11,6 +11,10 @@
     --github-color: #000000;
     --discord-color: #5865f2;
     --snapchat-color: #fffc00;
+    --saturation-factor: 1;
+    --brand-experiment: hsl(235,calc(var(--saturation-factor, 1)*85.6%),64.7%);
+    --button-secondary-background: #4f545c;
+    --button-secondary-background-hover: #686d73;
 }
 
 * {

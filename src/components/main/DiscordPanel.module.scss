@@ -1,5 +1,5 @@
 .discord_panel {
-    height: 400px;
+    height: 430px;
     width: 500px;
     background-color: #232323;
     border-radius: 25px;
@@ -26,17 +26,26 @@
     font-weight: bolder;
 }
 
-.discord_header_status{
+.discord_header_status {
     display: flex;
     margin-top: 10px;
     color: #dcddde;
     font-size: small;
     font-weight: lighter;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .discord_content_profile {
     padding-bottom: 10px;
     border-bottom: 2px solid #343434;
+}
+
+.discord_avatar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .discord_avatar_img {
