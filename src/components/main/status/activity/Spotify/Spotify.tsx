@@ -128,7 +128,7 @@ export const Spotify: FC<Props> = ({ info }) => {
                 </div>
             </div>
             <div>
-                <SpotifyButton url={`spotify:track:{spotify.track_id}`} />
+                <SpotifyButton url={`spotify:track:${spotify.track_id}`} />
             </div>
         </div>
     )
