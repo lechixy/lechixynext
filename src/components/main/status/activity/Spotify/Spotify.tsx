@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { addZero } from '../../../../../utils/helper';
 import spsvg from '../../../../../utils/spotify.svg';
 import { SpotifyButton } from './SpotifyButton';
+import { useContext, WebSocketContext } from '../../../../../utils/context';
 
 type Props = {
     info: ApiRespond;
@@ -42,7 +43,9 @@ type ApiRespond = {
     }
 }
 
-export const Spotify: FC<Props> = ({ info }) => {
+export const Spotify = () => {
+
+    const { info } = useContext(WebSocketContext)
 
     let spotify = info.data.spotify
     let spotifyact = info.data.activities.find(x => x.type === 2)

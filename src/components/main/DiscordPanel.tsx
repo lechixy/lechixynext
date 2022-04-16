@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import styles from './DiscordPanel.module.scss';
 import { FC } from 'react';
-import Image from 'next/image'
 import { Props } from '../../utils/types';
 import { Status } from './status/Status';
 import { DiscordButton } from './DiscordButton';
+import { useContext, WebSocketContext } from '../../utils/context';
 
-export const DiscordPanel: FC<Props> = ({ info }) => {
+export const DiscordPanel: FC = () => {
+
+    const { info } = useContext(WebSocketContext)
 
     let status_colors = {
         online: 'rgb(0, 255, 0)',
@@ -57,7 +59,7 @@ export const DiscordPanel: FC<Props> = ({ info }) => {
                         <span className={styles.discord_header_status}>{custom_status}</span>
                     </div>
                 </div>
-                <Status info={info} />
+                <Status />
             </div>
         </div>
 

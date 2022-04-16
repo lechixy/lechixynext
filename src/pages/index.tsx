@@ -8,8 +8,14 @@ import Image from 'next/image';
 import { DiscordPanel } from '../components/main/DiscordPanel';
 import { getDiscordProfile } from '../utils/api';
 import { Props } from '../utils/types';
+import { WebSocketContext, useContext } from '../utils/context';
 
 const Main: NextPage<Props> = ({ info }) => {
+
+  let data = {
+    info
+  }
+  
   return (
     <div className={styles.main}>
       <Head>
@@ -39,7 +45,9 @@ const Main: NextPage<Props> = ({ info }) => {
         </a>
       </div>
       <div className={styles.discord} id="discord">
-        <DiscordPanel info={info} />
+        <WebSocketContext.Provider value={data}>
+          <DiscordPanel />
+        </WebSocketContext.Provider>
       </div>
       <div className={styles.more}>
         <h2 id="more" className={styles.more_header}>Other stuffs</h2>

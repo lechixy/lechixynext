@@ -23,7 +23,11 @@
 }
 
 .discord_button:hover{
-    background-color: #4157c0;
+    background-color: var(--brand-experiment-hover);
+}
+
+.discord_button:focus{
+    background-color: var(--brand-experiment-focus);
 }
 
 .discord_button_container{

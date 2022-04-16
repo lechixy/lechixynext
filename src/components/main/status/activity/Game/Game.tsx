@@ -2,63 +2,12 @@ import { FC, useEffect, useState } from 'react'
 import Image from "next/image"
 import styles from './Game.module.scss'
 import { addZero } from '../../../../../utils/helper';
+import { useContext, WebSocketContext } from '../../../../../utils/context';
 
-type Props = {
-    info: ApiRespond;
-};
+export const GameActivity: FC = () => {
 
-type ApiRespond = {
-    success: boolean;
-    data: {
-        spotify: {
-            track_id: string
-            timestamps: {
-                start: number;
-                end: number;
-            };
-            song: string;
-            artist: string;
-            album_art_url: string;
-            album: string;
-        };
-        listening_to_spotify: boolean;
-        discord_user: {
-            username: string;
-            public_flags: number;
-            id: string;
-            discriminator: string;
-            avatar: string;
-        }
-        discord_status: string;
-        activities: [GameActivityType];
-        active_on_discord_web: boolean;
-        active_on_discord_mobile: boolean;
-        active_on_discord_desktop: boolean;
-    }
-}
+    const { info } = useContext(WebSocketContext)
 
-type GameActivityType = {
-    type: number;
-    timestamps: {
-        start: number;
-    }
-    state: string;
-    session: string;
-    name: string;
-    id: string;
-    details: string;
-    created_at: number;
-    buttons: [string];
-    assets: {
-        small_text: string;
-        small_image: string;
-        large_text: string;
-        large_image: string;
-    }
-    application_id: string;
-}
-
-export const GameActivity: FC<Props> = ({ info }) => {
     let gamestatus = info.data.activities.find(x => x.type === 0);
     let gameicon = `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets?.large_image}.png`
 
@@ -92,7 +41,7 @@ export const GameActivity: FC<Props> = ({ info }) => {
                 <span className={styles.activity_text_title} title={game_name}>{game_name}</span>
                 <span className={styles.activity_text_details} title={gamestatus?.details}>{gamestatus?.details}</span>
                 <span className={styles.activity_text_state} title={gamestatus?.state}>{gamestatus?.state}</span>
-                {gametime ? <span className={styles.activity_text_timestamp} title={start+' elapsed'}>{start} elapsed</span> : null}
+                {gametime ? <span className={styles.activity_text_timestamp} title={start + ' elapsed'}>{start} elapsed</span> : null}
             </div>
         </div>
     )

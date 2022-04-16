@@ -11,10 +11,12 @@
     --github-color: #000000;
     --discord-color: #5865f2;
     --snapchat-color: #fffc00;
-    --saturation-factor: 1;
-    --brand-experiment: hsl(235,calc(var(--saturation-factor, 1)*85.6%),64.7%);
+    --brand-experiment: #516dee;
+    --brand-experiment-hover: #4157c0;
+    --brand-experiment-focus: #374aa2;
     --button-secondary-background: #4f545c;
     --button-secondary-background-hover: #686d73;
+    --button-secondary-background-focus: #72767d;
 }
 
 * {
