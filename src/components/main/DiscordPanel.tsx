@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import styles from './DiscordPanel.module.scss';
 import { FC } from 'react';
-import { Props } from '../../utils/types';
+import { ApiRespond } from '../../utils/types';
 import { Status } from './status/Status';
 import { DiscordButton } from './DiscordButton';
 import { useContext, WebSocketContext } from '../../utils/context';
 
 export const DiscordPanel: FC = () => {
 
-    const { info } = useContext(WebSocketContext)
+    const info = useContext(WebSocketContext) as unknown as ApiRespond
 
     let status_colors = {
         online: 'rgb(0, 255, 0)',
@@ -16,16 +16,16 @@ export const DiscordPanel: FC = () => {
         dnd: 'rgb(255, 0, 0)',
         offline: 'rgb(87, 87, 87)',
     }
-    let status_color = info.data.discord_status === 'online'
-        ? status_colors.online : info.data.discord_status === 'idle'
-            ? status_colors.idle : info.data.discord_status === 'dnd'
+    let status_color = info.discord_status === 'online'
+        ? status_colors.online : info.discord_status === 'idle'
+            ? status_colors.idle : info.discord_status === 'dnd'
                 ? status_colors.dnd : status_colors.offline;
-    let status_text = info.data.discord_status === 'online'
-        ? 'Online' : info.data.discord_status === 'idle'
-            ? 'Idle' : info.data.discord_status === 'dnd'
+    let status_text = info.discord_status === 'online'
+        ? 'Online' : info.discord_status === 'idle'
+            ? 'Idle' : info.discord_status === 'dnd'
                 ? 'Do not disturb' : 'Offline';
-    let avatar_url = `https://cdn.discordapp.com/avatars/${info.data.discord_user.id}/${info.data.discord_user.avatar}.png?size=256`
-    let custom_status = info.data.activities.find(x => x.type === 4) ? `${info.data.activities.find(x => x.type === 4)?.state}` : null;
+    let avatar_url = `https://cdn.discordapp.com/avatars/${info.discord_user.id}/${info.discord_user.avatar}.png?size=256`
+    let custom_status = info.activities.find(x => x.type === 4) ? `${info.activities.find(x => x.type === 4)?.state}` : null;
 
 
     return (
@@ -37,7 +37,7 @@ export const DiscordPanel: FC = () => {
                         <div>
                             <img
                                 src={avatar_url}
-                                alt={`${info.data.discord_user.id}`}
+                                alt={`${info.discord_user.id}`}
                                 className={styles.discord_avatar_img}
                                 height={100}
                                 width={100}
@@ -46,7 +46,7 @@ export const DiscordPanel: FC = () => {
                             </span>
                         </div>
                         <div>
-                            <a href={`https://discord.com/users/${info.data.discord_user.id}`} target="_blank" style={{ 'textDecoration': 'none' }} rel="noreferrer">
+                            <a href={`https://discord.com/users/${info.discord_user.id}`} target="_blank" style={{ 'textDecoration': 'none' }} rel="noreferrer">
                                 <DiscordButton info={
                                     { text: `View on Discord`, is_link: true }
                                 } />
@@ -54,8 +54,8 @@ export const DiscordPanel: FC = () => {
                         </div>
                     </div>
                     <div className={styles.discord_header}>
-                        <span className={styles.discord_header_tag}>{info.data.discord_user.username}</span>
-                        <span className={styles.discord_header_disc}>#{info.data.discord_user.discriminator}</span>
+                        <span className={styles.discord_header_tag}>{info.discord_user.username}</span>
+                        <span className={styles.discord_header_disc}>#{info.discord_user.discriminator}</span>
                         <span className={styles.discord_header_status}>{custom_status}</span>
                     </div>
                 </div>

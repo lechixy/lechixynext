@@ -178,13 +178,51 @@
     cursor: help;
     animation: 5s infinite hue linear;
     p {
-        text-shadow: 0px 0px 10px white,
-        0px 0px 20px white,
-        0px 0px 30px white;
+        text-shadow: 0px 0px 10px white, 0px 0px 20px white, 0px 0px 30px white;
     }
 }
 
 .discord {
     display: flex;
     justify-content: center;
+}
+
+.discord_loading {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 50px;
+    background-color: #fff;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 20px black;
+    .discord_loading_spinner {
+        background-color: black;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        animation: discord_loading_spinner 1200ms infinite;
+    }
+    .discord_loading_text {
+        margin-top: 10px;
+        color: black;
+        text-align: center;
+        font-weight: bold;
+    }
+}
+
+@keyframes discord_loading_spinner {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        background-color: black;
+        opacity: 1;
+        transform: scale(1)
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
 }

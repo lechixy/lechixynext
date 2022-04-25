@@ -2,13 +2,14 @@ import { FC, useEffect, useState } from 'react'
 import Image from "next/image"
 import styles from './Game.module.scss'
 import { addZero } from '../../../../../utils/helper';
+import { ApiRespond } from '../../../../../utils/types';
 import { useContext, WebSocketContext } from '../../../../../utils/context';
 
 export const GameActivity: FC = () => {
 
-    const { info } = useContext(WebSocketContext)
+    const info = useContext(WebSocketContext) as unknown as ApiRespond
 
-    let gamestatus = info.data.activities.find(x => x.type === 0);
+    let gamestatus = info.activities.find(x => x.type === 0);
     let gameicon = `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets?.large_image}.png`
 
     let gametime = Date.now() - gamestatus!.timestamps?.start

@@ -9,46 +9,41 @@ import spsvg from '../../../../../utils/spotify.svg';
 import { SpotifyButton } from './SpotifyButton';
 import { useContext, WebSocketContext } from '../../../../../utils/context';
 
-type Props = {
-    info: ApiRespond;
-};
-
 type ApiRespond = {
-    success: boolean;
-    data: {
-        spotify: {
-            track_id: string
-            timestamps: {
-                start: number;
-                end: number;
-            };
-            song: string;
-            artist: string;
-            album_art_url: string;
-            album: string;
+
+    spotify: {
+        track_id: string
+        timestamps: {
+            start: number;
+            end: number;
         };
-        listening_to_spotify: boolean;
-        discord_user: {
-            username: string;
-            public_flags: number;
-            id: string;
-            discriminator: string;
-            avatar: string;
-        }
-        discord_status: string;
-        activities: [any];
-        active_on_discord_web: boolean;
-        active_on_discord_mobile: boolean;
-        active_on_discord_desktop: boolean;
+        song: string;
+        artist: string;
+        album_art_url: string;
+        album: string;
+    };
+    listening_to_spotify: boolean;
+    discord_user: {
+        username: string;
+        public_flags: number;
+        id: string;
+        discriminator: string;
+        avatar: string;
     }
+    discord_status: string;
+    activities: [any];
+    active_on_discord_web: boolean;
+    active_on_discord_mobile: boolean;
+    active_on_discord_desktop: boolean;
 }
+
 
 export const Spotify = () => {
 
-    const { info } = useContext(WebSocketContext)
+    const info = useContext(WebSocketContext) as unknown as ApiRespond
 
-    let spotify = info.data.spotify
-    let spotifyact = info.data.activities.find(x => x.type === 2)
+    let spotify = info.spotify
+    let spotifyact = info.activities.find(x => x.type === 2)
 
     //Miliseconds
     let tracknow = Date.now() - spotify.timestamps.start

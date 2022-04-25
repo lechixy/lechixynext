@@ -1,7 +1,7 @@
 import { createContext, useContext, Context } from "react";
 import { Props } from '../utils/types';
 
-const WebSocketContext: Context<Props> = createContext()
+const WebSocketContext: Context<string> = createContext()
 
 export {
     WebSocketContext,

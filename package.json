@@ -9,20 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/ws": "^8.5.3",
-    "axios": "^0.26.1",
-    "bufferutil": "^4.0.6",
-    "fs": "^0.0.1-security",
-    "moment": "^2.29.1",
-    "net": "^1.0.2",
-    "next": "12.1.0",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "sass": "^1.49.9",
-    "socket.io-client": "^4.4.1",
-    "tls": "^0.0.1",
-    "utf-8-validate": "^5.0.9",
-    "ws": "^8.5.0"
+    "moment": "^2.29.3",
+    "next": "12.1.5",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "sass": "^1.50.1"
   },
   "devDependencies": {
     "@types/node": "17.0.21",
@@ -31,5 +22,6 @@
     "eslint-config-next": "12.1.0",
     "react-icons": "^4.3.1",
     "typescript": "4.6.2"
-  }
+  },
+  "packageManager": "yarn@1.22.18"
 }
