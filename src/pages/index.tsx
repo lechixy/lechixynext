@@ -35,7 +35,7 @@ const Main: NextPage = () => {
             subscribe_to_id: "391511241786654721"
           }
         }
-        let interval = jsConvert.d.heartbeat_interval
+        let interval = jsConvert.d.heartbeat_interval-1000
         ws.send(JSON.stringify(op1))
         intervalObject = setInterval(() => {
           websocketlog('Sending heartbeat interval...')
