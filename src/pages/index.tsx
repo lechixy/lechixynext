@@ -15,7 +15,7 @@ const Main: NextPage = () => {
 
   useEffect(() => {
     connectToWebSocket();
-  },[])
+  }, [])
 
   const connectToWebSocket = () => {
     websocketlog('Trying to connect websocket...')
@@ -35,7 +35,7 @@ const Main: NextPage = () => {
             subscribe_to_id: "391511241786654721"
           }
         }
-        let interval = jsConvert.d.heartbeat_interval-1000
+        let interval = jsConvert.d.heartbeat_interval - 1000
         ws.send(JSON.stringify(op1))
         intervalObject = setInterval(() => {
           websocketlog('Sending heartbeat interval...')
@@ -52,7 +52,13 @@ const Main: NextPage = () => {
       }
     })
 
-    return () => clearInterval(intervalObject)
+    ws.addEventListener('close', (error) => {
+      clearInterval(intervalObject)
+      ws.close();
+      websocketlog(`An error occurred while websocket connection: ${error}`)
+      websocketlog('Trying to reconnect to websocket!')
+      connectToWebSocket();
+    })
   }
 
   return (

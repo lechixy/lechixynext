@@ -1,93 +1,9 @@
-.type_4{
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-    color: white;
-    .type_4_head{
-        font-weight: bold;
-        color: #989898;
-        margin-bottom: 5px;
-    }
-}
-
-.type_2{
-    margin-top: 20px;
-    display: block;
-    .header{
-        color: #b9bbbe;
-        margin-bottom: 5px;
-        font-size: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .spotify{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        .spotify_img{
-            border-radius: 5px;
-            object-fit: cover;
-        }
-        .spotify_text{
-            width: 100%;
-            margin-left: 10px;
-            display: flex;
-            flex-direction: column;
-            .spotify_text_song{
-                color: white;
-                font-weight: 600;
-            }
-            .spotify_text_artist{
-                color: #dcddde;
-            }
-            .spotify_text_album{
-                color: #dcddde;
-            }
-            .spotify_timestamp_area{
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                margin-top: 5px;
-            }
-            .spotify_timestamp{
-                color: #dcddde;
-                font-size: small;
-            }
-            .spotify_statusbar_bg{
-                width: 100%;
-                margin-top: 10px;
-                height: 4px;
-                background-color: rgba(79,84,92,.16);
-                border-radius: 2px;
-            }
-            .spotify_statusbar{
-                background-color: white;
-                border-radius: 2px;
-                height: 100%;
-            }
-        }
-    }
-}
-
-.underline:hover{
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 .offline{
     display: flex;
     font-weight: bold;
     color: #989898;
     justify-content: center;
-    margin-top: 95px;
-}
-
-.gamestatus{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 50px;
+    align-items: center;
+    height: 200px;
+    width: 440px;
 }
