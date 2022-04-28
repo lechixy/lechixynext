@@ -1,17 +1,17 @@
 .gamestatus {
     display: flex;
-    height: 180px;
-    width: 100%;
+    width: 440px;
+    height: 200px;
     flex-direction: row;
     align-items: center;
-    
+
     .activity_image {
-        * {
+        img{
             border-radius: 5px;
             object-fit: cover;
         }
     }
-    .activity_text{
+    .activity_text {
         width: 100%;
         margin-left: 10px;
         display: flex;
@@ -20,17 +20,17 @@
         text-overflow: ellipsis;
         overflow: hidden;
         cursor: default;
-        .activity_text_title{
+        .activity_text_title {
             color: white;
             font-weight: 600;
         }
-        .activity_text_details{
+        .activity_text_details {
             color: #dcddde;
         }
-        .activity_text_state{
+        .activity_text_state {
             color: #dcddde;
         }
-        .activity_text_timestamp{
+        .activity_text_timestamp {
             color: #dcddde;
         }
     }

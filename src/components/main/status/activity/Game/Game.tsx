@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from 'react'
 import Image from "next/image"
 import styles from './Game.module.scss'
@@ -36,7 +37,7 @@ export const GameActivity: FC = () => {
     return (
         <div className={styles.gamestatus}>
             <div className={styles.activity_image} title={large_text}>
-                <Image src={gameicon} height={150} width={150} alt={game_name} />
+                <img src={gameicon} height={100} width={100} alt={game_name} />
             </div>
             <div className={styles.activity_text}>
                 <span className={styles.activity_text_title} title={game_name}>{game_name}</span>

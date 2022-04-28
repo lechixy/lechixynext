@@ -93,7 +93,7 @@ export const Spotify = () => {
             </div>
             <div className={styles.spotify}>
                 <div className={styles.spotify_img}>
-                    <Image src={spotify.album_art_url} alt={`${spotify.album}`} height={140} width={140} title={`${spotify.album}`} />
+                    <img src={spotify.album_art_url} alt={`${spotify.album}`} height={100} width={100} title={`${spotify.album}`} />
                 </div>
                 <div className={styles.spotify_text}>
                     <span className={styles.spotify_text_song} title={`${spotify.song}`}>
