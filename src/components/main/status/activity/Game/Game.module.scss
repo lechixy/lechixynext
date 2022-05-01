@@ -5,11 +5,46 @@
     flex-direction: row;
     align-items: center;
 
-    .activity_image {
-        img{
+    .activity_img {
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        img {
             border-radius: 5px;
             object-fit: cover;
         }
+        .activity_img_tooltip {
+            opacity: 0;
+            transform: translateY(100px) scale(0.95);
+            background-color: var(--background-floating);
+            box-shadow: var(--elevation-high);
+            color: white;
+            pointer-events: none;
+            position: absolute;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 14px;
+            max-width: 190px;
+            line-height: 16px;
+            white-space: pre-line;
+            padding: 8px 12px;
+            text-align: center;
+            transition: 75ms ease-in-out;
+            display: flex;
+            justify-content: center;
+            .activity_img_tooltip_arrow {
+                border: 5px solid transparent;
+                border-bottom-color: var(--background-floating);
+                position: absolute;
+                bottom: 100%;
+                width: 0;
+                height: 0;
+            }
+        }
+    }
+    .activity_img:hover > .activity_img_tooltip {
+        opacity: 1;
+        transform: translateY(108px) scale(1);
     }
     .activity_text {
         width: 100%;

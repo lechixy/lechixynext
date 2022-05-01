@@ -95,6 +95,7 @@ export const Spotify = () => {
                 <Link href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} passHref>
                     <div className={styles.spotify_img}>
                         <div className={styles.spotify_img_tooltip}>
+                            <div className={styles.spotify_img_tooltip_arrow}></div>
                             <div>{spotify.album}</div>
                         </div>
                         <img src={spotify.album_art_url} alt={`${spotify.album}`} height={100} width={100} />

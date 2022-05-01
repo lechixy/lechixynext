@@ -44,6 +44,7 @@ export const DiscordPanel: FC = () => {
                             />
                             <div style={{ 'backgroundColor': `${status_color}` }} className={styles.discord_avatar_status}>
                                 <div className={styles.discord_avatar_status_tooltip}>
+                                    <div className={styles.discord_avatar_status_tooltip_arrow}></div>
                                     <div>{status_text}</div>
                                 </div>
                             </div>
