@@ -42,8 +42,11 @@ export const DiscordPanel: FC = () => {
                                 height={100}
                                 width={100}
                             />
-                            <span style={{ 'backgroundColor': `${status_color}` }} className={styles.discord_avatar_status} title={status_text}>
-                            </span>
+                            <div style={{ 'backgroundColor': `${status_color}` }} className={styles.discord_avatar_status}>
+                                <div className={styles.discord_avatar_status_tooltip}>
+                                    <div>{status_text}</div>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <a href={`https://discord.com/users/${info.discord_user.id}`} target="_blank" style={{ 'textDecoration': 'none' }} rel="noreferrer">

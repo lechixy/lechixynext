@@ -92,9 +92,14 @@ export const Spotify = () => {
                 </svg>
             </div>
             <div className={styles.spotify}>
-                <div className={styles.spotify_img}>
-                    <img src={spotify.album_art_url} alt={`${spotify.album}`} height={100} width={100} title={`${spotify.album}`} />
-                </div>
+                <Link href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} passHref>
+                    <div className={styles.spotify_img}>
+                        <div className={styles.spotify_img_tooltip}>
+                            <div>{spotify.album}</div>
+                        </div>
+                        <img src={spotify.album_art_url} alt={`${spotify.album}`} height={100} width={100} />
+                    </div>
+                </Link>
                 <div className={styles.spotify_text}>
                     <span className={styles.spotify_text_song} title={`${spotify.song}`}>
                         <Link href={`https://open.spotify.com/track/${spotify.track_id}`} passHref>

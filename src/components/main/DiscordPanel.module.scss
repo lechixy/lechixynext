@@ -3,6 +3,7 @@
     width: 500px;
     background-color: #232323;
     border-radius: 25px;
+    box-shadow: var(--elevation-high);
 }
 
 .discord_content {
@@ -18,12 +19,12 @@
 
 .discord_header_tag {
     color: white;
-    font-weight: bold;
+    font-weight: bolder;
 }
 
 .discord_header_disc {
     color: #b9bbbe;
-    font-weight: bolder;
+    font-weight: lighter;
 }
 
 .discord_header_status {
@@ -42,7 +43,7 @@
     border-bottom: 2px solid #343434;
 }
 
-.discord_avatar{
+.discord_avatar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -52,6 +53,7 @@
     height: 100px;
     width: 100px;
     border-radius: 50%;
+    box-shadow: var(--elevation-high);
 }
 
 .discord_avatar_status {
@@ -61,6 +63,32 @@
     height: 25px;
     width: 25px;
     border-radius: 50%;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: 5px solid #232323;
+}
+
+.discord_avatar_status_tooltip {
+    opacity: 0;
+    transform: translateX(20px) scale(0.95);
+    background-color: var(--background-floating);
+    box-shadow: var(--elevation-high);
+    color: white;
+    pointer-events: none;
+    position: absolute;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    max-width: 190px;
+    line-height: 16px;
+    white-space: pre-line;
+    padding: 8px 12px;
+    text-align: center;
+    transition: 75ms ease-in-out;
+}
+
+.discord_avatar_status:hover > .discord_avatar_status_tooltip {
+    opacity: 1;
+    transform: translateX(50px) scale(1);
 }
