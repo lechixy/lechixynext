@@ -1,17 +1,22 @@
 .type_2 {
     margin-top: 15px;
     display: flex;
-    width: 440px;
+    max-width: 440px;
+    width: auto;
     height: 110px;
     flex-direction: column;
     .header {
         color: #1db954;
         margin-bottom: 10px;
-        font-size: 10px;
+        font-size: 12px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         cursor: default;
+        font-family: 'Whitney';
+        span{
+            font-weight: bolder;
+        }
     }
     .spotify {
         display: flex;
@@ -27,7 +32,7 @@
             }
             .spotify_img_tooltip {
                 opacity: 0;
-                transform: translateY(100px) scale(0.95);
+                transform: translateY(96px) scale(0.95);
                 background-color: var(--background-floating);
                 box-shadow: var(--elevation-high);
                 color: white;
@@ -41,7 +46,7 @@
                 white-space: pre-line;
                 padding: 8px 12px;
                 text-align: center;
-                transition: 75ms ease-in-out;
+                transition: 75ms ease-in;
                 display: flex;
                 justify-content: center;
                 .spotify_img_tooltip_arrow {

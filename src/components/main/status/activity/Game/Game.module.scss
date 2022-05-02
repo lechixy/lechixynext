@@ -1,10 +1,10 @@
 .gamestatus {
     display: flex;
-    width: 440px;
+    max-width: 440px;
+    width: auto;
     height: 200px;
     flex-direction: row;
     align-items: center;
-
     .activity_img {
         display: flex;
         justify-content: center;
@@ -15,7 +15,7 @@
         }
         .activity_img_tooltip {
             opacity: 0;
-            transform: translateY(100px) scale(0.95);
+            transform: translateY(96px) scale(0.95);
             background-color: var(--background-floating);
             box-shadow: var(--elevation-high);
             color: white;
@@ -29,7 +29,7 @@
             white-space: pre-line;
             padding: 8px 12px;
             text-align: center;
-            transition: 75ms ease-in-out;
+            transition: 75ms ease-in;
             display: flex;
             justify-content: center;
             .activity_img_tooltip_arrow {

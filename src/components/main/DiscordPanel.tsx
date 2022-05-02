@@ -24,7 +24,13 @@ export const DiscordPanel: FC = () => {
         ? 'Online' : info.discord_status === 'idle'
             ? 'Idle' : info.discord_status === 'dnd'
                 ? 'Do not disturb' : 'Offline';
-    let avatar_url = `https://cdn.discordapp.com/avatars/${info.discord_user.id}/${info.discord_user.avatar}.png?size=256`
+
+
+    let active_on: string[] = []
+    if (info.active_on_discord_desktop) active_on.push('Desktop')
+    if (info.active_on_discord_web) active_on.push('Web')
+    if (info.active_on_discord_mobile) active_on.push('Mobile')
+    let avatar_url = `https://cdn.discordapp.com/avatars/${info.discord_user.id}/${info.discord_user.avatar}.png?size=4096`
     let custom_status = info.activities.find(x => x.type === 4) ? `${info.activities.find(x => x.type === 4)?.state}` : null;
 
 
@@ -45,7 +51,7 @@ export const DiscordPanel: FC = () => {
                             <div style={{ 'backgroundColor': `${status_color}` }} className={styles.discord_avatar_status}>
                                 <div className={styles.discord_avatar_status_tooltip}>
                                     <div className={styles.discord_avatar_status_tooltip_arrow}></div>
-                                    <div>{status_text}</div>
+                                    <div className={styles.discord_avatar_status_tooltip_text}>{status_text === 'Offline' ? status_text : `${status_text} on ${active_on.join(', ')}`}</div>
                                 </div>
                             </div>
                         </div>

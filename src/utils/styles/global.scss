@@ -1,3 +1,14 @@
+@font-face{
+    font-family: 'Whitney';
+    src: url('/fonts/Whitney-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+@font-face{
+    font-family: 'Whitney';
+    src: url('/fonts/Whitney-Semibold.woff2') format('woff2');
+    font-weight: bolder;
+}
+
 :root {
     --border-color: rgba(22, 22, 22, 0.685);
     --app-color: rgb(255, 255, 255);
@@ -18,7 +29,7 @@
     --button-secondary-background-hover: #686d73;
     --button-secondary-background-focus: #72767d;
     --background-floating: #18191c;
-    --elevation-high: 0 8px 16px rgba(0,0,0,0.24);
+    --elevation-high: 0 8px 16px rgba(0, 0, 0, 0.24);
 }
 
 * {
@@ -28,7 +39,7 @@
 
 html {
     scroll-behavior: smooth;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "DM Sans", sans-serif;
 }
 
 .fa-snowflake {
