@@ -105,10 +105,7 @@ const Main: NextPage = () => {
       <div className={styles.more}>
         <h2 id="more" className={styles.more_header}>Other stuffs</h2>
         <div className={styles.more_text}>
-          <p>{`You should call me "kawaii"`}</p>
-          <p>{`Play it like a hentaii`}</p>
-          <p>{`Moshi moshi, Oni Chi`}</p>
-          <p>{`Yuce, Noshi Kamaji`}</p>
+          <p>{`i can't have it all together`}</p>
         </div>
       </div>
 
