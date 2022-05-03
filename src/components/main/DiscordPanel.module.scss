@@ -1,5 +1,4 @@
 .discord_panel {
-    height: 430px;
     width: 500px;
     background-color: #232323;
     border-radius: 25px;
@@ -9,7 +8,8 @@
 .discord_content {
     display: flex;
     flex-direction: column;
-    margin: 30px;
+    padding: 30px;
+    justify-content: center;
 }
 
 .discord_header {
@@ -70,6 +70,7 @@
 }
 
 .discord_avatar_status_tooltip {
+    visibility: hidden;
     opacity: 0;
     transform: translateX(25px) scale(0.90);
     background-color: var(--background-floating);
@@ -102,5 +103,6 @@
 
 .discord_avatar_status:hover > .discord_avatar_status_tooltip {
     opacity: 1;
+    visibility: visible;
     transform: translateX(37px) scale(1);
 }

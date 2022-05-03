@@ -8,26 +8,17 @@ import { GameActivity } from './activity/Game/Game';
 export const Status: FC = () => {
 
     const info = useContext(WebSocketContext) as unknown as ApiRespond
-
-    //Game
-    if (info.activities.find(x => x.type === 0)) {
-
-        return (
-            <GameActivity />
-        )
-    }
-
-    //Spotify
-    if (info.listening_to_spotify === true) {
-        return (
-            <Spotify />
-        )
-
-    }
+    const noActivity = info.activities.length === 1 && info.activities[0].type === 4 && !info.listening_to_spotify
 
     return (
-        <div className={styles.offline}>
-            <span>Well, there is no activity to show you {`>_<`} </span>
-        </div>
+        <>
+            {info.activities.find(x => x.type === 0) && (<GameActivity />)}
+            {info.listening_to_spotify && (<Spotify />)}
+            {noActivity && (
+                <div className={`${styles.offline} ${styles.status}`}>
+                    <span>Well, there is no activity to show you {`>_<`} </span>
+                </div>
+            )}
+        </>
     )
 }

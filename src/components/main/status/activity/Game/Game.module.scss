@@ -15,6 +15,7 @@
         }
         .activity_img_tooltip {
             opacity: 0;
+            visibility: hidden;
             transform: translateY(96px) scale(0.95);
             background-color: var(--background-floating);
             box-shadow: var(--elevation-high);
@@ -44,6 +45,7 @@
     }
     .activity_img:hover > .activity_img_tooltip {
         opacity: 1;
+        visibility: visible;
         transform: translateY(108px) scale(1);
     }
     .activity_text {

@@ -1,9 +1,8 @@
 .type_2 {
     margin-top: 15px;
     display: flex;
-    max-width: 440px;
-    width: auto;
-    height: 110px;
+    width: 100%;
+    height: 100%;
     flex-direction: column;
     .header {
         color: #1db954;
@@ -13,15 +12,15 @@
         justify-content: space-between;
         align-items: center;
         cursor: default;
-        font-family: 'Whitney';
-        span{
+        font-family: "Whitney";
+        span {
             font-weight: bolder;
         }
     }
     .spotify {
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
         .spotify_img {
             display: flex;
             justify-content: center;
@@ -32,6 +31,7 @@
             }
             .spotify_img_tooltip {
                 opacity: 0;
+                visibility: hidden;
                 transform: translateY(96px) scale(0.95);
                 background-color: var(--background-floating);
                 box-shadow: var(--elevation-high);
@@ -61,6 +61,7 @@
         }
         .spotify_img:hover > .spotify_img_tooltip {
             opacity: 1;
+            visibility: visible;
             transform: translateY(108px) scale(1);
         }
         .spotify_text {
@@ -77,6 +78,7 @@
             }
             .spotify_text_artist {
                 color: #dcddde;
+                white-space: pre-wrap;
             }
             .spotify_text_album {
                 color: #dcddde;
