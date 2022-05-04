@@ -4,6 +4,7 @@ import { WebSocketContext, useContext } from '../../../utils/context';
 import { ApiRespond } from '../../../utils/types';
 import { Spotify } from './activity/Spotify/Spotify';
 import { GameActivity } from './activity/Game/Game';
+import DiscordSvg from '../../../utils/discord_no_way.svg'
 
 export const Status: FC = () => {
 
@@ -11,14 +12,14 @@ export const Status: FC = () => {
     const noActivity = info.activities.length === 1 && info.activities[0].type === 4 && !info.listening_to_spotify
 
     return (
-        <>
+        <div className={styles.status}>
             {info.activities.find(x => x.type === 0) && (<GameActivity />)}
             {info.listening_to_spotify && (<Spotify />)}
             {noActivity && (
-                <div className={`${styles.offline} ${styles.status}`}>
+                <div className={styles.offline}>
                     <span>Well, there is no activity to show you {`>_<`} </span>
                 </div>
             )}
-        </>
+        </div>
     )
 }

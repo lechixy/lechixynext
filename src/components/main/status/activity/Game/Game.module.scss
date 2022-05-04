@@ -1,14 +1,12 @@
 .gamestatus {
     display: flex;
-    max-width: 440px;
     width: auto;
-    height: 200px;
+    height: 140px;
     flex-direction: row;
     align-items: center;
     .activity_img {
         display: flex;
         justify-content: center;
-        cursor: pointer;
         img {
             border-radius: 5px;
             object-fit: cover;
@@ -30,7 +28,7 @@
             white-space: pre-line;
             padding: 8px 12px;
             text-align: center;
-            transition: 75ms ease-in;
+            transition: 50ms ease-in;
             display: flex;
             justify-content: center;
             .activity_img_tooltip_arrow {
