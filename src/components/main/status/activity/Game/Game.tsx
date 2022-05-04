@@ -36,20 +36,25 @@ export const GameActivity: FC = () => {
 
     return (
         <div className={styles.gamestatus}>
-            <div className={styles.activity_img} title={large_text}>
-                {large_text && (
-                    <div className={styles.activity_img_tooltip}>
-                        <div className={styles.activity_img_tooltip_arrow}></div>
-                        <div>{large_text}</div>
-                    </div>
-                )}
-                <img src={gameicon} height={100} width={100} alt={game_name} />
+            <div className={styles.header}>
+                <span title={`Playing a game`}>PLAYING A GAME</span>
             </div>
-            <div className={styles.activity_text}>
-                <span className={styles.activity_text_title} title={game_name}>{game_name}</span>
-                <span className={styles.activity_text_details} title={gamestatus?.details}>{gamestatus?.details}</span>
-                <span className={styles.activity_text_state} title={gamestatus?.state}>{gamestatus?.state}</span>
-                {gametime ? <span className={styles.activity_text_timestamp} title={start + ' elapsed'}>{start} elapsed</span> : null}
+            <div className={styles.game_activity}>
+                <div className={styles.activity_img}>
+                    {large_text && (
+                        <div className={styles.activity_img_tooltip}>
+                            <div className={styles.activity_img_tooltip_arrow}></div>
+                            <div>{large_text}</div>
+                        </div>
+                    )}
+                    <img src={gameicon} height={100} width={100} alt={game_name} />
+                </div>
+                <div className={styles.activity_text}>
+                    <span className={styles.activity_text_title} title={game_name}>{game_name}</span>
+                    <span className={styles.activity_text_details} title={gamestatus?.details}>{gamestatus?.details}</span>
+                    <span className={styles.activity_text_state} title={gamestatus?.state}>{gamestatus?.state}</span>
+                    {gametime ? <span className={styles.activity_text_timestamp} title={start + ' elapsed'}>{start} elapsed</span> : null}
+                </div>
             </div>
         </div>
     )
