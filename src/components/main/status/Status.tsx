@@ -20,6 +20,11 @@ export const Status: FC = () => {
                     <span>Well, there is no activity to show you {`>_<`} </span>
                 </div>
             )}
+            {info.discord_status === "offline" && (
+                <div className={styles.offline}>
+                    <span>Looks like {`i'm`} offline {`(❤️ ω ❤️)`} </span>
+                </div>
+            )}
         </div>
     )
 }
