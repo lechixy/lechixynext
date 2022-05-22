@@ -64,7 +64,7 @@ const Main: NextPage = () => {
   return (
     <div className={styles.main}>
       <Head>
-        <title>lechixy | backstabber!</title>
+        <title>lechixy | yesterday mistakes!</title>
       </Head>
       <div id="social" className={styles.social_links}>
         <a id="app" className={styles.app} href={socials.instagram}>

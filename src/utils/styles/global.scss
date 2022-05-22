@@ -31,8 +31,8 @@
 :root {
     --border-color: rgba(22, 22, 22, 0.685);
     --app-color: rgb(255, 255, 255);
-    --app-bg-color: rgba(58, 58, 58, 0.568);
-    --app-after-color: rgba(119, 119, 119, 0.562);
+    --app-bg-color: rgba(58, 58, 58, 0.3);
+    --app-after-color: rgba(119, 119, 119, 0.3);
     --bg-color-gradient: linear-gradient(45deg, rgb(0, 0, 0), rgb(25, 25, 25));
     --instagram-color: #bc318f;
     --twitch-color: #9b58ff;
@@ -74,5 +74,19 @@ html {
     100% {
         transform: translateY(300vh) rotate(360deg);
         opacity: 0;
+    }
+}
+
+.skeleton {
+    opacity: 0.7;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 70%);
+    }
+    100% {
+        background-color: hsl(200, 20%, 95%);
     }
 }
