@@ -45,7 +45,7 @@
                 white-space: pre-line;
                 padding: 8px 12px;
                 text-align: center;
-                transition: 75ms ease-in;
+                transition: var(--animation);
                 display: flex;
                 justify-content: center;
                 .spotify_img_tooltip_arrow {

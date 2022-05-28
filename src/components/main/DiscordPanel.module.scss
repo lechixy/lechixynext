@@ -83,7 +83,7 @@
     line-height: 16px;
     padding: 8px 12px;
     width: auto;
-    transition: .17s ease-out;
+    transition: var(--animation);
     display: flex;
     align-items: center;
     .discord_avatar_status_tooltip_arrow {
