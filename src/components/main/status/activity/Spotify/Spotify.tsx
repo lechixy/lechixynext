@@ -54,8 +54,8 @@ export const Spotify = () => {
     let tracklength_timestamp = `${new Date(tracklength).getMinutes()}:${addZero(new Date(tracklength).getSeconds().toString())}`
 
     //Status bar values
-    let nowAsSeconds = Math.round(moment.duration(tracknow).asSeconds())
-    let lengthAsSeconds = Math.round(moment.duration(tracklength).asSeconds())
+    let nowAsSeconds = moment.duration(tracknow).asMilliseconds()
+    let lengthAsSeconds = moment.duration(tracklength).asMilliseconds()
     let percent = (nowAsSeconds * 100) / lengthAsSeconds;
 
     //Live values
@@ -69,7 +69,7 @@ export const Spotify = () => {
             tracknow_timestamp = `${new Date(tracknow).getMinutes()}:${addZero(new Date(tracknow).getSeconds().toString())}`
 
             setStart(tracknow_timestamp)
-        }, 1000)
+        }, 300);
 
         if (nowAsSeconds >= lengthAsSeconds) {
             setStart(tracknow_timestamp)
