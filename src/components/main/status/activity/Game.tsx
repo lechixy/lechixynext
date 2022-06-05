@@ -2,9 +2,9 @@
 import { FC, useEffect, useState } from 'react'
 import Image from "next/image"
 import styles from './Game.module.scss'
-import { addZero } from '../../../../../utils/helper';
-import { ApiRespond } from '../../../../../utils/types';
-import { useContext, WebSocketContext } from '../../../../../utils/context';
+import { addZero } from '../../../../utils/helper';
+import { ApiRespond } from '../../../../utils/types';
+import { useContext, WebSocketContext } from '../../../../utils/context';
 
 export const GameActivity: FC = () => {
 

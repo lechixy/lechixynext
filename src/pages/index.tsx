@@ -70,9 +70,6 @@ const Main: NextPage = () => {
         <a id="app" className={styles.app} href={socials.instagram}>
           <icon.FaInstagram className={styles.app_instagram} size={55} />
         </a>
-        <a id="app" className={styles.app} href={socials.snapchat}>
-          <icon.FaSnapchat className={styles.app_snapchat} size={55} />
-        </a>
         <a id="app" className={styles.app} href={socials.twitch}>
           <icon.FaTwitch className={styles.app_twitch} size={55} />
         </a>

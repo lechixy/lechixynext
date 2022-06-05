@@ -4,10 +4,9 @@ import { FC, useState, useEffect } from 'react';
 import styles from './Spotify.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
-import { addZero } from '../../../../../utils/helper';
+import { addZero } from '../../../../utils/helper';
 import spsvg from '../../../../../utils/spotify.svg';
-import { SpotifyButton } from './SpotifyButton';
-import { useContext, WebSocketContext } from '../../../../../utils/context';
+import { useContext, WebSocketContext } from '../../../../utils/context';
 
 type ApiRespond = {
 
@@ -131,9 +130,6 @@ export const Spotify = () => {
                         <span className={styles.spotify_timestamp} title={`${tracklength_timestamp}`} >{tracklength_timestamp}</span>
                     </div>
                 </div>
-            </div>
-            <div>
-                <SpotifyButton url={`spotify:track:${spotify.track_id}`} />
             </div>
         </div>
     )
