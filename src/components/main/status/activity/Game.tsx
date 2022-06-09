@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from 'react'
-import Image from "next/image"
 import styles from './Game.module.scss'
 import { toTimestamp } from '../../../../utils/functions';
 import { ApiRespond } from '../../../../utils/types';
 import { useContext, WebSocketContext } from '../../../../utils/context';
+import moment from 'moment';
 
 export const GameActivity: FC = () => {
 
@@ -13,19 +13,18 @@ export const GameActivity: FC = () => {
     let gamestatus = info.activities.find(x => x.type === 0);
     let gameicon = `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets?.large_image}.png`
 
-    let gametime = Date.now() - gamestatus!.timestamps?.start
-    let gametimetimestamp = `${new Date(gametime).getMinutes()}:${addZero(new Date(gametime).getSeconds().toString())}`
-
-    const [start, setStart] = useState(gametimetimestamp)
+    const [start, setStart] = useState("0")
 
     useEffect(() => {
         const interval = setInterval(() => {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            gametime = Date.now() - gamestatus!.timestamps?.start
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            gametimetimestamp = `${new Date(gametime).getMinutes()}:${addZero(new Date(gametime).getSeconds().toString())}`
+            //Elapsed
+            let elapsedMs = Date.now() - gamestatus!.timestamps?.start
+            let elapsedSec = moment.duration(elapsedMs).asSeconds()
 
-            setStart(gametimetimestamp)
+            //Elapsed timestamp
+            let length = toTimestamp(Math.floor(elapsedSec));
+
+            setStart(length)
         }, 1000)
 
         return () => clearInterval(interval)
@@ -53,7 +52,7 @@ export const GameActivity: FC = () => {
                     <span className={styles.activity_text_title} title={game_name}>{game_name}</span>
                     <span className={styles.activity_text_details} title={gamestatus?.details}>{gamestatus?.details}</span>
                     <span className={styles.activity_text_state} title={gamestatus?.state}>{gamestatus?.state}</span>
-                    {gametime ? <span className={styles.activity_text_timestamp} title={start + ' elapsed'}>{start} elapsed</span> : null}
+                    {start ? <span className={styles.activity_text_timestamp}>{start} elapsed</span> : null}
                 </div>
             </div>
         </div>

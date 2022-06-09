@@ -40,7 +40,6 @@ export const Spotify: FC = () => {
     const info = useContext(WebSocketContext) as unknown as ApiRespond
 
     let spotify = info.spotify
-    let spotifyact = info.activities.find(x => x.type === 2)
 
     //Live values
     let [percent, setPercent] = useState("0%")
