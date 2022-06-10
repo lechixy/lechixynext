@@ -7,7 +7,7 @@ export function formatTime(time: number): string {
 
 export function toTimestamp(second: number): string {
     if (second < 60) {
-        return `00:${second}`
+        return `00:${formatTime(second)}`
     } else {
         let min = parseInt((second / 60).toPrecision());
         console.log(min)
