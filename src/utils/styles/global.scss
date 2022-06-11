@@ -29,11 +29,13 @@
 }
 
 :root {
-    --border-color: rgba(22, 22, 22, 0.685);
-    --app-color: rgb(255, 255, 255);
-    --app-bg-color: rgba(58, 58, 58, 0.3);
+    //Main colors
+    --bg-color-gradient: linear-gradient(0deg, rgb(10, 10, 10), rgb(16, 16, 16));
+    --border-color: rgba(20, 20, 20, 1);
+    --app-color: white;
+    --app-bg-color: rgba(30, 30, 30, 0.85);
     --app-after-color: rgba(119, 119, 119, 0.3);
-    --bg-color-gradient: linear-gradient(45deg, rgb(0, 0, 0), rgb(25, 25, 25));
+    //Apps
     --instagram-color: #bc318f;
     --twitch-color: #9b58ff;
     --steam-color: #00adee;
@@ -41,6 +43,7 @@
     --github-color: #000000;
     --discord-color: #5865f2;
     --snapchat-color: #fffc00;
+    //Some discord colors
     --brand-experiment: #516dee;
     --brand-experiment-hover: #4157c0;
     --brand-experiment-focus: #374aa2;
@@ -50,6 +53,7 @@
     --background-floating: #18191c;
     --elevation-high: 0 8px 16px rgba(0, 0, 0, 0.24);
     --header-secondary: #b9bbbe;
+    //Animations
     --animation: 50ms ease-in-out;
 }
 

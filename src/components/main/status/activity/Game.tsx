@@ -13,9 +13,14 @@ export const GameActivity: FC = () => {
     let gamestatus = info.activities.find(x => x.type === 0);
     let gameicon = `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets?.large_image}.png`
 
-    const [start, setStart] = useState("0")
+    const [start, setStart] = useState<any>(null)
 
     useEffect(() => {
+        if (!gamestatus.timestamps) {
+            setStart(null)
+            return;
+        }
+
         const interval = setInterval(() => {
             //Elapsed
             let elapsedMs = Date.now() - gamestatus!.timestamps?.start
@@ -25,10 +30,10 @@ export const GameActivity: FC = () => {
             let length = toTimestamp(Math.floor(elapsedSec));
 
             setStart(length)
-        }, 1000)
+        }, 500)
 
         return () => clearInterval(interval)
-    })
+    }, [gamestatus]);
 
     let large_text = gamestatus?.assets?.large_text ? `${gamestatus.assets.large_text}` : undefined;
     let game_name = gamestatus?.name ? `${gamestatus.name}` : undefined;

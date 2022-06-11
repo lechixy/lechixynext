@@ -11,12 +11,6 @@ import { websocketlog } from '../utils/log';
 
 const Main: NextPage = () => {
 
-  const [data, setData] = useState(null)
-
-  useEffect(() => {
-    connectToWebSocket();
-  }, [])
-
   const connectToWebSocket = () => {
     websocketlog('Trying to connect websocket...')
     let ws = new WebSocket('wss://api.lanyard.rest/socket')
@@ -61,10 +55,16 @@ const Main: NextPage = () => {
     })
   }
 
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    connectToWebSocket();
+  }, [])
+
   return (
     <div className={styles.main}>
       <Head>
-        <title>lechixy | yesterday mistakes!</title>
+        <title>lechixy | sweetest pie!</title>
       </Head>
       <div id="social" className={styles.social_links}>
         <a id="app" className={styles.app} href={socials.instagram}>
@@ -102,12 +102,12 @@ const Main: NextPage = () => {
       <div className={styles.more}>
         <h2 id="more" className={styles.more_header}>Other stuffs</h2>
         <div className={styles.more_text}>
-          <p>{`i can't have it all together`}</p>
+          <p>{`nothing to see here, güven bana`}</p>
         </div>
       </div>
 
       <div className={styles.made_text}>
-        <p>{`Made with ❤️ by Melih`}</p>
+        <p>{`hay aksi sona ulaştın | melih 💖`}</p>
       </div>
     </div>
   );

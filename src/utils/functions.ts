@@ -6,14 +6,21 @@ export function formatTime(time: number): string {
 }
 
 export function toTimestamp(second: number): string {
+    let times: string[] = [];
+
     if (second < 60) {
         return `00:${formatTime(second)}`
     } else {
+        let hour = parseInt((second / 3600).toPrecision());
+        if (hour !== 0) {
+            times.push(formatTime(hour));
+            second = second - (hour * 3600);
+        }
         let min = parseInt((second / 60).toPrecision());
-        console.log(min)
         let sec = second - (min * 60)
-        console.log(sec)
+        times.push(formatTime(min), formatTime(sec));
 
-        return `${formatTime(min)}:${formatTime(sec)}`
+
+        return times.join(':');
     }
 }

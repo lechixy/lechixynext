@@ -171,15 +171,16 @@
 
 .made_text {
     display: flex;
-    color: #ffffff;
+    color: white;
+    background-color: transparent;
     justify-content: center;
-    background-color: red;
-    padding: 30px;
-    cursor: help;
-    animation: 5s infinite hue linear;
-    p {
-        text-shadow: 0px 0px 10px white, 0px 0px 20px white, 0px 0px 30px white;
-    }
+    padding: 15px;
+    transition: all 200ms ease-out;
+}
+
+.made_text:hover{
+    color: black;
+    background-color: white;
 }
 
 .discord {
