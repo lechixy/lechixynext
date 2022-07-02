@@ -1,7 +1,6 @@
 .type_2 {
     display: flex;
     width: 100%;
-    height: 100%;
     flex-direction: column;
     .header {
         color: #1db954;
@@ -18,15 +17,16 @@
     }
     .spotify {
         display: flex;
-        flex-direction: row;
-        align-items: flex-start;
         .spotify_img {
             display: flex;
             justify-content: center;
             cursor: pointer;
+            margin-right: 8px;
             img {
                 border-radius: 5px;
                 object-fit: cover;
+                height: 100px;
+                width: 100x;
             }
             .spotify_img_tooltip {
                 opacity: 0;
@@ -64,12 +64,10 @@
             transform: translateY(108px) scale(1);
         }
         .spotify_text {
-            margin-left: 10px;
-            width: 100%;
             display: flex;
-            white-space: nowrap;
-            overflow: hidden;
             flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
             cursor: default;
             .spotify_text_song {
                 color: white;
@@ -81,30 +79,35 @@
             }
             .spotify_text_album {
                 color: #dcddde;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
-            .spotify_timestamp_area {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                margin-top: 5px;
-            }
-            .spotify_timestamp {
-                color: #dcddde;
-                font-size: small;
-                cursor: default;
-            }
-            .spotify_statusbar_bg {
-                width: 100%;
-                margin-top: 10px;
-                height: 4px;
-                background-color: rgba(79, 84, 92, 0.16);
-                border-radius: 2px;
-            }
-            .spotify_statusbar {
-                background-color: white;
-                border-radius: 2px;
-                height: 4px;
-            }
+        }
+    }
+    .spotify_bar {
+        .spotify_timestamp_area {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+        .spotify_timestamp {
+            color: #dcddde;
+            font-size: small;
+            cursor: default;
+        }
+        .spotify_statusbar_bg {
+            width: 100%;
+            margin-top: 8px;
+            height: 4px;
+            background-color: rgba(79, 84, 92, 0.16);
+            border-radius: 2px;
+        }
+        .spotify_statusbar {
+            background-color: white;
+            border-radius: 2px;
+            height: 4px;
         }
     }
 }

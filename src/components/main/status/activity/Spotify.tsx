@@ -88,7 +88,7 @@ export const Spotify: FC = () => {
                             <div className={styles.spotify_img_tooltip_arrow}></div>
                             <div>{spotify.album}</div>
                         </div>
-                        <img src={spotify.album_art_url} alt={`${spotify.album}`} height={100} width={100} />
+                        <img src={spotify.album_art_url} alt={`${spotify.album}`} />
                     </div>
                 </Link>
                 <div className={styles.spotify_text}>
@@ -111,16 +111,19 @@ export const Spotify: FC = () => {
                             </span>
                         </Link>
                     </span>
-                    <div className={styles.spotify_statusbar_bg}>
-                        <div style={{ 'width': `${percent}` }} className={styles.spotify_statusbar}>
-                        </div>
-                    </div>
-                    <div className={styles.spotify_timestamp_area}>
-                        <span className={styles.spotify_timestamp}>{timestamps.current}</span>
-                        <span className={styles.spotify_timestamp}>{timestamps.length}</span>
+                </div>
+
+            </div >
+            <div className={styles.spotify_bar}>
+                <div className={styles.spotify_statusbar_bg}>
+                    <div style={{ 'width': `${percent}` }} className={styles.spotify_statusbar}>
                     </div>
                 </div>
-            </div >
+                <div className={styles.spotify_timestamp_area}>
+                    <span className={styles.spotify_timestamp}>{timestamps.current}</span>
+                    <span className={styles.spotify_timestamp}>{timestamps.length}</span>
+                </div>
+            </div>
         </div >
     )
 }
