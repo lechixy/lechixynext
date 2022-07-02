@@ -1,4 +1,6 @@
 # lechixynext
 personal website repository
 
-using lanyard for more: https://github.com/Phineas/lanyard
+made with next.js
+
+using lanyard for websocket: https://github.com/Phineas/lanyard
