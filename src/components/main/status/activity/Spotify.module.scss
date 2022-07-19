@@ -72,6 +72,9 @@
             .spotify_text_song {
                 color: white;
                 font-weight: 600;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
             .spotify_text_artist {
                 color: #dcddde;

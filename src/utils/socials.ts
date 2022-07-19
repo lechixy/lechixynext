@@ -16,7 +16,7 @@ const socials: SocialType[] = [
         url: 'https://open.spotify.com/user/31frempzaphgs26vlu4nn7tpagki/'
     },
     {
-        name: 'Github',
+        name: 'GitHub',
         url: 'https://github.com/lechixy'
     },
     {
@@ -26,7 +26,7 @@ const socials: SocialType[] = [
 ]
 
 type SocialType = {
-    name: string
+    name: "Instagram" | "Twitch" | "Steam" | "Spotify" | "GitHub" | "lechsbott";
     url: string
 }
 

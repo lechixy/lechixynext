@@ -1,0 +1,15 @@
+.presence {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.offline {
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    color: #989898;
+    height: 100%;
+}

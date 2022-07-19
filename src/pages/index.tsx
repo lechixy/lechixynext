@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../utils/styles/main/Home.module.scss';
 import socials from '../utils/socials';
-import { FaDiscord, FaGithub, FaInstagram, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { DiscordPanel } from '../components/main/DiscordPanel';
-import { Props } from '../utils/types';
+import Discord from '../components/main/Discord';
 import { WebSocketContext } from '../utils/context';
 import { websocketlog } from '../utils/log';
+import getIcon from '../components/main/Icon';
+import { getTime } from '../utils';
+import Spinner from '../components/main/Spinner';
 
 const Main: NextPage = () => {
 
@@ -56,9 +57,13 @@ const Main: NextPage = () => {
   }
 
   const [data, setData] = useState(null)
+  const [date, setDate] = useState<string>('Loading...')
 
   useEffect(() => {
     connectToWebSocket();
+    setInterval(() => {
+      setDate(getTime())
+    }, 1000)
   }, [])
 
   return (
@@ -76,37 +81,8 @@ const Main: NextPage = () => {
               {
                 socials.map(social => {
                   return (
-                    <a href={social.url} className={`${styles.app} ${styles[`app_${social.name.toLowerCase()}`]}`} key={social.name}>
-                      {
-                        social.name === 'Instagram' && (
-                          <FaInstagram className={styles.app_icon} />
-                        )
-                      }
-                      {
-                        social.name === 'Twitch' && (
-                          <FaTwitch className={styles.app_icon} />
-                        )
-                      }
-                      {
-                        social.name === 'Steam' && (
-                          <FaSteam className={styles.app_icon} />
-                        )
-                      }
-                      {
-                        social.name === 'Spotify' && (
-                          <FaSpotify className={styles.app_icon} />
-                        )
-                      }
-                      {
-                        social.name === 'Github' && (
-                          <FaGithub className={styles.app_icon} />
-                        )
-                      }
-                      {
-                        social.name === 'lechsbott' && (
-                          <FaStar className={styles.app_icon} />
-                        )
-                      }
+                    <a href={social.url} target={'_blank'} rel={'noreferrer'} className={`${styles.app} ${styles[`app_${social.name.toLowerCase()}`]}`} key={social.name}>
+                      {getIcon(social.name, styles)}
                       {social.name}
                     </a>
                   )
@@ -115,20 +91,18 @@ const Main: NextPage = () => {
             </div>
           </div>
           <div className={styles.made_text}>
-            <p>{`hay aksi sona ulaştın | melih 💖`}</p>
+            <p>{`🕒 ${date} | melih 💖`}</p>
           </div>
         </div>
-        <div className={styles.discord} id="discord">
-          {data ? (
-            <WebSocketContext.Provider value={data}>
-              <DiscordPanel />
-            </WebSocketContext.Provider>
-          ) : (
-            <div className={styles.discord_loading}>
-              <div className={styles.discord_loading_spinner} />
-              <p className={styles.discord_loading_text}>Loading</p>
-            </div>
-          )
+        <div className={styles.discord}>
+          {
+            data ? (
+              <WebSocketContext.Provider value={data}>
+                <Discord />
+              </WebSocketContext.Provider>
+            ) : (
+              <Spinner />
+            )
           }
         </div>
       </div>
