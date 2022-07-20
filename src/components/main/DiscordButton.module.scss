@@ -1,6 +1,6 @@
 .discord_button {
     color: #fff;
-    background-color: var(--brand-experiment);
+    background-color: var(--discord-blurple);
     cursor: pointer;
     display: flex;
     width: auto;
@@ -17,11 +17,11 @@
 }
 
 .discord_button:hover{
-    background-color: var(--brand-experiment-hover);
+    background-color: var(--discord-blurple-hover);
 }
 
 .discord_button:focus{
-    background-color: var(--brand-experiment-focus);
+    background-color: var(--discord-blurple-focus);
 }
 
 .discord_button_container{

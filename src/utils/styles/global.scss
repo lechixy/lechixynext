@@ -29,10 +29,15 @@
 }
 
 :root {
+    --background-image: url("https://www.whatspaper.com/wp-content/uploads/2021/03/4k-anime-wallpaper-whatspaper-1.jpg");
     //Main colors
-    --discord-background: #202225;
-    --discord-floating: #18191c;
-    --discord-divider: rgba(79, 84, 92, 0.478);
+    --discord-background: rgba(32, 34, 37, 0.75);
+    --discord-floating: rgba(24, 25, 28, 1);
+    --discord-divider: rgba(79, 84, 92, 1);
+    --discord-elevation-high: 0 8px 16px rgba(0, 0, 0, 0.24);
+    --discord-blurple: rgb(81, 109, 238, 1);
+    --discord-blurple-hover: rgba(65, 87, 192, 1);
+    --discord-blurple-focus: rgba(55, 74, 162, 1);
     //Apps
     --instagram-color: #bc318f;
     --twitch-color: #9b58ff;
@@ -41,16 +46,13 @@
     --github-color: #58a6ff;
     --lechsbott-color: #00ffff;
     //Some discord colors
-    --brand-experiment: #516dee;
-    --brand-experiment-hover: #4157c0;
-    --brand-experiment-focus: #374aa2;
     --button-secondary-background: #4f545c;
     --button-secondary-background-hover: #686d73;
     --button-secondary-background-focus: #72767d;
-    --elevation-high: 0 8px 16px rgba(0, 0, 0, 0.24);
     --header-secondary: #b9bbbe;
     //Animations
     --animation: 50ms ease-in-out;
+    --animation-1: 150ms ease-in-out;
 }
 
 * {

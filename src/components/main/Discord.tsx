@@ -51,9 +51,13 @@ export const Discord: FC = () => {
                             <div className={styles.user_name}>{info.discord_user.username}</div>
                             <div className={styles.user_discriminator}>#{info.discord_user.discriminator}</div>
                         </div>
-                        <div className={styles.custom_status}>
-                            {custom_status}
-                        </div>
+                        {
+                            custom_status && (
+                                <div className={styles.custom_status}>
+                                    {custom_status}
+                                </div>
+                            )
+                        }
                     </div>
                     <div>
                         <a href={`https://discord.com/users/${info.discord_user.id}`} target="_blank" style={{ 'textDecoration': 'none' }} rel="noreferrer">
