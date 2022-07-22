@@ -64,6 +64,10 @@ const Main: NextPage = () => {
     setInterval(() => {
       setDate(getTime())
     }, 1000)
+
+    window.addEventListener('load', () => {
+      console.log('Loaded!')
+    })
   }, [])
 
   return (
@@ -71,6 +75,7 @@ const Main: NextPage = () => {
       <Head>
         <title>lechixy | sweetest pie!</title>
       </Head>
+      { /*//TODO: add a preloader*/ }
       <div className={styles.container}>
         <div className={styles.stuff}>
           <div>

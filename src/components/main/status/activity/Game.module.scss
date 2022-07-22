@@ -22,17 +22,34 @@
         align-items: center;
         .activity_img {
             display: flex;
-            justify-content: center;
-            img {
+            flex-direction: row;
+            .activity_large {
+                display: flex;
+                justify-content: center;
+            }
+            .activity_small {
+                display: flex;
+                justify-content: center;
+            }
+            .activity_large_img {
                 border-radius: 5px;
                 object-fit: cover;
+            }
+            .activity_small_img {
+                border-radius: 50%;
+                object-fit: cover;
+                position: absolute;
+                bottom: 240px;
+                width: 30px;
+                height: 30px;
+                box-shadow: var(--discord-elevation-high);
             }
             .activity_img_tooltip {
                 opacity: 0;
                 visibility: hidden;
                 transform: translateY(96px) scale(0.95);
-                background-color: var(--background-floating);
-                box-shadow: var(--elevation-high);
+                background-color: var(--discord-floating);
+                box-shadow: var(--discord-elevation-high);
                 color: white;
                 pointer-events: none;
                 position: absolute;
@@ -49,7 +66,7 @@
                 justify-content: center;
                 .activity_img_tooltip_arrow {
                     border: 5px solid transparent;
-                    border-bottom-color: var(--background-floating);
+                    border-bottom-color: var(--discord-floating);
                     position: absolute;
                     bottom: 100%;
                     width: 0;
@@ -57,7 +74,12 @@
                 }
             }
         }
-        .activity_img:hover > .activity_img_tooltip {
+        .activity_large:hover > .activity_img_tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(108px) scale(1);
+        }
+        .activity_small:hover > .activity_img_tooltip {
             opacity: 1;
             visibility: visible;
             transform: translateY(108px) scale(1);
