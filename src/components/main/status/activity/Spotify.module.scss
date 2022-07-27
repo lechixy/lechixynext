@@ -29,11 +29,11 @@
                 width: 100px;
             }
             .spotify_img_tooltip {
-                transform: translateX(25px) scale(0.9);
+                transform: translateY(96px) scale(0.9);
                 .spotify_img_tooltip_arrow {
-                    border-right-color: var(--discord-floating);
+                    border-bottom-color: var(--discord-floating);
                     position: absolute;
-                    right: 100%;
+                    bottom: 100%;
                     width: 0;
                     height: 0;
                 }
@@ -42,7 +42,7 @@
         .spotify_img:hover > .spotify_img_tooltip {
             opacity: 1;
             visibility: visible;
-            transform: translateY(106px) scale(1);
+            transform: translateY(108px) scale(1);
         }
         .spotify_text {
             display: flex;
@@ -83,7 +83,7 @@
         }
         .spotify_statusbar_bg {
             width: 100%;
-            margin-top: 8px;
+            margin-top: 10px;
             height: 4px;
             background-color: rgba(79, 84, 92, 0.16);
             border-radius: 2px;
