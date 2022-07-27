@@ -114,9 +114,9 @@ const Main: NextPage = () => {
         </div>
       </div>
       <div className="layer-container" />
-      <div className={styles.preloader} >
+      {/* <div className={styles.preloader} >
         <Spinner />
-      </div>
+      </div> */}
     </div>
   );
 }
