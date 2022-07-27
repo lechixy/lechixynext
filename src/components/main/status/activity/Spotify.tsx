@@ -4,7 +4,7 @@ import { FC, useState, useEffect } from 'react';
 import styles from './Spotify.module.scss';
 import Link from 'next/link';
 import { toTimestamp } from '../../../../utils/functions';
-import { useContext, WebSocketContext } from '../../../../utils/context';
+import { useContext, WebSocketContext } from '../../../../utils/lanyard';
 
 type ApiRespond = {
 

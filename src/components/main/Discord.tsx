@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { ApiRespond } from '../../utils/types';
 import Presence from './status/Presence';
 import { DiscordButton } from './DiscordButton';
-import { useContext, WebSocketContext } from '../../utils/context';
+import { useContext, WebSocketContext } from '../../utils/lanyard';
 import { layerContainer } from '../../utils';
 
 export const Discord: FC = () => {

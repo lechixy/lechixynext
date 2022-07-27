@@ -4,8 +4,8 @@ import socials from '../utils/socials';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Discord from '../components/main/Discord';
-import { WebSocketContext } from '../utils/context';
-import { websocketlog } from '../utils/log';
+import { WebSocketContext } from '../utils/lanyard';
+import { websocketlog } from '../utils/';
 import getIcon from '../components/main/Icon';
 import { getTime } from '../utils';
 import Spinner from '../components/main/Spinner';
@@ -30,7 +30,7 @@ const Main: NextPage = () => {
             subscribe_to_id: "391511241786654721"
           }
         }
-        let interval = jsConvert.d.heartbeat_interval - 1000
+        let interval = jsConvert.d.heartbeat_interval
         ws.send(JSON.stringify(op1))
         intervalObject = setInterval(() => {
           websocketlog('Sending heartbeat interval...')
@@ -54,20 +54,22 @@ const Main: NextPage = () => {
       websocketlog('Trying to reconnect to websocket!')
       connectToWebSocket();
     })
+
+    return ws;
   }
 
   const [data, setData] = useState(null)
   const [date, setDate] = useState<string>('Loading...')
 
   useEffect(() => {
-    connectToWebSocket();
+    let ws = connectToWebSocket();
     setInterval(() => {
       setDate(getTime())
     }, 1000)
 
-    window.addEventListener('load', () => {
-      console.log('Loaded!')
-    })
+    // ws.addEventListener('load', () => {
+    //   const preloader = document.getElementsByClassName(styles.preloader)[0]
+    // })
   }, [])
 
   return (
@@ -75,7 +77,7 @@ const Main: NextPage = () => {
       <Head>
         <title>lechixy | sweetest pie!</title>
       </Head>
-      { /*//TODO: add a preloader*/ }
+      { /*//TODO: add a preloader*/}
       <div className={styles.container}>
         <div className={styles.stuff}>
           <div>
@@ -112,6 +114,9 @@ const Main: NextPage = () => {
         </div>
       </div>
       <div className="layer-container" />
+      <div className={styles.preloader} >
+        <Spinner />
+      </div>
     </div>
   );
 }
