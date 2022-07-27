@@ -5,6 +5,7 @@ import { ApiRespond } from '../../utils/types';
 import Presence from './status/Presence';
 import { DiscordButton } from './DiscordButton';
 import { useContext, WebSocketContext } from '../../utils/context';
+import { layerContainer } from '../../utils';
 
 export const Discord: FC = () => {
 
@@ -31,7 +32,9 @@ export const Discord: FC = () => {
     if (info.active_on_discord_web) active_on.push('Web')
     if (info.active_on_discord_mobile) active_on.push('Mobile')
     let avatar_url = `https://cdn.discordapp.com/avatars/${info.discord_user.id}/${info.discord_user.avatar}.png?size=4096`
-    let custom_status = info.activities.find(x => x.type === 4) ? `${info.activities.find(x => x.type === 4)?.state}` : null;
+    let custom_status = info.activities.find(x => x.type === 4)
+    let custom_status_text = custom_status ? custom_status?.state : null
+    let custom_status_emoji = custom_status?.emoji ? `https://cdn.discordapp.com/emojis/${custom_status?.emoji.id}${custom_status?.emoji.animated ? '.gif' : '.png'}` : null
 
     return (
         <div className={styles.discord_body}>
@@ -41,9 +44,9 @@ export const Discord: FC = () => {
                         <div className={styles.avatar}>
                             <img src={avatar_url} alt={info.discord_user.id} className={styles.avatar_img} />
                             <div className={styles.avatar_status} style={{ background: status_color }}>
-                                <div className={styles.avatar_status_tooltip}>
-                                    <div className={styles.avatar_status_tooltip_arrow}></div>
-                                    <div className={styles.avatar_status_tooltip_text}>{status_text === 'Offline' ? status_text : `${status_text} on ${active_on.join(', ')}`}</div>
+                                <div className={`tooltip ${styles.avatar_status_tooltip}`}>
+                                    <div className={`tooltip_arrow ${styles.avatar_status_tooltip_arrow}`}></div>
+                                    <div className={'tooltip_text'}>{status_text === 'Offline' ? status_text : `${status_text} on ${active_on.join(', ')}`}</div>
                                 </div>
                             </div>
                         </div>
@@ -53,8 +56,25 @@ export const Discord: FC = () => {
                         </div>
                         {
                             custom_status && (
-                                <div className={styles.custom_status}>
-                                    {custom_status}
+                                <div className={styles.custom_status} >
+                                    {
+                                        custom_status_emoji && (
+                                            <div className={styles.custom_status_emoji_container}>
+                                                <img src={custom_status_emoji} className={styles.custom_status_emoji} alt={custom_status.emoji.id} />
+                                                <div className={`tooltip ${styles.custom_status_emoji_tooltip}`}>
+                                                    <div className={`tooltip_arrow ${styles.custom_status_emoji_arrow}`}></div>
+                                                    <div className={'tooltip_text'}>{custom_status.emoji.name}</div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        custom_status_text && (
+                                            <div className={styles.custom_status_text}>
+                                                {custom_status_text}
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             )
                         }

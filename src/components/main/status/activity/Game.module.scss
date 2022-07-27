@@ -44,28 +44,9 @@
                 height: 30px;
                 box-shadow: var(--discord-elevation-high);
             }
-            .activity_img_tooltip {
-                opacity: 0;
-                visibility: hidden;
+            .activity_large_tooltip {
                 transform: translateY(96px) scale(0.95);
-                background-color: var(--discord-floating);
-                box-shadow: var(--discord-elevation-high);
-                color: white;
-                pointer-events: none;
-                position: absolute;
-                border-radius: 5px;
-                font-weight: 500;
-                font-size: 14px;
-                max-width: 190px;
-                line-height: 16px;
-                white-space: pre-line;
-                padding: 8px 12px;
-                text-align: center;
-                transition: var(--animation);
-                display: flex;
-                justify-content: center;
-                .activity_img_tooltip_arrow {
-                    border: 5px solid transparent;
+                .activity_large_tooltip_arrow {
                     border-bottom-color: var(--discord-floating);
                     position: absolute;
                     bottom: 100%;
@@ -74,7 +55,7 @@
                 }
             }
         }
-        .activity_large:hover > .activity_img_tooltip {
+        .activity_large:hover > .activity_large_tooltip {
             opacity: 1;
             visibility: visible;
             transform: translateY(108px) scale(1);
@@ -85,7 +66,6 @@
             transform: translateY(108px) scale(1);
         }
         .activity_text {
-            width: 100%;
             margin-left: 10px;
             display: flex;
             flex-direction: column;

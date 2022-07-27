@@ -94,3 +94,31 @@ html {
         background-color: hsl(200, 20%, 95%);
     }
 }
+
+.tooltip {
+    visibility: hidden;
+    opacity: 0;
+    //transform: translateX(25px) scale(0.9);
+    background-color: var(--discord-floating);
+    box-shadow: var(--discord-elevation-high);
+    color: white;
+    position: absolute;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 8px 12px;
+    width: auto;
+    transition: var(--animation);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .tooltip_arrow {
+        border: 5px solid transparent;
+    }
+    .tooltip_text {
+        width: auto;
+        white-space: nowrap;
+        text-align: center;
+    }
+}

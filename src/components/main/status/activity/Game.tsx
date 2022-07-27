@@ -5,14 +5,15 @@ import { toTimestamp } from '../../../../utils/functions';
 import { ApiRespond } from '../../../../utils/types';
 import { useContext, WebSocketContext } from '../../../../utils/context';
 import moment from 'moment';
+import { decideContent } from '../../../../utils';
 
 export const GameActivity: FC = () => {
 
     const info = useContext(WebSocketContext) as unknown as ApiRespond
 
     let gamestatus = info.activities.find(x => x.type === 0);
-    let large_icon = gamestatus?.assets?.large_image ? `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets?.large_image}.png` : null
-    let small_icon = gamestatus?.assets?.small_image ? `https://cdn.discordapp.com/app-assets/${gamestatus?.application_id}/${gamestatus?.assets?.small_image}.png` : null
+    let large_icon = gamestatus?.assets?.large_image && decideContent(gamestatus, 'large')
+    let small_icon = gamestatus?.assets?.small_image && decideContent(gamestatus, 'small')
     let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
     let large_text = gamestatus?.assets?.large_text ? `${gamestatus.assets.large_text}` : undefined;
     let small_text = gamestatus?.assets?.small_text ? `${gamestatus.assets.small_text}` : undefined;
@@ -49,9 +50,9 @@ export const GameActivity: FC = () => {
                 <div className={styles.activity_img}>
                     <div className={styles.activity_large}>
                         {large_text && (
-                            <div className={styles.activity_img_tooltip}>
-                                <div className={styles.activity_img_tooltip_arrow}></div>
-                                <div>{large_text}</div>
+                            <div className={`tooltip ${styles.activity_large_tooltip}`}>
+                                <div className={`tooltip_arrow ${styles.activity_large_tooltip_arrow}`}></div>
+                                <div className={`tooltip_text`}>{large_text}</div>
                             </div>
                         )}
                         {large_icon ? (

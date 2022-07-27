@@ -84,9 +84,9 @@ export const Spotify: FC = () => {
             <div className={styles.spotify}>
                 <Link href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} passHref>
                     <div className={styles.spotify_img}>
-                        <div className={styles.spotify_img_tooltip}>
-                            <div className={styles.spotify_img_tooltip_arrow}></div>
-                            <div>{spotify.album}</div>
+                        <div className={`tooltip ${styles.spotify_img_tooltip}`}>
+                            <div className={`tooltip_arrow ${styles.spotify_img_tooltip_arrow}`}></div>
+                            <div className={`tooltip_text`}>{spotify.album}</div>
                         </div>
                         <img src={spotify.album_art_url} alt={`${spotify.album}`} />
                     </div>
