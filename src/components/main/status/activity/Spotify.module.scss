@@ -3,7 +3,7 @@
     width: 100%;
     flex-direction: column;
     .header {
-        color: #1db954;
+        color: var(--spotify-color);
         margin-bottom: 4px;
         font-size: 12px;
         display: flex;

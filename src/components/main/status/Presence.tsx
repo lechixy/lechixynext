@@ -8,7 +8,7 @@ import { GameActivity } from './activity/Game';
 export const Presence: FC = () => {
 
     const info = useContext(WebSocketContext) as unknown as ApiRespond
-    const noActivity = info.activities.length === 1 && info.activities[0].type === 4 && !info.listening_to_spotify
+    const noActivity = !info.activities.length
 
     return (
         <div className={styles.presence}>

@@ -12,9 +12,9 @@ class MyDocument extends Document {
                     <meta property="og:title" content="lechixy"></meta>
                     <meta property="og:image" content="https://lechixy.netlify.app/favicon.ico"></meta>
                 </Head>
+                <NextScript />
                 <body>
                     <Main />
-                    <NextScript />
                 </body>
             </Html>
         )

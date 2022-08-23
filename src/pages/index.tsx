@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../utils/styles/main/Home.module.scss';
 import socials from '../utils/socials';
 import { NextPage } from 'next';
@@ -9,6 +9,7 @@ import { websocketlog } from '../utils/';
 import getIcon from '../components/main/Icon';
 import { getTime } from '../utils';
 import Spinner from '../components/main/Spinner';
+import { getRandomBackground } from '../utils/getBackground';
 
 const Main: NextPage = () => {
 
@@ -23,27 +24,29 @@ const Main: NextPage = () => {
     })
     ws.addEventListener('message', (message) => {
       let jsConvert = JSON.parse(message.data)
-      if (jsConvert.op === 1) {
-        let op1 = {
-          op: 2,
-          d: {
-            subscribe_to_id: "391511241786654721"
+      switch (jsConvert.op) {
+        case 1:
+          let op1 = {
+            op: 2,
+            d: {
+              subscribe_to_id: "391511241786654721"
+            }
           }
-        }
-        let interval = jsConvert.d.heartbeat_interval
-        ws.send(JSON.stringify(op1))
-        intervalObject = setInterval(() => {
-          websocketlog('Sending heartbeat interval...')
-          let op3 = {
-            op: 3
-          }
-          ws.send(JSON.stringify(op3))
-        }, interval)
-      }
-      if (jsConvert.op === 0) {
-        websocketlog(`${number++}. data received from discord, updating... `)
-        let discordData = jsConvert.d
-        setData(discordData)
+          let interval = jsConvert.d.heartbeat_interval
+          ws.send(JSON.stringify(op1))
+          intervalObject = setInterval(() => {
+            websocketlog('Sending heartbeat interval...')
+            let op3 = {
+              op: 3
+            }
+            ws.send(JSON.stringify(op3))
+          }, interval)
+          break;
+        case 0:
+          websocketlog(`${number++}. data received from discord, updating... `)
+          let discordData = jsConvert.d
+          setData(discordData)
+          break;
       }
     })
 
@@ -60,20 +63,27 @@ const Main: NextPage = () => {
 
   const [data, setData] = useState(null)
   const [date, setDate] = useState<string>('Loading...')
+  const bgRef = useRef<any>(null)
+  let bg = getRandomBackground()
 
   useEffect(() => {
+    bgRef.current.style.backgroundImage = `url("${bg}")`
     let ws = connectToWebSocket();
     setInterval(() => {
       setDate(getTime())
     }, 1000)
 
-    // ws.addEventListener('load', () => {
-    //   const preloader = document.getElementsByClassName(styles.preloader)[0]
+    // window.addEventListener('load', () => {
+    //   const preloader = document.querySelector(`.${styles.preloader}`)
+    //   preloader?.classList.add('disappear')
+    //   setTimeout(() => {
+    //     preloader?.remove()
+    //   }, 1000)
     // })
   }, [])
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main} ref={bgRef}>
       <Head>
         <title>lechixy | sweetest pie!</title>
       </Head>
@@ -113,7 +123,6 @@ const Main: NextPage = () => {
           }
         </div>
       </div>
-      <div className="layer-container" />
       {/* <div className={styles.preloader} >
         <Spinner />
       </div> */}
