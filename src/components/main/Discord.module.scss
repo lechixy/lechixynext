@@ -16,23 +16,42 @@
     width: 100%;
 }
 
-.discord_header {
-    display: flex;
-    flex-direction: row;
+.discord_header_top {
+    display: inline-flex;
     justify-content: space-between;
     width: 100%;
 }
 
+.discord_header_bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+
 .avatar {
+    height: 100px;
+    width: 100px;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    img {
+        height: 100px;
+        width: 100px;
+        display: block;
+        border-radius: 50%;
+        box-shadow: var(--discord-elevation-high);
+    }
     .avatar_status {
-        border: 5px solid var(--discord-background);
-        position: relative;
-        display: inline-flex;
+        box-sizing: border-box;
+        border: 3px solid var(--discord-background);
+        display: flex;
         align-items: center;
-        right: 25px;
-        top: 5px;
-        height: 25px;
-        width: 25px;
+        position: absolute;
+        height: 30px;
+        width: 30px;
         border-radius: 50%;
         .avatar_status_tooltip {
             transform: translateX(25px) scale(0.9);
@@ -45,18 +64,17 @@
             }
         }
     }
-    .avatar_img {
-        height: 100px;
-        width: 100px;
-        border-radius: 50%;
-        box-shadow: var(--discord-elevation-high);
-    }
 }
 
 .avatar_status:hover > .avatar_status_tooltip {
     opacity: 1;
     visibility: visible;
     transform: translateX(37px) scale(1);
+}
+
+.discord_button{
+    display: flex;
+    align-items: center;
 }
 
 .user {

@@ -50,7 +50,7 @@ const Main: NextPage = () => {
       }
     });
 
-    ws.addEventListener("close", (error) => {
+    ws.addEventListener("error", (error) => {
       clearInterval(intervalObject);
       ws.close();
       websocketlog(`An error occurred while websocket connection: ${error}`);
@@ -66,8 +66,7 @@ const Main: NextPage = () => {
   const bgRef = useRef<any>(null);
 
   useEffect(() => {
-    connectToWebSocket();
-
+    let ws = connectToWebSocket();
     // window.addEventListener('load', () => {
     //   const preloader = document.querySelector(`.${styles.preloader}`)
     //   preloader?.classList.add('disappear')
@@ -75,6 +74,8 @@ const Main: NextPage = () => {
     //     preloader?.remove()
     //   }, 1000)
     // })
+
+    return () => ws.close();
   }, []);
 
   return (
@@ -83,12 +84,12 @@ const Main: NextPage = () => {
         <title>lechixy | sweetest pie!</title>
       </Head>
       {/*//TODO: add a preloader*/}
-      <div className={styles.container}>
-        <div className={styles.background} ref={bgRef}>
-          <div>
-            <img src={bg} alt="background" />
-          </div>
+      <div className={styles.background} ref={bgRef}>
+        <div>
+          <img src={bg} alt="background" />
         </div>
+      </div>
+      <div className={styles.container}>
         <div className={styles.stuff}>
           <div>
             <div className={styles.stuff_header}>Stuffs</div>
