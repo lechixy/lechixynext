@@ -26,44 +26,47 @@
             .activity_large {
                 display: flex;
                 justify-content: center;
-            }
-            .activity_small {
-                display: flex;
-                justify-content: center;
-            }
-            .activity_large_img {
-                border-radius: 5px;
-                object-fit: cover;
-            }
-            .activity_small_img {
-                border-radius: 50%;
-                object-fit: cover;
-                position: absolute;
-                bottom: 240px;
-                width: 30px;
-                height: 30px;
-                box-shadow: var(--discord-elevation-high);
-            }
-            .activity_large_tooltip {
-                transform: translateY(96px) scale(0.95);
-                .activity_large_tooltip_arrow {
-                    border-bottom-color: var(--discord-floating);
+                position: relative;
+                img {
+                    border-radius: 5px;
+                    object-fit: cover;
+                    display: block;
+                }
+                &::after {
+                    content: "";
+                    width: 100%;
                     position: absolute;
-                    bottom: 100%;
-                    width: 0;
-                    height: 0;
+                    height: 100%;
+                }
+                .activity_large_tooltip {
+                    transform: translateY(96px) scale(0.95);
+                    .activity_large_tooltip_arrow {
+                        border-bottom-color: var(--discord-floating);
+                        position: absolute;
+                        bottom: 100%;
+                        width: 0;
+                        height: 0;
+                    }
+                }
+                &:hover > .activity_large_tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(108px) scale(1);
                 }
             }
-        }
-        .activity_large:hover > .activity_large_tooltip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(108px) scale(1);
-        }
-        .activity_small:hover > .activity_img_tooltip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(108px) scale(1);
+            // .activity_small {
+            //     display: flex;
+            //     justify-content: center;
+            // }
+            // .activity_small_img {
+            //     border-radius: 50%;
+            //     object-fit: cover;
+            //     position: absolute;
+            //     bottom: 240px;
+            //     width: 30px;
+            //     height: 30px;
+            //     box-shadow: var(--discord-elevation-high);
+            // }
         }
         .activity_text {
             margin-left: 10px;

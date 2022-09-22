@@ -9,7 +9,7 @@ export function toTimestamp(second: number): string {
     let times: string[] = [];
 
     if (second < 60) {
-        return `00:${formatTime(second)}`
+        return `0:${formatTime(second)}`
     } else {
         let hour = parseInt((second / 3600).toPrecision());
         if (hour !== 0) {

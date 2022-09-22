@@ -38,7 +38,7 @@ export const Discord: FC = () => {
     if (info.active_on_discord_web) active_on.push("Web");
     if (info.active_on_discord_mobile) active_on.push("Mobile");
     let avatarType = info.discord_user.avatar.startsWith("a_") ? ".gif" : ".png";
-    let avatar_url = `https://cdn.discordapp.com/avatars/${info.discord_user.id}/${info.discord_user.avatar}${avatarType}?size=1024`;
+    let avatar_url = `https://cdn.discordapp.com/avatars/${info.discord_user.id}/${info.discord_user.avatar}${avatarType}?size=128`;
     let custom_status = info.activities.find((x) => x.type === 4);
     let custom_status_text = custom_status ? custom_status?.state : null;
     let custom_status_emoji = custom_status?.emoji
@@ -51,7 +51,9 @@ export const Discord: FC = () => {
             <div className={styles.discord_container}>
                 <div className={styles.discord_header_top}>
                     <div className={styles.avatar}>
-                        <img src={avatar_url} alt={info.discord_user.id} />
+                        <div>
+                            <img src={avatar_url} alt={info.discord_user.id} />
+                        </div>
                         <div className={styles.avatar_status} style={{ background: status_color }}>
                             <div className={`tooltip ${styles.avatar_status_tooltip}`}>
                                 <div className={`tooltip_arrow ${styles.avatar_status_tooltip_arrow}`}></div>

@@ -44,6 +44,12 @@
         border-radius: 50%;
         box-shadow: var(--discord-elevation-high);
     }
+    &::after {
+        content: "";
+        width: 100%;
+        position: absolute;
+        height: 100%;
+    }
     .avatar_status {
         box-sizing: border-box;
         border: 3px solid var(--discord-background);

@@ -55,11 +55,13 @@ export const GameActivity: FC = () => {
                                 <div className={`tooltip_text`}>{large_text}</div>
                             </div>
                         )}
-                        {large_icon ? (
-                            <img src={large_icon} className={styles.activity_large_img} height={100} width={100} alt={game_name} />
-                        ) : (
-                            <img src={noicon} className={styles.activity_large_img} height={100} width={100} alt={game_name} />
-                        )}
+                        <div>
+                            {large_icon ? (
+                                <img src={large_icon} height={100} width={100} alt={game_name} />
+                            ) : (
+                                <img src={noicon} height={100} width={100} alt={game_name} />
+                            )}
+                        </div>
                     </div>
                     {/* {small_text && (
                         <div className={styles.activity_img_tooltip}>

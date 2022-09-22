@@ -112,6 +112,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 5;
     .tooltip_arrow {
         border: 5px solid transparent;
     }

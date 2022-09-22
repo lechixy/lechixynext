@@ -43,7 +43,7 @@ export const Spotify: FC = () => {
 
     //Live values
     let [percent, setPercent] = useState("0%")
-    let [timestamps, setTimestamps] = useState({ current: "00:00", length: "00:00" })
+    let [timestamps, setTimestamps] = useState({ current: "0:00", length: "0:00" })
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -66,8 +66,10 @@ export const Spotify: FC = () => {
             setTimestamps({ current, length })
         }, 250);
 
-        return () => clearInterval(interval)
-    })
+        return () => {
+            clearInterval(interval);
+        }
+    }, [spotify])
 
 
     return (
@@ -88,31 +90,28 @@ export const Spotify: FC = () => {
                             <div className={`tooltip_arrow ${styles.spotify_img_tooltip_arrow}`}></div>
                             <div className={`tooltip_text`}>{spotify.album}</div>
                         </div>
+                        <div>
                         <img src={spotify.album_art_url} alt={`${spotify.album}`} />
+                        </div>
                     </div>
                 </Link>
                 <div className={styles.spotify_text}>
                     <span className={styles.spotify_text_song} title={`${spotify.song}`}>
-                        <Link href={`https://open.spotify.com/track/${spotify.track_id}`} passHref>
-                            <span className={styles.underline}>{spotify.song}</span>
-                        </Link>
+                        <a className={styles.underline} href={`https://open.spotify.com/track/${spotify.track_id}`} target="_blank" rel="noreferrer">
+                            {spotify.song}
+                        </a>
                     </span>
                     <span className={styles.spotify_text_artist} title={`by ${spotify.artist}`}>
-                        by <Link href={`https://open.spotify.com/search/${encodeURIComponent(spotify.artist)}`} passHref>
-                            <span className={styles.underline}>
-                                {spotify.artist}
-                            </span>
-                        </Link>
+                        by <a className={styles.underline} href={`https://open.spotify.com/search/${encodeURIComponent(spotify.artist)}`} target="_blank" rel="noreferrer">
+                            {spotify.artist}
+                        </a>
                     </span>
                     <span className={styles.spotify_text_album} title={`on ${spotify.album}`}>
-                        on <Link href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} passHref>
-                            <span className={styles.underline}>
-                                {spotify.album}
-                            </span>
-                        </Link>
+                        on <a className={styles.underline} href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} target="_blank" rel="noreferrer">
+                            {spotify.album}
+                        </a>
                     </span>
                 </div>
-
             </div >
             <div className={styles.spotify_bar}>
                 <div className={styles.spotify_statusbar_bg}>
