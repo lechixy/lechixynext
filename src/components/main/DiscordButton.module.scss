@@ -20,7 +20,7 @@
     background-color: var(--discord-blurple-hover);
 }
 
-.discord_button:focus{
+.discord_button:focus-within{
     background-color: var(--discord-blurple-focus);
 }
 

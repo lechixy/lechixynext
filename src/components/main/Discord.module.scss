@@ -59,6 +59,7 @@
         height: 30px;
         width: 30px;
         border-radius: 50%;
+        z-index: 3;
         .avatar_status_tooltip {
             transform: translateX(25px) scale(0.9);
             .avatar_status_tooltip_arrow {
