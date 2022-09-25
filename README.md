@@ -1,6 +1,5 @@
 # lechixynext
 personal website repository
 
-made with next.js
-
-using lanyard for websocket: https://github.com/Phineas/lanyard
+- de with using react and next.js
+- ing lanyard for discord stuff: https://github.com/Phineas/lanyard
