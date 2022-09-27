@@ -81,10 +81,9 @@ export const Discord: FC = () => {
                     {custom_status && (
                         <div className={styles.custom_status}>
                             {custom_status_emoji && (
-                                <div className={styles.custom_status_emoji_container}>
+                                <div className={styles.custom_status_emoji}>
                                     <img
                                         src={custom_status_emoji}
-                                        className={styles.custom_status_emoji}
                                         alt={custom_status.emoji.id}
                                     />
                                     <div className={`tooltip ${styles.custom_status_emoji_tooltip}`}>

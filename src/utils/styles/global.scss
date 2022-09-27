@@ -30,20 +30,20 @@
 
 :root {
     //Main colors
-    --discord-background: rgba(32, 34, 37, 0.75);
-    --discord-floating: rgba(24, 25, 28, 1);
-    --discord-divider: rgba(79, 84, 92, 1);
-    --discord-elevation-high: 0 8px 16px rgba(0, 0, 0, 0.24);
+    --discord-background: rgba(0, 0, 0, 0.5);
+    --discord-floating: rgba(0, 0, 0, 1);
+    --discord-divider: rgba(100, 100, 100, 0.5);
+    --discord-elevation-high: 0 8px 16px rgba(0, 0, 0, 0.3);
     --discord-blurple: rgb(81, 109, 238, 1);
     --discord-blurple-hover: rgba(65, 87, 192, 1);
     --discord-blurple-focus: rgba(55, 74, 162, 1);
     //Apps
     --instagram-color: #ff00ae;
-    --twitch-color: #9e5dff;
-    --steam-color: #00bbff;
+    --twitch-color: #6600ff;
+    --steam-color: #124876;
     --spotify-color: #00ff44;
-    --github-color: #0077ff;
-    --lechsbott-color: #00ffff;
+    --github-color: #000000;
+    --lechsbott-color: #00eeff;
     //Some discord colors
     --button-secondary-background: #4f545c;
     --button-secondary-background-hover: #686d73;

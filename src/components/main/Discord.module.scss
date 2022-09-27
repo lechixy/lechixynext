@@ -103,24 +103,30 @@
     display: flex;
     align-items: center;
     margin-top: 5px;
-    .custom_status_emoji_container {
+    .custom_status_emoji {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    .custom_status_emoji_tooltip {
-        transform: translateY(25px) scale(0.95);
-        .custom_status_emoji_arrow {
-            border-bottom-color: var(--discord-floating);
-            position: absolute;
-            bottom: 100%;
-            width: 0;
-            height: 0;
+        img {
+            display: block;
+            width: 25px;
+            height: 25px;
         }
-    }
-    .custom_status_emoji {
-        width: 25px;
-        height: 25px;
+        .custom_status_emoji_tooltip {
+            transform: translateY(25px) scale(0.95);
+            .custom_status_emoji_arrow {
+                border-bottom-color: var(--discord-floating);
+                position: absolute;
+                bottom: 100%;
+                width: 0;
+                height: 0;
+            }
+        }
+        &:hover > .custom_status_emoji_tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(37px) scale(1);
+        }
     }
     .custom_status_text {
         margin-left: 5px;
@@ -131,12 +137,6 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
-}
-
-.custom_status_emoji_container:hover > .custom_status_emoji_tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(37px) scale(1);
 }
 
 .divider {
