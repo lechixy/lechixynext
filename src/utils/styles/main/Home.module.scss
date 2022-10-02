@@ -141,18 +141,17 @@
     color: var(--lechsbott-color);
 }
 
-.made_text {
+.bottom_text {
+    font-weight: bolder;
+    color: white;
+    font-size: 16px;
     text-align: center;
-    background: transparent;
-    color: black;
+    background: var(--discord-blurple);
     padding: 10px;
     transition: var(--animation-1);
-    font-weight: bold;
-}
-
-.made_text:hover {
-    color: white;
-    background: var(--discord-blurple);
+    &:hover{
+        background: transparent;
+    }
 }
 
 .discord {

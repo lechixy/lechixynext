@@ -2,20 +2,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../utils/styles/main/Home.module.scss";
 import socials from "../utils/socials";
-import { NextPage } from "next";
+import {
+  GetServerSidePropsResult,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  NextPage,
+} from "next";
 import Head from "next/head";
 import Discord from "../components/main/Discord";
 import { WebSocketContext } from "../utils/lanyard";
 import { websocketlog } from "../utils/";
 import getIcon from "../components/main/Icon";
-import { getTime } from "../utils";
 import Spinner from "../components/main/Spinner";
 import { getRandomBackground } from "../utils/getBackground";
 
-const Main: NextPage = () => {
+const Main: NextPage<any> = ({ background }) => {
   const [data, setData] = useState(null);
-  const [bg, setBg] = useState(getRandomBackground());
-  const bgRef = useRef<any>(null);
+  const bg = background;
 
   useEffect(() => {
     const connectToWebSocket = () => {
@@ -23,7 +26,7 @@ const Main: NextPage = () => {
       let ws = new WebSocket("wss://api.lanyard.rest/socket");
       let number = 1;
       let intervalObject: NodeJS.Timer;
-  
+
       ws.addEventListener("open", () => {
         websocketlog("Connected to websocket!");
       });
@@ -54,18 +57,25 @@ const Main: NextPage = () => {
             break;
         }
       });
-  
+      ws.addEventListener("close", (close) => {
+        //1011 | Server error - Internal server error while operating
+        if (close.code === 1000) {
+          connectToWebSocket();
+          return;
+        }
+
+        websocketlog(`Closed websocket connection: [${close?.code}] ${close?.reason}`);
+      });
       ws.addEventListener("error", (error) => {
         clearInterval(intervalObject);
-        ws.close();
+        ws.close(1000, "Error");
+        console.log(error);
         websocketlog(`An error occurred while websocket connection: ${error}`);
-        websocketlog("Trying to reconnect to websocket!");
-        connectToWebSocket();
       });
-  
+
       return ws;
     };
-    
+
     let ws = connectToWebSocket();
     // window.addEventListener('load', () => {
     //   const preloader = document.querySelector(`.${styles.preloader}`)
@@ -75,7 +85,9 @@ const Main: NextPage = () => {
     //   }, 1000)
     // })
 
-    return () => ws.close();
+    return () => {
+      ws.close();
+    };
   }, []);
 
   return (
@@ -84,7 +96,7 @@ const Main: NextPage = () => {
         <title>lechixy | sweetest pie!</title>
       </Head>
       {/*//TODO: add a preloader*/}
-      <div className={styles.background} ref={bgRef}>
+      <div className={styles.background}>
         <div>
           <img src={bg} alt="background" />
         </div>
@@ -110,9 +122,7 @@ const Main: NextPage = () => {
               })}
             </div>
           </div>
-          <div className={styles.made_text}>
-            <p>{`<3`}</p>
-          </div>
+          <div className={styles.bottom_text}>{`🍓`}</div>
         </div>
         <div className={styles.discord}>
           {data ? (
@@ -124,11 +134,22 @@ const Main: NextPage = () => {
           )}
         </div>
       </div>
+      <div className={"layer_container"} />
       {/* <div className={styles.preloader} >
         <Spinner />
       </div> */}
     </div>
   );
 };
+
+export function getStaticProps(context: GetStaticPropsContext): GetStaticPropsResult<any> {
+  let bg = getRandomBackground();
+
+  return {
+    props: {
+      background: bg,
+    },
+  };
+}
 
 export default Main;

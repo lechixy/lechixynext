@@ -24,3 +24,24 @@ export function toTimestamp(second: number): string {
         return times.join(':');
     }
 }
+
+type BoundingObject = {
+    xCenter: number;
+    yCenter: number;
+}
+
+export function getBoundingBox(element: any) {
+    const box = element.getBoundingClientRect()
+    const ret: any = {}
+
+    // Loops through all DomRect properties.
+    // Cannot spread because they're not enumerable.
+    for (const prop in box) {
+        ret[prop] = box[prop]
+    }
+
+    ret.xCenter = (box.left + box.right) / 2
+    ret.yCenter = (box.top + box.bottom) / 2
+
+    return ret as BoundingObject
+}

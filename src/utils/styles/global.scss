@@ -40,10 +40,10 @@
     //Apps
     --instagram-color: #ff00ae;
     --twitch-color: #6600ff;
-    --steam-color: #124876;
+    --steam-color: #0066c0;
     --spotify-color: #00ff44;
-    --github-color: #000000;
-    --lechsbott-color: #00eeff;
+    --github-color: #0077ff;
+    --lechsbott-color: #ebe700;
     //Some discord colors
     --button-secondary-background: #4f545c;
     --button-secondary-background-hover: #686d73;
@@ -112,7 +112,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    z-index: 4;
     .tooltip_arrow {
         border: 5px solid transparent;
     }
@@ -134,4 +134,11 @@ html {
     100%{
         opacity: 0;
     }
+}
+
+.layer_container{
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    right: 0;
 }

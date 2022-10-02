@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import styles from "./Discord.module.scss";
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import { ApiRespond } from "../../utils/types";
 import Presence from "./status/Presence";
 import { DiscordButton } from "./DiscordButton";
 import { useContext, WebSocketContext } from "../../utils/lanyard";
 import { layerContainer } from "../../utils";
+import { getBoundingBox } from "../../utils/functions";
 
 export const Discord: FC = () => {
     const info = useContext(WebSocketContext) as unknown as ApiRespond;
@@ -45,6 +46,33 @@ export const Discord: FC = () => {
         ? `https://cdn.discordapp.com/emojis/${custom_status?.emoji.id}${custom_status?.emoji.animated ? ".gif" : ".png"
         }`
         : null;
+    
+    // //Tooltip stuff
+    // let avatar_status = useRef<HTMLDivElement>(null);
+
+    // useEffect(() => {
+    //     let layer_container = document.querySelector(".layer_container")
+
+    //     let avatar_element =  avatar_status.current
+    //     let rect = getBoundingBox(avatar_element)
+
+    //     let div = document.createElement("div")
+    //     div.classList.add("tooltip")
+    //     let text = document.createElement("div")
+    //     text.classList.add("tooltip_text")
+    //     text.innerText = "selam"
+
+    //     div.append(text)
+
+    //     div.style.top = `50px`
+    //     div.style.left = `50px`
+    //     div.style.opacity = `1`;
+    //     div.style.visibility = "visible"
+
+    //     layer_container?.append(div)
+
+    //     console.log(rect)
+    // })
 
     return (
         <div className={styles.discord_body}>
@@ -54,6 +82,7 @@ export const Discord: FC = () => {
                         <div>
                             <img src={avatar_url} alt={info.discord_user.id} />
                         </div>
+                        {/* {ref={avatar_status}} */}
                         <div className={styles.avatar_status} style={{ background: status_color }}>
                             <div className={`tooltip ${styles.avatar_status_tooltip}`}>
                                 <div className={`tooltip_arrow ${styles.avatar_status_tooltip_arrow}`}></div>
