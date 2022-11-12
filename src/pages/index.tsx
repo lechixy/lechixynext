@@ -142,7 +142,7 @@ const Main: NextPage<any> = ({ background }) => {
   );
 };
 
-export function getStaticProps(context: GetStaticPropsContext): GetStaticPropsResult<any> {
+export function getServerSideProps(context: GetStaticPropsContext): GetServerSidePropsResult<any> {
   let bg = getRandomBackground();
 
   return {

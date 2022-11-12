@@ -97,6 +97,7 @@ html {
 .tooltip {
     visibility: hidden;
     opacity: 0;
+    width: auto;
     //transform: translateX(25px) scale(0.9);
     background-color: var(--discord-floating);
     box-shadow: var(--discord-elevation-high);
@@ -107,12 +108,12 @@ html {
     font-size: 14px;
     line-height: 16px;
     padding: 8px 12px;
-    width: auto;
     transition: var(--animation);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 4;
+    box-sizing: border-box;
     .tooltip_arrow {
         border: 5px solid transparent;
     }
