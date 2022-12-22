@@ -6,26 +6,43 @@
     align-items: center;
 }
 
-.preloader {
-    position: fixed;
-    width: 100%;
+.layer_container {
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-}
-.disappear {
-    animation: vanish 1s ease-in-out forwards;
+    width: 100%;
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
 }
 
-@keyframes vanish {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        visibility: hidden;
-    }
+.flake {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    color: white;
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 1), 0px 0px 20px rgba(255, 255, 255, 0.75);
 }
+
+// .preloader {
+//     position: fixed;
+//     width: 100%;
+//     height: 100%;
+//     background-color: rgba(0, 0, 0, 0.5);
+//     z-index: 2;
+// }
+// .disappear {
+//     animation: vanish 1s ease-in-out forwards;
+// }
+
+// @keyframes vanish {
+//     0% {
+//         opacity: 1;
+//     }
+//     100% {
+//         opacity: 0;
+//         visibility: hidden;
+//     }
+// }
 
 .container {
     display: flex;
@@ -149,7 +166,7 @@
     background: var(--discord-blurple);
     padding: 10px;
     transition: var(--animation-1);
-    &:hover{
+    &:hover {
         background: transparent;
     }
 }
@@ -217,7 +234,7 @@
     .main {
         height: 150vh;
     }
-    .background{
+    .background {
         height: 150vh;
     }
     .container {

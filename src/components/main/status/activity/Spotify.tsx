@@ -74,6 +74,10 @@ export const Spotify: FC = () => {
 
     return (
         <div className={styles.type_2}>
+            <div className={styles.background}>
+                <img src={spotify.album_art_url} alt={`${spotify.album}`} />
+                <div className={styles.background_gradient}></div>
+            </div>
             <div className={styles.header}>
                 <span title={`Listening to Spotify`}>LISTENING TO SPOTIFY</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -113,7 +117,7 @@ export const Spotify: FC = () => {
                     </span>
                 </div>
             </div >
-            <div className={styles.spotify_bar}>
+            <div className={styles.bar}>
                 <div className={styles.spotify_statusbar_bg}>
                     <div style={{ 'width': `${percent}` }} className={styles.spotify_statusbar}>
                     </div>

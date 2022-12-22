@@ -2,6 +2,33 @@
     display: flex;
     width: 100%;
     flex-direction: column;
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+    .background {
+        top: 0;
+        left: 0;
+        position: absolute;
+        pointer-events: none;
+        height: 100%;
+        width: 100%;
+        img {
+            display: block;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            object-fit: cover;
+            border-radius: 10px;
+            opacity: 0.5;
+        }
+        .background_gradient{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.25));
+            border-radius: 10px;
+        }
+    }
     .header {
         color: var(--spotify-color);
         margin-bottom: 4px;
@@ -14,6 +41,7 @@
         span {
             font-weight: bolder;
         }
+        z-index: 1;
     }
     .spotify {
         display: flex;
@@ -30,7 +58,7 @@
                 height: 100px;
                 width: 100px;
             }
-            &::after{
+            &::after {
                 content: "";
                 width: 100%;
                 position: absolute;
@@ -58,6 +86,7 @@
             justify-content: center;
             overflow: hidden;
             cursor: default;
+            z-index: 1;
             .spotify_text_song {
                 color: white;
                 font-weight: 600;
@@ -77,7 +106,8 @@
             }
         }
     }
-    .spotify_bar {
+    .bar {
+        z-index: 1;
         .spotify_timestamp_area {
             display: flex;
             flex-direction: row;
@@ -98,13 +128,14 @@
         }
         .spotify_statusbar {
             background-color: white;
+            filter: drop-shadow(0px 0px 5px white);
             border-radius: 2px;
             height: 4px;
         }
     }
 }
 
-.underline{
+.underline {
     color: inherit;
     text-decoration: none;
     &:hover {

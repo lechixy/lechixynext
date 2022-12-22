@@ -90,6 +90,48 @@ const Main: NextPage<any> = ({ background }) => {
     };
   }, []);
 
+  useEffect(() => {
+    let layer_container = document.querySelector(`.${styles.layer_container}`);
+
+    let interval = setInterval(() => {
+      createSnowflake();
+    }, 200)
+
+    function createSnowflake() {
+      let flake_div = document.createElement("div");
+      flake_div.textContent = "❄";
+      flake_div.classList.add(styles.flake);
+
+      let life_time = Math.floor(Math.random() * 10) + 4000;
+      let spawn_x = Math.floor(Math.random() * window.innerWidth);
+      let end_x = Math.floor(Math.random() * window.innerWidth);
+      let opacity = (Math.random() * 1) + 0.2;
+      let rotate_start = Math.floor(Math.random() * 360);
+      let rotate_end = Math.floor(Math.random() * 360) + 20;
+
+      flake_div.style.opacity = opacity.toString();
+      flake_div.animate([
+        { transform: `translateY(0px) translateX(${spawn_x}px) rotateZ(${rotate_start}deg)` },
+        { transform: `translateY(100vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
+      ], {
+        duration: life_time,
+        fill: "forwards"
+      });
+
+      layer_container?.append(flake_div);
+      
+
+      let clear_timeout = setTimeout(() => {
+        flake_div.remove();
+        clearTimeout(clear_timeout);
+      }, life_time);
+    }
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, []);
+
   return (
     <div className={styles.main}>
       <Head>
@@ -134,7 +176,7 @@ const Main: NextPage<any> = ({ background }) => {
           )}
         </div>
       </div>
-      <div className={"layer_container"} />
+      <div className={styles.layer_container} />
       {/* <div className={styles.preloader} >
         <Spinner />
       </div> */}
