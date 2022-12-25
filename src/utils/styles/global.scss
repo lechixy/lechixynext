@@ -30,6 +30,11 @@
     font-weight: 700;
 }
 
+@font-face {
+    font-family: Monocraft;
+    src: url("/fonts/Monocraft.otf") format("otf");
+}
+
 :root {
     //Main colors
     --discord-background: rgba(0, 0, 0, 0.5);

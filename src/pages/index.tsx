@@ -102,12 +102,22 @@ const Main: NextPage<any> = ({ background }) => {
       flake_div.textContent = "❄";
       flake_div.classList.add(styles.flake);
 
+      let easings = [
+        "linear",
+        "ease",
+        "ease-in",
+        "ease-out",
+        "ease-in-out",
+      ]
+
       let life_time = Math.floor(Math.random() * 10) + 4000;
       let spawn_x = Math.floor(Math.random() * window.innerWidth);
       let end_x = Math.floor(Math.random() * window.innerWidth);
       let opacity = (Math.random() * 1) + 0.3;
       let rotate_start = Math.floor(Math.random() * 360);
       let rotate_end = Math.floor(Math.random() * (360*3)) + 120;
+      let easing = Math.floor(Math.random() * easings.length);
+
 
       flake_div.style.opacity = opacity.toString();
       flake_div.animate([
@@ -115,7 +125,8 @@ const Main: NextPage<any> = ({ background }) => {
         { transform: `translateY(101vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
       ], {
         duration: life_time,
-        fill: "forwards"
+        fill: "forwards",
+        easing: easings[easing]
       });
 
       layer_container?.append(flake_div);
