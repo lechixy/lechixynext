@@ -95,7 +95,7 @@ const Main: NextPage<any> = ({ background }) => {
 
     let interval = setInterval(() => {
       createSnowflake();
-    }, 200)
+    }, 150)
 
     function createSnowflake() {
       let flake_div = document.createElement("div");
@@ -105,14 +105,14 @@ const Main: NextPage<any> = ({ background }) => {
       let life_time = Math.floor(Math.random() * 10) + 4000;
       let spawn_x = Math.floor(Math.random() * window.innerWidth);
       let end_x = Math.floor(Math.random() * window.innerWidth);
-      let opacity = (Math.random() * 1) + 0.2;
+      let opacity = (Math.random() * 1) + 0.3;
       let rotate_start = Math.floor(Math.random() * 360);
-      let rotate_end = Math.floor(Math.random() * 360) + 20;
+      let rotate_end = Math.floor(Math.random() * (360*3)) + 120;
 
       flake_div.style.opacity = opacity.toString();
       flake_div.animate([
         { transform: `translateY(0px) translateX(${spawn_x}px) rotateZ(${rotate_start}deg)` },
-        { transform: `translateY(100vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
+        { transform: `translateY(101vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
       ], {
         duration: life_time,
         fill: "forwards"
@@ -137,7 +137,6 @@ const Main: NextPage<any> = ({ background }) => {
       <Head>
         <title>lechixy | sweetest pie!</title>
       </Head>
-      {/*//TODO: add a preloader*/}
       <div className={styles.background}>
         <div>
           <img src={bg} alt="background" />

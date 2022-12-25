@@ -97,14 +97,13 @@
     text-align: center;
     font-size: 25px;
     font-weight: bolder;
-    background-color: var(--discord-blurple);
+    background: linear-gradient(to right, var(--new-year-1));
     color: #fff;
     transition: var(--animation-1);
-}
-
-.stuff_header:hover {
-    background: transparent;
-    color: black;
+    // &:hover {
+    //     background: transparent;
+    //     color: black;
+    // }
 }
 
 .app {
@@ -121,9 +120,9 @@
         height: 20px;
         padding-right: 5px;
     }
-}
-.app:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
 }
 
 @keyframes hue {
@@ -163,12 +162,12 @@
     color: white;
     font-size: 16px;
     text-align: center;
-    background: var(--discord-blurple);
+    background: linear-gradient(to right, var(--new-year-1));
     padding: 10px;
     transition: var(--animation-1);
-    &:hover {
-        background: transparent;
-    }
+    // &:hover {
+    //     background: transparent;
+    // }
 }
 
 .discord {

@@ -78,6 +78,7 @@ export const Spotify: FC = () => {
                 <img src={spotify.album_art_url} alt={`${spotify.album}`} />
                 <div className={styles.background_gradient}></div>
             </div>
+            <div className={styles.container}>
             <div className={styles.header}>
                 <span title={`Listening to Spotify`}>LISTENING TO SPOTIFY</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -126,6 +127,7 @@ export const Spotify: FC = () => {
                     <span className={styles.spotify_timestamp}>{timestamps.current}</span>
                     <span className={styles.spotify_timestamp}>{timestamps.length}</span>
                 </div>
+            </div>
             </div>
         </div >
     )
