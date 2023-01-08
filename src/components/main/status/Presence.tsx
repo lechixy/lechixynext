@@ -12,7 +12,7 @@ export const Presence: FC = () => {
     const isListening = info.listening_to_spotify
     const isOffline = info.discord_status === "offline"
     //We using "length < 2" because custom status counted as an activity
-    const noActivity = info.activities.length < 2 && !isOffline && !isListening
+    const noActivity = !activity && !isOffline && !isListening
 
     return (
         <div className={styles.presence}>

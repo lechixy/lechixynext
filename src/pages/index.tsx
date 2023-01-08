@@ -121,8 +121,8 @@ const Main: NextPage<any> = ({ background }) => {
 
       flake_div.style.opacity = opacity.toString();
       flake_div.animate([
-        { transform: `translateY(0px) translateX(${spawn_x}px) rotateZ(${rotate_start}deg)` },
-        { transform: `translateY(101vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
+        { transform: `translateY(-2vh) translateX(${spawn_x}px) rotateZ(${rotate_start}deg)` },
+        { transform: `translateY(102vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
       ], {
         duration: life_time,
         fill: "forwards",
