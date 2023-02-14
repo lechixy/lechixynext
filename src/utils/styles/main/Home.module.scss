@@ -7,7 +7,7 @@
 }
 
 .layer_container {
-    height: 100%;
+    height: 100vh;
     width: 100%;
     position: absolute;
     z-index: 3;
@@ -231,6 +231,9 @@
 
 @media (max-width: 650px) {
     .main {
+        height: 150vh;
+    }
+    .layer_container {
         height: 150vh;
     }
     .background {
