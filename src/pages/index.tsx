@@ -102,31 +102,35 @@ const Main: NextPage<any> = ({ background }) => {
       flake_div.textContent = "❄";
       flake_div.classList.add(styles.flake);
 
-      let easings = [
-        "linear",
-        "ease",
-        "ease-in",
-        "ease-out",
-        "ease-in-out",
-      ]
+      // let easings = [
+      //   "linear",
+      //   // "cubic-bezier(0.11, 0, 0.5, 0)",
+      //   // "cubic-bezier(0.45, 0, 0.55, 1)",
+      //   // "cubic-bezier(0.32, 0, 0.67, 0)",
+      // ]
 
       let life_time = Math.floor(Math.random() * 10) + 4000;
       let spawn_x = Math.floor(Math.random() * window.innerWidth);
       let end_x = Math.floor(Math.random() * window.innerWidth);
+      let end_y = 102;
       let opacity = (Math.random() * 1) + 0.3;
       let rotate_start = Math.floor(Math.random() * 360);
       let rotate_end = Math.floor(Math.random() * (360*3)) + 120;
-      let easing = Math.floor(Math.random() * easings.length);
+      // let easing = Math.floor(Math.random() * easings.length);
 
+      // If site in mobile version
+      if(window.innerWidth < 650) {
+        end_y = end_y + 50;
+      }
 
       flake_div.style.opacity = opacity.toString();
       flake_div.animate([
         { transform: `translateY(-2vh) translateX(${spawn_x}px) rotateZ(${rotate_start}deg)` },
-        { transform: `translateY(102vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
+        { transform: `translateY(${end_y}vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
       ], {
         duration: life_time,
         fill: "forwards",
-        easing: easings[easing]
+        easing: "linear"
       });
 
       layer_container?.append(flake_div);
