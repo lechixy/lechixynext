@@ -94,13 +94,15 @@ const Main: NextPage<any> = ({ background }) => {
     let layer_container = document.querySelector(`.${styles.layer_container}`);
 
     let interval = setInterval(() => {
-      createSnowflake();
+      createParticles({type: 'cherry'});
     }, 150)
 
-    function createSnowflake() {
-      let flake_div = document.createElement("div");
-      flake_div.textContent = "❄";
-      flake_div.classList.add(styles.flake);
+    function createParticles({ type }: { type: 'snow' | 'cherry'}) {
+      let emoji = type === 'snow' ? '❄️' : '🌸';
+
+      let particle_div = document.createElement("div");
+      particle_div.textContent = emoji;
+      particle_div.classList.add(styles.particle, styles[type]);
 
       // let easings = [
       //   "linear",
@@ -123,8 +125,8 @@ const Main: NextPage<any> = ({ background }) => {
         end_y = end_y + 50;
       }
 
-      flake_div.style.opacity = opacity.toString();
-      flake_div.animate([
+      particle_div.style.opacity = opacity.toString();
+      particle_div.animate([
         { transform: `translateY(-2vh) translateX(${spawn_x}px) rotateZ(${rotate_start}deg)` },
         { transform: `translateY(${end_y}vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
       ], {
@@ -133,11 +135,11 @@ const Main: NextPage<any> = ({ background }) => {
         easing: "linear"
       });
 
-      layer_container?.append(flake_div);
+      layer_container?.append(particle_div);
       
 
       let clear_timeout = setTimeout(() => {
-        flake_div.remove();
+        particle_div.remove();
         clearTimeout(clear_timeout);
       }, life_time);
     }

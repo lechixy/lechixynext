@@ -45,7 +45,8 @@
     --discord-blurple-hover: rgba(65, 87, 192, 1);
     --discord-blurple-focus: rgba(55, 74, 162, 1);
     //Season Colors
-    --new-year-1: #00b5e2, #4dc3d3, #a0eeee;
+    --new-year: #00b5e2, #4dc3d3, #a0eeee;
+    --spring: #e03b7b, #e26aaa, #f8b7ef;
     //Apps
     --instagram-color: #ff00ae;
     --twitch-color: #6600ff;
@@ -72,14 +73,6 @@
 html {
     scroll-behavior: smooth;
     font-family: "DM Sans", "Whitney", sans-serif;
-}
-
-.fa-snowflake {
-    animation: fall infinite;
-    color: #ffffff;
-    position: absolute;
-    top: -20px;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2), 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px white;
 }
 
 @keyframes fall {
