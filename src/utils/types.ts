@@ -28,3 +28,5 @@ export type ApiRespond = {
     active_on_discord_mobile: boolean;
     active_on_discord_desktop: boolean;
 } & Object;
+
+export type ParticleType = "snow" | "cherry"

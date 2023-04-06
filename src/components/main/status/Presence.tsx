@@ -16,11 +16,11 @@ export const Presence: FC = () => {
 
     return (
         <div className={styles.presence}>
-            {activity && (
-                <GameActivity />
-            )}
             {isListening && (
                 <Spotify />
+            )}
+            {activity && (
+                <GameActivity />
             )}
             {noActivity && (
                 <div className={styles.offline}>

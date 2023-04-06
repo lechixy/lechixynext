@@ -2,12 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../utils/styles/main/Home.module.scss";
 import socials from "../utils/socials";
-import {
-  GetServerSidePropsResult,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  NextPage,
-} from "next";
+import { GetServerSidePropsResult, GetStaticPropsContext, NextPage } from "next";
 import Head from "next/head";
 import Discord from "../components/main/Discord";
 import { WebSocketContext } from "../utils/lanyard";
@@ -15,10 +10,12 @@ import { websocketlog } from "../utils/";
 import getIcon from "../components/main/Icon";
 import Spinner from "../components/main/Spinner";
 import { getRandomBackground } from "../utils/getBackground";
+import { ParticleType } from "../utils/types";
 
 const Main: NextPage<any> = ({ background }) => {
   const [data, setData] = useState(null);
   const bg = background;
+  const [season, setSeason] = useState<ParticleType>("cherry");
 
   useEffect(() => {
     const connectToWebSocket = () => {
@@ -33,15 +30,18 @@ const Main: NextPage<any> = ({ background }) => {
       ws.addEventListener("message", (message) => {
         let jsConvert = JSON.parse(message.data);
         switch (jsConvert.op) {
+          // Opcode 1: Hello
           case 1:
-            let op1 = {
+            // Opcode 2: Initialize
+            let op2 = {
               op: 2,
               d: {
                 subscribe_to_id: "391511241786654721",
               },
             };
             let interval = jsConvert.d.heartbeat_interval;
-            ws.send(JSON.stringify(op1));
+            ws.send(JSON.stringify(op2));
+
             intervalObject = setInterval(() => {
               websocketlog("Sending heartbeat interval...");
               let op3 = {
@@ -49,6 +49,7 @@ const Main: NextPage<any> = ({ background }) => {
               };
               ws.send(JSON.stringify(op3));
             }, interval);
+            
             break;
           case 0:
             websocketlog(`${number++}. data received from discord, updating... `);
@@ -93,50 +94,69 @@ const Main: NextPage<any> = ({ background }) => {
   useEffect(() => {
     let layer_container = document.querySelector(`.${styles.layer_container}`);
 
-    let interval = setInterval(() => {
-      createParticles({type: 'cherry'});
-    }, 150)
+    //Season Theme
+    let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
+    stuffs_header.style.background = `linear-gradient(to right, var(--${season}))`;
 
-    function createParticles({ type }: { type: 'snow' | 'cherry'}) {
-      let emoji = type === 'snow' ? '❄️' : '🌸';
+    let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
+    bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
+
+    let interval = setInterval(() => {
+      createParticles();
+    }, 150);
+
+    function createParticles() {
+      let emoji = season === "snow" ? "❄" : "🌸";
 
       let particle_div = document.createElement("div");
       particle_div.textContent = emoji;
-      particle_div.classList.add(styles.particle, styles[type]);
+      particle_div.classList.add(styles.particle, styles[season]);
 
-      // let easings = [
-      //   "linear",
-      //   // "cubic-bezier(0.11, 0, 0.5, 0)",
-      //   // "cubic-bezier(0.45, 0, 0.55, 1)",
-      //   // "cubic-bezier(0.32, 0, 0.67, 0)",
-      // ]
+      /**
+       * ! Particle Values
+      */
 
-      let life_time = Math.floor(Math.random() * 10) + 4000;
+      // Time
+      let life_time = Math.floor(Math.random() * 10) + 4250;
+      // Scale
+      let spawn_scale = Math.random() * 0.65 + 0.65;
+      let end_scale = Math.random() * 0.25 + spawn_scale;
+      console.log(spawn_scale, end_scale);
+      // Position
       let spawn_x = Math.floor(Math.random() * window.innerWidth);
       let end_x = Math.floor(Math.random() * window.innerWidth);
       let end_y = 102;
-      let opacity = (Math.random() * 1) + 0.3;
-      let rotate_start = Math.floor(Math.random() * 360);
-      let rotate_end = Math.floor(Math.random() * (360*3)) + 120;
-      // let easing = Math.floor(Math.random() * easings.length);
+      // Opacity
+      let spawn_opacity = Math.random() * 1 + 0.65;
+      let end_opacity = Math.abs(Math.random() * spawn_opacity);
+      // Rotation
+      let rotate_start = Math.floor(Math.random() * 270) + 90;
+      let rotate_end = Math.floor(Math.random() * (360 * 3));
 
       // If site in mobile version
-      if(window.innerWidth < 650) {
+      if (window.innerWidth < 650) {
         end_y = end_y + 50;
       }
 
-      particle_div.style.opacity = opacity.toString();
-      particle_div.animate([
-        { transform: `translateY(-2vh) translateX(${spawn_x}px) rotateZ(${rotate_start}deg)` },
-        { transform: `translateY(${end_y}vh) translateX(${end_x}px) rotateZ(${rotate_end}deg)` },
-      ], {
-        duration: life_time,
-        fill: "forwards",
-        easing: "linear"
-      });
+      particle_div.animate(
+        [
+          {
+            transform: `translateY(-2vh) translateX(${spawn_x}px) rotateZ(${rotate_start}deg) scale(${spawn_scale})`,
+            opacity: spawn_opacity.toString(),
+          },
+          {
+            transform: `translateY(${end_y}vh) translateX(${end_x}px) rotateZ(${rotate_end}deg) scale(${end_scale})`,
+            opacity: end_opacity.toString(),
+          },
+        ],
+        {
+          duration: life_time,
+          fill: "forwards",
+          easing: "linear",
+        }
+      );
 
       layer_container?.append(particle_div);
-      
 
       let clear_timeout = setTimeout(() => {
         particle_div.remove();
@@ -146,7 +166,7 @@ const Main: NextPage<any> = ({ background }) => {
 
     return () => {
       clearInterval(interval);
-    }
+    };
   }, []);
 
   return (
