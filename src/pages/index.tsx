@@ -24,7 +24,7 @@ const Main: NextPage<any> = ({ background }) => {
 
     const connectToWebSocket = () => {
       websocketlog("Trying to connect websocket...");
-      let ws = new WebSocket("wss://api.lanyard.rest/socket");
+      ws = new WebSocket("wss://api.lanyard.rest/socket");
       let number = 1;
       
       ws.addEventListener("open", () => {
@@ -42,11 +42,14 @@ const Main: NextPage<any> = ({ background }) => {
                 subscribe_to_id: "391511241786654721",
               },
             };
+
             interval = jsConvert.d.heartbeat_interval;
             ws.send(JSON.stringify(op2));
 
             intervalObject = setInterval(sendHeartbeat, interval);
             break;
+
+            
           case 0:
             websocketlog(`${number++}. data received from discord, updating... `);
             let discordData = jsConvert.d;
@@ -76,11 +79,13 @@ const Main: NextPage<any> = ({ background }) => {
 
       if (ws.readyState === ws.CONNECTING){
         websocketlog("Still trying to connect to websocket, passing heartbeat interval");
+        setData(null);
+        return;
       }
       else if (ws.readyState === ws.CLOSED) {
+        setData(null);
         websocketlog("No websocket connection, trying to reconnect...");
         clearInterval(intervalObject);
-        intervalObject = setInterval(sendHeartbeat, 1000)
         ws = connectToWebSocket();
         return;
       }
@@ -102,6 +107,7 @@ const Main: NextPage<any> = ({ background }) => {
 
     return () => {
       ws.close(1000);
+      clearInterval(intervalObject);
     };
   }, []);
 

@@ -30,8 +30,8 @@ type BoundingObject = {
     yCenter: number;
 }
 
-export function getBoundingBox(element: any) {
-    const box = element.getBoundingClientRect()
+export function getBoundingBox(element: HTMLElement) {
+    const box: any = element.getBoundingClientRect()
     const ret: any = {}
 
     // Loops through all DomRect properties.

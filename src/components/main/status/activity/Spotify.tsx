@@ -3,7 +3,7 @@ import moment from 'moment';
 import { FC, useState, useEffect } from 'react';
 import styles from './Spotify.module.scss';
 import Link from 'next/link';
-import { toTimestamp } from '../../../../utils/functions';
+import { getBoundingBox, toTimestamp } from '../../../../utils/functions';
 import { useContext, WebSocketContext } from '../../../../utils/lanyard';
 
 type ApiRespond = {
@@ -33,7 +33,6 @@ type ApiRespond = {
     active_on_discord_mobile: boolean;
     active_on_discord_desktop: boolean;
 }
-
 
 export const Spotify: FC = () => {
 
@@ -71,6 +70,17 @@ export const Spotify: FC = () => {
         }
     }, [spotify])
 
+    // useEffect(() => {
+    //     let spotify_image = document.querySelector(`.${styles.spotify_img}`) as HTMLDivElement;
+    //     let center = getBoundingBox(spotify_image);
+        
+    //     spotify_image.addEventListener('mouseover', () => {
+    //         console.log('mouse here')
+    //     })
+    //     spotify_image.addEventListener('mouseleave', () => {
+    //         console.log('mouse leaved')
+    //     })
+    // }, [])
 
     return (
         <div className={styles.type_2}>
@@ -91,7 +101,7 @@ export const Spotify: FC = () => {
                 </svg>
             </div>
             <div className={styles.spotify}>
-                <Link href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} passHref>
+                <a href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} target="_blank" rel="noreferrer">
                     <div className={styles.spotify_img}>
                         <div className={`tooltip ${styles.spotify_img_tooltip}`}>
                             <div className={`tooltip_arrow ${styles.spotify_img_tooltip_arrow}`}></div>
@@ -101,7 +111,7 @@ export const Spotify: FC = () => {
                         <img src={spotify.album_art_url} alt={`${spotify.album}`} />
                         </div>
                     </div>
-                </Link>
+                </a>
                 <div className={styles.spotify_text}>
                     <span className={styles.spotify_text_song} title={`${spotify.song}`}>
                         <a className={styles.underline} href={`https://open.spotify.com/track/${spotify.track_id}`} target="_blank" rel="noreferrer">
