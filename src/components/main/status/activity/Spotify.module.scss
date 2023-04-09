@@ -1,10 +1,23 @@
+@keyframes background_animation {
+    0% {
+        transform: translateY(0%);
+    }
+    100% {
+        transform: translateY(- calc(100% - 20%));
+    }
+}
+
 .type_2 {
     display: flex;
     width: 100%;
+    height: 200px;
     flex-direction: column;
     position: relative;
     padding: 10px;
     box-sizing: border-box;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 10px;
     .background {
         top: 0;
         left: 0;
@@ -12,20 +25,24 @@
         pointer-events: none;
         height: 100%;
         width: 100%;
-        img {
-            display: block;
+        .background_container{
+            position: relative;
             height: 100%;
             width: 100%;
-            position: absolute;
-            object-fit: cover;
-            border-radius: 10px;
+            img {
+                animation: background_animation 7.5s infinite alternate ease-in-out;
+                position: absolute;
+                height: 1000px;
+                width: 100%;
+                object-fit: cover;
+            }
         }
         .background_gradient {
             position: absolute;
+            top: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.40));
-            border-radius: 10px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.4));
         }
     }
     .container {
@@ -122,7 +139,7 @@
                 width: 100%;
                 margin-top: 10px;
                 height: 4px;
-                background-color: rgba(79, 84, 92, 0.20);
+                background-color: rgba(79, 84, 92, 0.2);
                 border-radius: 10px;
             }
             .spotify_statusbar {

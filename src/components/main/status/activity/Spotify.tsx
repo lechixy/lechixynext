@@ -75,7 +75,9 @@ export const Spotify: FC = () => {
     return (
         <div className={styles.type_2}>
             <div className={styles.background}>
-                <img src={spotify.album_art_url} alt={`${spotify.album}`} />
+                <div className={styles.background_container}>
+                    <img src={spotify.album_art_url} alt={`${spotify.album}`} />
+                </div>
                 <div className={styles.background_gradient}></div>
             </div>
             <div className={styles.container}>

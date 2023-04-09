@@ -18,12 +18,15 @@ const Main: NextPage<any> = ({ background }) => {
   const [season, setSeason] = useState<ParticleType>("cherry");
 
   useEffect(() => {
+    let intervalObject: NodeJS.Timer;
+    let interval: number;
+    let ws: WebSocket;
+
     const connectToWebSocket = () => {
       websocketlog("Trying to connect websocket...");
       let ws = new WebSocket("wss://api.lanyard.rest/socket");
       let number = 1;
-      let intervalObject: NodeJS.Timer;
-
+      
       ws.addEventListener("open", () => {
         websocketlog("Connected to websocket!");
       });
@@ -39,17 +42,10 @@ const Main: NextPage<any> = ({ background }) => {
                 subscribe_to_id: "391511241786654721",
               },
             };
-            let interval = jsConvert.d.heartbeat_interval;
+            interval = jsConvert.d.heartbeat_interval;
             ws.send(JSON.stringify(op2));
 
-            intervalObject = setInterval(() => {
-              websocketlog("Sending heartbeat interval...");
-              let op3 = {
-                op: 3,
-              };
-              ws.send(JSON.stringify(op3));
-            }, interval);
-            
+            intervalObject = setInterval(sendHeartbeat, interval);
             break;
           case 0:
             websocketlog(`${number++}. data received from discord, updating... `);
@@ -59,7 +55,6 @@ const Main: NextPage<any> = ({ background }) => {
         }
       });
       ws.addEventListener("close", (close) => {
-        //1011 | Server error - Internal server error while operating
         if (close.code === 1000) {
           connectToWebSocket();
           return;
@@ -69,15 +64,34 @@ const Main: NextPage<any> = ({ background }) => {
       });
       ws.addEventListener("error", (error) => {
         clearInterval(intervalObject);
-        ws.close(1000, "Error");
+        ws.close(1000);
+        websocketlog(`An error occurred while websocket connection:`);
         console.log(error);
-        websocketlog(`An error occurred while websocket connection: ${error}`);
       });
 
       return ws;
     };
+    const sendHeartbeat = () => {
+      websocketlog("Sending heartbeat interval...");
 
-    let ws = connectToWebSocket();
+      if (ws.readyState === ws.CONNECTING){
+        websocketlog("Still trying to connect to websocket, passing heartbeat interval");
+      }
+      else if (ws.readyState === ws.CLOSED) {
+        websocketlog("No websocket connection, trying to reconnect...");
+        clearInterval(intervalObject);
+        intervalObject = setInterval(sendHeartbeat, 1000)
+        ws = connectToWebSocket();
+        return;
+      }
+
+      let op3 = {
+        op: 3,
+      };
+      ws.send(JSON.stringify(op3));
+    };
+
+    ws = connectToWebSocket();
     // window.addEventListener('load', () => {
     //   const preloader = document.querySelector(`.${styles.preloader}`)
     //   preloader?.classList.add('disappear')
@@ -87,7 +101,7 @@ const Main: NextPage<any> = ({ background }) => {
     // })
 
     return () => {
-      ws.close();
+      ws.close(1000);
     };
   }, []);
 
@@ -114,14 +128,13 @@ const Main: NextPage<any> = ({ background }) => {
 
       /**
        * ! Particle Values
-      */
+       */
 
       // Time
       let life_time = Math.floor(Math.random() * 10) + 4250;
       // Scale
       let spawn_scale = Math.random() * 0.65 + 0.65;
       let end_scale = Math.random() * 0.25 + spawn_scale;
-      console.log(spawn_scale, end_scale);
       // Position
       let spawn_x = Math.floor(Math.random() * window.innerWidth);
       let end_x = Math.floor(Math.random() * window.innerWidth);
