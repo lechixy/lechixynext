@@ -139,7 +139,7 @@ const Main: NextPage<any> = ({ background }) => {
       // Time
       let life_time = Math.floor(Math.random() * 10) + 4250;
       // Scale
-      let spawn_scale = Math.random() * 0.65 + 0.65;
+      let spawn_scale = Math.random() * 0.6 + 0.5;
       let end_scale = Math.random() * 0.25 + spawn_scale;
       // Position
       let spawn_x = Math.floor(Math.random() * window.innerWidth);
