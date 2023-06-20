@@ -16,11 +16,15 @@ export type ApiRespond = {
     };
     listening_to_spotify: boolean;
     discord_user: {
-        username: string;
-        public_flags: number;
-        id: string;
-        discriminator: string;
         avatar: string;
+        avatar_decoration: string | null;
+        bot: boolean;
+        discriminator: string;
+        display_name: string;
+        global_name: string;
+        id: string;
+        public_flags: number;
+        username: string;
     }
     discord_status: string;
     activities: [any];

@@ -89,12 +89,15 @@
     font-family: "DM Sans";
     font-size: 18px;
     display: flex;
-    .user_name {
+    flex-direction: column;
+    .user_global_name {
+        font-size: 20px;
         color: white;
         font-weight: bolder;
     }
-    .user_discriminator {
+    .user_name {
         color: #b9bbbe;
+        font-size: 14px;
         font-weight: lighter;
     }
 }
@@ -107,6 +110,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-right: 5px;
+        font-size: 14px;
         img {
             display: block;
             width: 25px;
@@ -129,9 +134,8 @@
         }
     }
     .custom_status_text {
-        margin-left: 5px;
         color: #dcddde;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: lighter;
         white-space: nowrap;
         text-overflow: ellipsis;

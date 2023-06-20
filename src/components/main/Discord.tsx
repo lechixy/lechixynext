@@ -11,6 +11,8 @@ import { getBoundingBox } from "../../utils/functions";
 export const Discord: FC = () => {
     const info = useContext(WebSocketContext) as unknown as ApiRespond;
 
+    console.log(info)
+
     let status_colors = {
         online: "rgb(0, 255, 0)",
         idle: "rgb(255, 255, 0)",
@@ -43,10 +45,9 @@ export const Discord: FC = () => {
     let custom_status = info.activities.find((x) => x.type === 4);
     let custom_status_text = custom_status ? custom_status?.state : null;
     let custom_status_emoji = custom_status?.emoji
-        ? `https://cdn.discordapp.com/emojis/${custom_status?.emoji.id}${custom_status?.emoji.animated ? ".gif" : ".png"
-        }`
+        ? `https://cdn.discordapp.com/emojis/${custom_status?.emoji.id}${custom_status?.emoji.animated ? ".gif" : ".png"}`
         : null;
-    
+
     // //Tooltip stuff
     // let avatar_status = useRef<HTMLDivElement>(null);
 
@@ -104,12 +105,12 @@ export const Discord: FC = () => {
                 </div>
                 <div className={styles.discord_header_bottom}>
                     <div className={styles.user}>
+                        <div className={styles.user_global_name}>{info.discord_user.global_name}</div>
                         <div className={styles.user_name}>{info.discord_user.username}</div>
-                        <div className={styles.user_discriminator}>#{info.discord_user.discriminator}</div>
                     </div>
                     {custom_status && (
                         <div className={styles.custom_status}>
-                            {custom_status_emoji && (
+                            {custom_status_emoji && custom_status.emoji.id && (
                                 <div className={styles.custom_status_emoji}>
                                     <img
                                         src={custom_status_emoji}
@@ -122,7 +123,9 @@ export const Discord: FC = () => {
                                 </div>
                             )}
                             {custom_status_text && (
-                                <div className={styles.custom_status_text}>{custom_status_text}</div>
+                                <div className={styles.custom_status_text}>
+                                    {custom_status.emoji && !custom_status.emoji.id ? `${custom_status.emoji?.name} ${custom_status_text}` : custom_status_text}
+                                </div>
                             )}
                         </div>
                     )}
