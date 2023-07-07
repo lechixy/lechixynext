@@ -10,12 +10,13 @@ import { websocketlog } from "../utils/";
 import getIcon from "../components/main/Icon";
 import Spinner from "../components/main/Spinner";
 import { getRandomBackground } from "../utils/getBackground";
-import { ParticleType } from "../utils/types";
+import { Season } from "../utils/types";
 
 const Main: NextPage<any> = ({ background }) => {
   const [data, setData] = useState(null);
   const bg = background;
-  const [season, setSeason] = useState<ParticleType>("cherry");
+  const [season] = useState<Season>("summer");
+  const [emoji, setEmoji] = useState<string>("");
 
   useEffect(() => {
     let intervalObject: NodeJS.Timer;
@@ -26,7 +27,7 @@ const Main: NextPage<any> = ({ background }) => {
       websocketlog("Trying to connect websocket...");
       ws = new WebSocket("wss://api.lanyard.rest/socket");
       let number = 1;
-      
+
       ws.addEventListener("open", () => {
         websocketlog("Connected to websocket!");
       });
@@ -49,7 +50,7 @@ const Main: NextPage<any> = ({ background }) => {
             intervalObject = setInterval(sendHeartbeat, interval);
             break;
 
-            
+
           case 0:
             websocketlog(`${number++}. data received from discord, updating... `);
             let discordData = jsConvert.d;
@@ -77,7 +78,7 @@ const Main: NextPage<any> = ({ background }) => {
     const sendHeartbeat = () => {
       websocketlog("Sending heartbeat interval...");
 
-      if (ws.readyState === ws.CONNECTING){
+      if (ws.readyState === ws.CONNECTING) {
         websocketlog("Still trying to connect to websocket, passing heartbeat interval");
         setData(null);
         return;
@@ -121,15 +122,35 @@ const Main: NextPage<any> = ({ background }) => {
     let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
     bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
 
-    let interval = setInterval(() => {
-      createParticles();
-    }, 150);
+    let particle: string | null = null;
+    let interval: NodeJS.Timer | null = null;
+
+    switch (season) {
+      case "winter":
+        particle = "❄"
+        setEmoji("❄️")
+        break;
+      case "spring":
+        particle = "🌸"
+        setEmoji("🌸")
+        break;
+      case "summer":
+        setEmoji("🌞")
+        break;
+      case "autumn":
+        setEmoji("🍂")
+        break;
+    }
+
+    if (particle) {
+      interval = setInterval(() => {
+        createParticles();
+      }, 150);
+    }
 
     function createParticles() {
-      let emoji = season === "snow" ? "❄" : "🌸";
-
       let particle_div = document.createElement("div");
-      particle_div.textContent = emoji;
+      particle_div.textContent = particle;
       particle_div.classList.add(styles.particle, styles[season]);
 
       /**
@@ -184,7 +205,9 @@ const Main: NextPage<any> = ({ background }) => {
     }
 
     return () => {
-      clearInterval(interval);
+      if (interval) {
+        clearInterval(interval);
+      }
     };
   }, []);
 
@@ -219,7 +242,10 @@ const Main: NextPage<any> = ({ background }) => {
               })}
             </div>
           </div>
-          <div className={styles.bottom_text}>{`🍓`}</div>
+          <div
+            className={styles.bottom_text}
+            title={`${season.charAt(0).toUpperCase() + season.slice(1)}`}
+          >{`🍓${emoji}`}</div>
         </div>
         <div className={styles.discord}>
           {data ? (

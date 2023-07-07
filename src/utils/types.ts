@@ -33,4 +33,4 @@ export type ApiRespond = {
     active_on_discord_desktop: boolean;
 } & Object;
 
-export type ParticleType = "snow" | "cherry"
+export type Season = "winter" | "autumn" | "spring" | "summer"
