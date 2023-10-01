@@ -172,9 +172,28 @@
     background: linear-gradient(to right, var(--cherry));
     padding: 10px;
     transition: var(--animation-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     // &:hover {
     //     background: transparent;
     // }
+    .season_tooltip {
+        transform: translateY(-30px) scale(0.7);
+        .season_tooltip_arrow {
+            border-top-color: var(--discord-floating);
+            position: absolute;
+            top: 100%;
+            width: 0;
+            height: 0;
+        }
+    }
+}
+
+.bottom_text:hover > .season_tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-44px) scale(1);
 }
 
 .discord {

@@ -15,8 +15,6 @@ import { Season } from "../utils/types";
 const Main: NextPage<any> = ({ background }) => {
   const [data, setData] = useState(null);
   const bg = background;
-  const [season] = useState<Season>("summer");
-  const [emoji, setEmoji] = useState<string>("");
 
   useEffect(() => {
     let intervalObject: NodeJS.Timer;
@@ -115,12 +113,33 @@ const Main: NextPage<any> = ({ background }) => {
   useEffect(() => {
     let layer_container = document.querySelector(`.${styles.layer_container}`);
 
+    function getSeasonName() {
+      const now = new Date();
+      const month = now.getMonth() + 1; // Months are 0-indexed, so add 1
+      const day = now.getDate();
+
+      if ((month === 3 && day >= 20) || (month === 4) || (month === 5)) {
+        return "spring";
+      } else if ((month === 6 && day >= 21) || (month === 7) || (month === 8)) {
+        return "summer";
+      } else if ((month === 9 && day >= 22) || (month === 10) || (month === 11)) {
+        return "autumn";
+      } else {
+        return "winter";
+      }
+    }
+    const season = getSeasonName()
+
     //Season Theme
     let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
     stuffs_header.style.background = `linear-gradient(to right, var(--${season}))`;
 
     let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
     bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
+    let bottom_text_span = bottom_text.querySelector(`span`) as HTMLSpanElement;
+
+    let season_tooltip = document.querySelector(`.${styles.season_tooltip} .tooltip_text`) as HTMLDivElement;
+    season_tooltip.textContent = season.charAt(0).toUpperCase() + season.slice(1).toLowerCase();
 
     let particle: string | null = null;
     let interval: NodeJS.Timer | null = null;
@@ -128,17 +147,18 @@ const Main: NextPage<any> = ({ background }) => {
     switch (season) {
       case "winter":
         particle = "❄"
-        setEmoji("❄️")
+        bottom_text_span.textContent = "🍓❄️"
         break;
       case "spring":
         particle = "🌸"
-        setEmoji("🌸")
+        bottom_text_span.textContent = "🍓🌸"
         break;
       case "summer":
-        setEmoji("🌞")
+        bottom_text_span.textContent = "🍓🌞"
         break;
       case "autumn":
-        setEmoji("🍂")
+        particle = "🍂"
+        bottom_text_span.textContent = "🍓🍂"
         break;
     }
 
@@ -244,8 +264,14 @@ const Main: NextPage<any> = ({ background }) => {
           </div>
           <div
             className={styles.bottom_text}
-            title={`${season.charAt(0).toUpperCase() + season.slice(1)}`}
-          >{`🍓${emoji}`}</div>
+          >
+            <div className={`tooltip ${styles.season_tooltip}`}>
+              <div className={`tooltip_arrow ${styles.season_tooltip_arrow}`}></div>
+              <div className={"tooltip_text"}>
+              </div>
+            </div>
+            <span></span>
+          </div>
         </div>
         <div className={styles.discord}>
           {data ? (
