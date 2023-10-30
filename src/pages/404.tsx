@@ -1,6 +1,5 @@
-import type { NextPage } from 'next'
 import React from 'react';
-import styles from '../utils/styles/404/404.module.scss'
+import styles from 'styles/404/404.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'
 

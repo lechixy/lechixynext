@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import moment from 'moment';
 import { FC, useState, useEffect } from 'react';
-import styles from './Spotify.module.scss';
+import styles from 'components/activity/Spotify.module.scss';
 import Link from 'next/link';
-import { getBoundingBox, toTimestamp } from '../../../../utils/functions';
-import { useContext, WebSocketContext } from '../../../../utils/lanyard';
+import { getBoundingBox, toTimestamp } from 'utils/functions';
+import { useContext, WebSocketContext } from 'utils/lanyard';
 
 type ApiRespond = {
 

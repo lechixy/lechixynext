@@ -1,4 +1,4 @@
-import styles from './DiscordButton.module.scss';
+import styles from 'components/DiscordButton.module.scss';
 import { FC } from 'react';
 
 type Props = {

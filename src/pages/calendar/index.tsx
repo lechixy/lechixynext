@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import styles from '../../utils/styles/calendar/calendar.module.scss';
-import * as constants from '../../utils/constants';
+import styles from 'styles/calendar/calendar.module.scss';
+import * as constants from 'utils/constants';
 
 type DayType = { type: "normal" | "last" | "next", content: string }
 

@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from 'react'
-import styles from './Game.module.scss'
-import { toTimestamp } from '../../../../utils/functions';
-import { ApiRespond } from '../../../../utils/types';
-import { useContext, WebSocketContext } from '../../../../utils/lanyard';
+import styles from 'components/activity/Game.module.scss'
+import { toTimestamp } from 'utils/functions';
+import { ApiRespond } from 'utils/types';
+import { useContext, WebSocketContext } from 'utils/lanyard';
 import moment from 'moment';
-import { decideContent } from '../../../../utils';
+import { decideContent } from 'utils';
 
 export const GameActivity: FC = () => {
 

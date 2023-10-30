@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import styles from "./Discord.module.scss";
+import styles from "components/Discord.module.scss";
 import { FC } from "react";
-import { ApiRespond } from "../../utils/types";
-import Presence from "./status/Presence";
-import { DiscordButton } from "./DiscordButton";
-import { useContext, WebSocketContext } from "../../utils/lanyard";
+import { ApiRespond } from "utils/types";
+import Presence from "components/Presence";
+import { DiscordButton } from "components/DiscordButton";
+import { useContext, WebSocketContext } from "utils/lanyard";
 
 export const Discord: FC = () => {
     const info = useContext(WebSocketContext) as unknown as ApiRespond;

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
 
 @font-face {
     font-family: Whitney;
@@ -45,14 +45,14 @@
     --discord-blurple-hover: rgba(65, 87, 192, 1);
     --discord-blurple-focus: rgba(55, 74, 162, 1);
     //Theme Colors
-    --winter: #00b5e2, #4dc3d3, #a0eeee;    
+    --winter: #00b5e2, #4dc3d3, #a0eeee;
     --spring: #e03b7b, #e26aaa, #f8b7ef;
     --summer: #00ffea, #ff71ec, #ff6161;
     --autumn: #ff8800, #ff4545, #fcff51;
-    //Apps  
+    //Apps
     --instagram-color: #ff00ae;
     --twitch-color: #6600ff;
-    --steam-color: #0066c0; 
+    --steam-color: #0066c0;
     --spotify-color: #00ff44;
     --github-color: #0077ff;
     --lechsbott-color: #ebe700;
@@ -64,6 +64,34 @@
     //Animations
     --animation: 50ms ease-in-out;
     --animation-1: 150ms ease-in-out;
+
+    // Cilek
+    --dark-color: #000;
+
+    // Background
+    --background-dot-color-primary: rgb(255, 0, 221); // rgb(0, 255, 250)
+    --background-dot-color-secondary: rgb(240, 240, 240); // rgb(240, 240, 240)
+    --background-radial-color-primary: rgba(251, 145, 255, 0.2); // rgba(145, 233, 255, 0.2)
+    --background-radial-color-secondary: rgb(0, 0, 0); // rgb(0, 0, 0)
+
+    // Flower
+    --flower-bloom: #ff83f5; // #6bf0ff
+    --flower-primary: #ff009d; // #a7ffee
+    --flower-secondary: #ffffff; // #54b8aa
+    --flower-line-leafs-primary: #a80b79; // #39c6d6
+    --flower-line-leafs-secondary: rgba(78, 4, 76, 0.4); // rgba(20, 117, 122, 0.4)
+    --flower-line: #1eff00; // #14757a
+
+    --flower-leaf: #048000; // #1aaa15
+    --flower-short-leafs: #6b0e54; // #159faa
+    --flower-long-leafs: #8418a5; // #079097
+
+    --leaf-right-big-shadow: #2ceefc33; // #2ceefc33
+    --leaf-right-big-primary: #6e0d5e; // #23f0ff
+
+    // Light
+    --flower-light-primary: #ff009d; // #23f0ff
+    --flower-light-secondary: #00eeff; // ##fffb00
 }
 
 * {
@@ -128,20 +156,20 @@ html {
     }
 }
 
-.disappear{
+.disappear {
     animation: vanish 1s forwards;
 }
 
 @keyframes vanish {
-    0%{
+    0% {
         opacity: 1;
     }
-    100%{
+    100% {
         opacity: 0;
     }
 }
 
-.layer_container{
+.layer_container {
     z-index: 3;
     position: absolute;
     top: 0;

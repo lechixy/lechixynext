@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import styles from './Presence.module.scss'
-import { WebSocketContext, useContext } from '../../../utils/lanyard';
-import { ApiRespond } from '../../../utils/types';
-import { Spotify } from './activity/Spotify';
-import { GameActivity } from './activity/Game';
+import styles from 'components/Presence.module.scss';
+import { WebSocketContext, useContext } from 'utils/lanyard';
+import { ApiRespond } from 'utils/types';
+import { Spotify } from 'components/activity/Spotify';
+import { GameActivity } from 'components/activity/Game';
 
 export const Presence: FC = () => {
 

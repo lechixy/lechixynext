@@ -1,16 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useRef, useState } from "react";
-import styles from "../utils/styles/main/Home.module.scss";
-import socials from "../utils/socials";
+import styles from "styles/main/Home.module.scss";
+import socials from "utils/socials";
 import { GetServerSidePropsResult, GetStaticPropsContext, NextPage } from "next";
 import Head from "next/head";
-import Discord from "../components/main/Discord";
-import { WebSocketContext } from "../utils/lanyard";
-import { websocketlog } from "../utils/";
-import getIcon from "../components/main/Icon";
-import Spinner from "../components/main/Spinner";
-import { getRandomBackground } from "../utils/getBackground";
-import { Season } from "../utils/types";
+import Discord from "components/Discord";
+import { WebSocketContext } from "utils/lanyard";
+import { websocketlog } from "utils"
+import getIcon from "components/Icon";
+import Spinner from "components/Spinner";
+import { getRandomBackground } from "utils/getBackground";
+import { Season } from "utils/types";
 
 const Main: NextPage<any> = ({ background }) => {
   const [data, setData] = useState(null);
