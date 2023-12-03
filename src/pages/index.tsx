@@ -6,11 +6,9 @@ import { GetServerSidePropsResult, GetStaticPropsContext, NextPage } from "next"
 import Head from "next/head";
 import Discord from "components/Discord";
 import { WebSocketContext } from "utils/lanyard";
-import { websocketlog } from "utils"
 import getIcon from "components/Icon";
 import Spinner from "components/Spinner";
-import { getRandomBackground } from "utils/getBackground";
-import { Season } from "utils/types";
+import { Util } from "utils/Util";
 
 const Main: NextPage<any> = ({ background }) => {
   const [data, setData] = useState(null);
@@ -22,12 +20,12 @@ const Main: NextPage<any> = ({ background }) => {
     let ws: WebSocket;
 
     const connectToWebSocket = () => {
-      websocketlog("Trying to connect websocket...");
+      Util.websocketlog("Trying to connect websocket...");
       ws = new WebSocket("wss://api.lanyard.rest/socket");
       let number = 1;
 
       ws.addEventListener("open", () => {
-        websocketlog("Connected to websocket!");
+        Util.websocketlog("Connected to websocket!");
       });
       ws.addEventListener("message", (message) => {
         let jsConvert = JSON.parse(message.data);
@@ -50,7 +48,7 @@ const Main: NextPage<any> = ({ background }) => {
 
 
           case 0:
-            websocketlog(`${number++}. data received from discord, updating... `);
+            Util.websocketlog(`${number++}. data received from discord, updating... `);
             let discordData = jsConvert.d;
             setData(discordData);
             break;
@@ -62,28 +60,28 @@ const Main: NextPage<any> = ({ background }) => {
           return;
         }
 
-        websocketlog(`Closed websocket connection: [${close?.code}] ${close?.reason}`);
+        Util.websocketlog(`Closed websocket connection: [${close?.code}] ${close?.reason}`);
       });
       ws.addEventListener("error", (error) => {
         clearInterval(intervalObject);
         ws.close(1000);
-        websocketlog(`An error occurred while websocket connection:`);
+        Util.websocketlog(`An error occurred while websocket connection:`);
         console.log(error);
       });
 
       return ws;
     };
     const sendHeartbeat = () => {
-      websocketlog("Sending heartbeat interval...");
+      Util.websocketlog("Sending heartbeat interval...");
 
       if (ws.readyState === ws.CONNECTING) {
-        websocketlog("Still trying to connect to websocket, passing heartbeat interval");
+        Util.websocketlog("Still trying to connect to websocket, passing heartbeat interval");
         setData(null);
         return;
       }
       else if (ws.readyState === ws.CLOSED) {
         setData(null);
-        websocketlog("No websocket connection, trying to reconnect...");
+        Util.websocketlog("No websocket connection, trying to reconnect...");
         clearInterval(intervalObject);
         ws = connectToWebSocket();
         return;
@@ -113,22 +111,8 @@ const Main: NextPage<any> = ({ background }) => {
   useEffect(() => {
     let layer_container = document.querySelector(`.${styles.layer_container}`);
 
-    function getSeasonName() {
-      const now = new Date();
-      const month = now.getMonth() + 1; // Months are 0-indexed, so add 1
-      const day = now.getDate();
-
-      if ((month === 3 && day >= 20) || (month === 4) || (month === 5)) {
-        return "spring";
-      } else if ((month === 6 && day >= 21) || (month === 7) || (month === 8)) {
-        return "summer";
-      } else if ((month === 9 && day >= 22) || (month === 10) || (month === 11)) {
-        return "autumn";
-      } else {
-        return "winter";
-      }
-    }
-    const season = getSeasonName()
+    const season = Util.getSeasonName();
+    const seasonContent = Util.getSeasonContent(season);
 
     //Season Theme
     let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
@@ -137,32 +121,14 @@ const Main: NextPage<any> = ({ background }) => {
     let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
     bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
     let bottom_text_span = bottom_text.querySelector(`span`) as HTMLSpanElement;
+    bottom_text_span.textContent = seasonContent.seasonEmojis
 
     let season_tooltip = document.querySelector(`.${styles.season_tooltip} .tooltip_text`) as HTMLDivElement;
     season_tooltip.textContent = season.charAt(0).toUpperCase() + season.slice(1).toLowerCase();
 
-    let particle: string | null = null;
     let interval: NodeJS.Timer | null = null;
 
-    switch (season) {
-      case "winter":
-        particle = "❄"
-        bottom_text_span.textContent = "🍓❄️"
-        break;
-      case "spring":
-        particle = "🌸"
-        bottom_text_span.textContent = "🍓🌸"
-        break;
-      case "summer":
-        bottom_text_span.textContent = "🍓🌞"
-        break;
-      case "autumn":
-        particle = "🍂"
-        bottom_text_span.textContent = "🍓🍂"
-        break;
-    }
-
-    if (particle) {
+    if (seasonContent.seasonParticle.length > 0) {
       interval = setInterval(() => {
         createParticles();
       }, 150);
@@ -170,7 +136,7 @@ const Main: NextPage<any> = ({ background }) => {
 
     function createParticles() {
       let particle_div = document.createElement("div");
-      particle_div.textContent = particle;
+      particle_div.innerHTML = seasonContent.seasonParticle;
       particle_div.classList.add(styles.particle, styles[season]);
 
       /**
@@ -292,7 +258,7 @@ const Main: NextPage<any> = ({ background }) => {
 };
 
 export function getServerSideProps(context: GetStaticPropsContext): GetServerSidePropsResult<any> {
-  let bg = getRandomBackground();
+  let bg = Util.getRandomBackground();
 
   return {
     props: {

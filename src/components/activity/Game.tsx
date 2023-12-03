@@ -1,19 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from 'react'
 import styles from 'components/activity/Game.module.scss'
-import { toTimestamp } from 'utils/functions';
 import { ApiRespond } from 'utils/types';
 import { useContext, WebSocketContext } from 'utils/lanyard';
 import moment from 'moment';
-import { decideContent } from 'utils';
+import { Util } from 'utils/Util';
 
 export const GameActivity: FC = () => {
 
     const info = useContext(WebSocketContext) as unknown as ApiRespond
 
     let gamestatus = info.activities.find(x => x.type === 0);
-    let large_icon = gamestatus?.assets?.large_image && decideContent(gamestatus, 'large')
-    let small_icon = gamestatus?.assets?.small_image && decideContent(gamestatus, 'small')
+    let large_icon = gamestatus?.assets?.large_image && Util.decideContent(gamestatus, 'large')
+    let small_icon = gamestatus?.assets?.small_image && Util.decideContent(gamestatus, 'small')
     let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
     let large_text = gamestatus?.assets?.large_text ? `${gamestatus.assets.large_text}` : undefined;
     let small_text = gamestatus?.assets?.small_text ? `${gamestatus.assets.small_text}` : undefined;
@@ -33,7 +32,7 @@ export const GameActivity: FC = () => {
             let elapsedSec = moment.duration(elapsedMs).asSeconds()
 
             //Elapsed timestamp
-            let length = toTimestamp(Math.floor(elapsedSec));
+            let length = Util.toTimestamp(Math.floor(elapsedSec));
 
             setStart(length)
         }, 500)
