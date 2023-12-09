@@ -130,6 +130,7 @@ html {
     visibility: hidden;
     opacity: 0;
     width: auto;
+    cursor: default;
     //transform: translateX(25px) scale(0.9);
     background-color: var(--discord-floating);
     box-shadow: var(--discord-elevation-high);
