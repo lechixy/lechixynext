@@ -200,7 +200,7 @@ const Main: NextPage<any> = ({ background }) => {
   return (
     <div className={styles.main}>
       <Head>
-        <title>lechixy | dance the night away!</title>
+        <title>lechixy | challenge accepted!</title>
       </Head>
       <div className={styles.background}>
         <div>
