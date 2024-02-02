@@ -62,6 +62,13 @@ const backgrounds = [
     "https://cdn.discordapp.com/attachments/999248792840831036/1158031697229660190/28690249062890689024.png"
 ]
 
+export const status_colors = {
+    online: "#2eff2e, #007c00",
+    idle: "#ffff2e, #7c7c00",
+    dnd: "#ff002e, #7c0000",
+    offline: "#575757, #1f1f1f",
+};
+
 export class Util {
     static getSeasonName(): Season {
         const now = new Date();

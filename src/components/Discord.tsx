@@ -5,18 +5,11 @@ import { ApiRespond } from "utils/types";
 import Presence from "components/Presence";
 import { DiscordButton } from "components/DiscordButton";
 import { useContext, WebSocketContext } from "utils/lanyard";
+import { status_colors } from "utils/Util";
 
 export const Discord: FC = () => {
     const info = useContext(WebSocketContext) as unknown as ApiRespond;
 
-    console.log(info)
-
-    let status_colors = {
-        online: "rgb(0, 255, 0)",
-        idle: "rgb(255, 255, 0)",
-        dnd: "rgb(255, 0, 0)",
-        offline: "rgb(87, 87, 87)",
-    };
     let status_color =
         info.discord_status === "online"
             ? status_colors.online
@@ -82,7 +75,7 @@ export const Discord: FC = () => {
                             <img src={avatar_url} alt={info.discord_user.id} />
                         </div>
                         {/* {ref={avatar_status}} */}
-                        <div className={styles.avatar_status} style={{ background: status_color }}>
+                        <div className={styles.avatar_status} style={{ background: `linear-gradient(135deg, ${status_color})` }}>
                             <div className={`tooltip ${styles.avatar_status_tooltip}`}>
                                 <div className={`tooltip_arrow ${styles.avatar_status_tooltip_arrow}`}></div>
                                 <div className={"tooltip_text"}>

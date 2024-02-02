@@ -10,6 +10,7 @@
     box-sizing: border-box;
     flex-direction: column;
     padding: 60px;
+    padding-top: 50px;    
     padding-bottom: 0px;
     justify-content: center;
     height: 100%;
@@ -52,7 +53,8 @@
     }
     .avatar_status {
         box-sizing: border-box;
-        border: 3px solid var(--discord-background);
+        //border: 3px solid var(--discord-background);
+        box-shadow: 0px 0px 1px black;
         display: flex;
         align-items: center;
         position: absolute;
@@ -88,11 +90,13 @@
     margin-top: 10px;
     font-family: "DM Sans";
     font-size: 18px;
+    text-shadow: 0px 0px 25px black;
     display: flex;
     flex-direction: column;
     .user_global_name {
         font-size: 20px;
         color: white;
+        
         font-weight: bolder;
     }
     .user_name {

@@ -112,6 +112,7 @@ const Main: NextPage<any> = ({ background }) => {
     let layer_container = document.querySelector(`.${styles.layer_container}`);
 
     const season = Util.getSeasonName();
+    //const season = "summer"
     const seasonContent = Util.getSeasonContent(season);
 
     //Season Theme
@@ -158,6 +159,9 @@ const Main: NextPage<any> = ({ background }) => {
       // Rotation
       let rotate_start = Math.floor(Math.random() * 270) + 90;
       let rotate_end = Math.floor(Math.random() * (360 * 3));
+      // Depth
+      let depth = Math.round(Math.random() * 1);
+      particle_div.style.zIndex = depth.toString();
 
       // If site in mobile version
       if (window.innerWidth < 650) {
