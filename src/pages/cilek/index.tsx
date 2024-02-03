@@ -1,7 +1,7 @@
 import { NextPage } from "next"
 import Head from "next/head";
 import { useEffect } from "react";
-import styles from "styles/cilek/Cilek.module.scss"
+import styles from "./Cilek.module.scss"
 
 const Cilek: NextPage = () => {
 
