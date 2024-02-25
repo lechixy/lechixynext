@@ -33,11 +33,22 @@ const Valentine: NextPage = () => {
 
     const [noCount, setNoCount] = useState(0);
     const [yesPressed, setYesPressed] = useState(false);
-    let yesButtonSize = noCount * 20 + 16;
+    // let yesButtonSize = noCount * 20 + 16;
 
     function handleNo() {
         setNoCount(noCount + 1);
+        let noButton = document.querySelector(`.${styles.noButton}`) as HTMLButtonElement;
+        let rect = noButton.getBoundingClientRect()
+
+        let h = window.innerHeight - rect.height;
+        let w = window.innerWidth - rect.width;
+        let randomY = Math.floor(Math.random() * h);
+        let randomX = Math.floor(Math.random() * w);
+
+        noButton.style.left = `${randomX}px`;
+        noButton.style.top = `${randomY}px`;
     }
+
 
     function getNoText() {
         return phrases[Math.min(noCount, phrases.length - 1)];
@@ -62,12 +73,13 @@ const Valentine: NextPage = () => {
                             <div>
                                 <button
                                     className={`${styles.button} ${styles.yesButton}`}
-                                    style={{ fontSize: yesButtonSize }}
+                                    // style={{ fontSize: yesButtonSize }}
                                     onClick={() => setYesPressed(true)}
                                 >{`Yess <3`}</button>
                                 <button
                                     className={`${styles.button} ${styles.noButton}`}
-                                    onClick={() => handleNo()}
+                                    // onClick={() => handleNo()}
+                                    onMouseEnter={e => handleNo()}
                                 >{getNoText()}</button>
                             </div>
                         </div>

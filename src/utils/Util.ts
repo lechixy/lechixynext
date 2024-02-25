@@ -12,54 +12,36 @@ type SeasonContent = {
 }
 
 const backgrounds = [
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026069300097851452/1.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026069300529868800/2.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026069300982861834/3.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030922327785542/1330314.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030922772385832/737474.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031512223105054/1331311.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031512718020729/1330761.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031513414283436/719179.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026069301305819176/4.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071494314430504/16.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071494645796934/15.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071495115550750/14.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071495702749184/13.webp",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071496143163432/12.webp",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071496596140032/11.webp",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071496961036309/10.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071497279819797/9.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071497611161600/8.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158029774124482640/1332406.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158029774581665872/1332015.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158029775210807306/1329412.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158029775210807306/1329412.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158029776091619368/1316292.jpeg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158029776460709989/677543.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030426691088404/1311965.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030427194392576/1332708.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030427555111001/1331860.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026069301611991091/5.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071806932684810/20.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071807272439888/19.webp",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071807733800970/18.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1026071808019017768/17.webp",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030427987128431/1332018.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030428523986964/1319293.jpeg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030428964401162/1331453.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158033114761789570/1330682.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031514970370119/1330094.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031694520127549/314574.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031695077982278/1322308.jpeg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031695556124733/1330234.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031696172695692/736461.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030920318713906/1329169.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030921669283930/1314408.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158030921975476284/1331544.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031514072793159/1329621.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031514496405534/1329618.png",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031696713752586/283589238959249062.jpg",
-    "https://cdn.discordapp.com/attachments/999248792840831036/1158031697229660190/28690249062890689024.png"
+    "/backgrounds/0.png",
+    "/backgrounds/1.jpg",
+    "/backgrounds/2.png",
+    "/backgrounds/3.png",
+    "/backgrounds/4.png",
+    "/backgrounds/5.jpg",
+    "/backgrounds/6.png",
+    "/backgrounds/7.png",
+    "/backgrounds/8.jpg",
+    "/backgrounds/9.jpg",
+    "/backgrounds/10.jpg",
+    "/backgrounds/11.png",
+    "/backgrounds/12.png",
+    "/backgrounds/13.png",
+    "/backgrounds/14.png",
+    "/backgrounds/15.png",
+    "/backgrounds/16.png",
+    "/backgrounds/17.png",
+    "/backgrounds/18.jpg",
+    "/backgrounds/19.png",
+    "/backgrounds/20.png",
+    "/backgrounds/21.png",
+    "/backgrounds/22.png",
+    "/backgrounds/23.png",
+    "/backgrounds/24.png",
+    "/backgrounds/25.png",
+    "/backgrounds/26.png",
+    "/backgrounds/27.png",
+    "/backgrounds/28.jpg",
+    "/backgrounds/29.png",
 ]
 
 export const status_colors = {
@@ -163,7 +145,7 @@ export class Util {
     
     static toTimestamp(second: number): string {
         let times: string[] = [];
-    
+
         if (second < 60) {
             return `0:${this.formatTime(second)}`
         } else {
@@ -174,9 +156,8 @@ export class Util {
             }
             let min = parseInt((second / 60).toPrecision());
             let sec = second - (min * 60)
-            times.push(this.formatTime(min), this.formatTime(sec));
-    
-    
+            times.length == 1 ? times.push(this.formatTime(min)) : times.push(min.toString())
+            times.push(this.formatTime(sec));
             return times.join(':');
         }
     }
