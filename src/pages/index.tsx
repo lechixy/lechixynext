@@ -15,8 +15,8 @@ const Main: NextPage<any> = ({ background }) => {
   const bg = background;
 
   useEffect(() => {
-    let intervalObject: NodeJS.Timer;
-    let interval: number;
+    let interval: NodeJS.Timeout;
+    let intervalTime: number;
     let ws: WebSocket;
 
     const connectToWebSocket = () => {
@@ -43,7 +43,7 @@ const Main: NextPage<any> = ({ background }) => {
             interval = jsConvert.d.heartbeat_interval;
             ws.send(JSON.stringify(op2));
 
-            intervalObject = setInterval(sendHeartbeat, interval);
+            interval = setInterval(sendHeartbeat, intervalTime);
             break;
 
 
@@ -63,7 +63,7 @@ const Main: NextPage<any> = ({ background }) => {
         Util.websocketlog(`Closed websocket connection: [${close?.code}] ${close?.reason}`);
       });
       ws.addEventListener("error", (error) => {
-        clearInterval(intervalObject);
+        clearInterval(interval);
         ws.close(1000);
         Util.websocketlog(`An error occurred while websocket connection:`);
         console.log(error);
@@ -82,7 +82,7 @@ const Main: NextPage<any> = ({ background }) => {
       else if (ws.readyState === ws.CLOSED) {
         setData(null);
         Util.websocketlog("No websocket connection, trying to reconnect...");
-        clearInterval(intervalObject);
+        clearInterval(interval)
         ws = connectToWebSocket();
         return;
       }
@@ -104,7 +104,7 @@ const Main: NextPage<any> = ({ background }) => {
 
     return () => {
       ws.close(1000);
-      clearInterval(intervalObject);
+      clearInterval(interval);
     };
   }, []);
 
@@ -127,7 +127,7 @@ const Main: NextPage<any> = ({ background }) => {
     let season_tooltip = document.querySelector(`.${styles.season_tooltip} .tooltip_text`) as HTMLDivElement;
     season_tooltip.textContent = season.charAt(0).toUpperCase() + season.slice(1).toLowerCase();
 
-    let interval: NodeJS.Timer | null = null;
+    let interval: NodeJS.Timeout | null = null;
 
     if (seasonContent.seasonParticle.length > 0) {
       interval = setInterval(() => {
