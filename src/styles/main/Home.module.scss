@@ -51,18 +51,6 @@
 //     }
 // }
 
-.container {
-    display: flex;
-    border-radius: 8px;
-    height: 90%;
-    width: 90%;
-    background: transparent;
-    overflow: hidden;
-    box-shadow: var(--discord-elevation-high);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    z-index: 1;
-}
-
 .background {
     position: absolute;
     width: 100%;
@@ -88,112 +76,124 @@
     }
 }
 
-.stuff {
-    height: 100%;
-    width: 20%;
+.container {
+    display: flex;
+    border-radius: 8px;
+    height: 90%;
+    width: 85%;
+    background: transparent;
+    overflow: hidden;
     box-shadow: var(--discord-elevation-high);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     z-index: 1;
-}
 
-.stuff_header {
-    padding: 10px;
-    text-align: center;
-    font-size: 25px;
-    font-weight: bolder;
-    // background: linear-gradient(to right, var(--cherry));
-    color: #fff;
-    transition: var(--animation-1);
-    // &:hover {
-    //     background: transparent;
-    //     color: black;
-    // }
-}
-
-.app {
-    padding: 10px;
-    transition: var(--animation-1);
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #000;
-    text-decoration: none;
-    font-weight: bold;
-    .app_icon {
-        width: 20px;
-        height: 20px;
-        padding-right: 5px;
+    .stuff {
+        height: 100%;
+        width: 20%;
+        box-shadow: var(--discord-elevation-high);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(10px);
+        z-index: 1;
     }
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+
+    .stuff_header {
+        padding: 10px;
+        text-align: center;
+        font-size: 25px;
+        font-weight: bolder;
+        // background: linear-gradient(to right, var(--cherry));
+        color: #fff;
+        transition: var(--animation-1);
+        // &:hover {
+        //     background: transparent;
+        //     color: black;
+        // }
     }
-}
 
-@keyframes hue {
-    0% {
-        filter: hue-rotate(0deg);
-    }
-    100% {
-    }
-}
-
-.app_instagram:hover {
-    color: var(--instagram-color);
-}
-
-.app_twitch:hover {
-    color: var(--twitch-color);
-}
-
-.app_steam:hover {
-    color: var(--steam-color);
-}
-
-.app_spotify:hover {
-    color: var(--spotify-color);
-}
-
-.app_github:hover {
-    color: var(--github-color);
-}
-
-.app_lechsbott:hover {
-    color: var(--lechsbott-color);
-}
-
-.bottom_text {
-    color: white;
-    font-size: 16px;
-    text-align: center;
-    background: linear-gradient(to right, var(--cherry));
-    padding: 10px;
-    transition: var(--animation-1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // &:hover {
-    //     background: transparent;
-    // }
-    .season_tooltip {
-        transform: translateY(-30px) scale(0.7);
-        .season_tooltip_arrow {
-            border-top-color: var(--discord-floating);
-            position: absolute;
-            top: 100%;
-            width: 0;
-            height: 0;
+    .app {
+        padding: 10px;
+        transition: var(--animation-1);
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #000;
+        text-decoration: none;
+        font-weight: bold;
+        .app_icon {
+            width: 20px;
+            height: 20px;
+            padding-right: 5px;
+        }
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
         }
     }
-}
 
-.bottom_text:hover > .season_tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(-44px) scale(1);
+    @keyframes hue {
+        0% {
+            filter: hue-rotate(0deg);
+        }
+        100% {
+        }
+    }
+
+    .app_ig:hover {
+        color: var(--instagram-color);
+    }
+
+    .app_tw:hover {
+        color: var(--twitch-color);
+    }
+
+    .app_steam:hover {
+        color: var(--steam-color);
+    }
+
+    .app_sp:hover {
+        color: var(--spotify-color);
+    }
+
+    .app_github:hover {
+        color: var(--github-color);
+    }
+
+    .app_lechsbott:hover {
+        color: var(--lechsbott-color);
+    }
+
+    .bottom_text {
+        color: white;
+        font-size: 16px;
+        text-align: center;
+        background: linear-gradient(to right, var(--cherry));
+        padding: 10px;
+        transition: var(--animation-1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // &:hover {
+        //     background: transparent;
+        // }
+        .season_tooltip {
+            transform: translateY(-30px) scale(0.7);
+            .season_tooltip_arrow {
+                border-top-color: var(--discord-floating);
+                position: absolute;
+                top: 100%;
+                width: 0;
+                height: 0;
+            }
+        }
+    }
+    
+    .bottom_text:hover > .season_tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-44px) scale(1);
+    }
 }
 
 .discord {
@@ -273,10 +273,10 @@
     }
     .stuff {
         width: 100%;
-        height: 40%;
+        height: 30%;
     }
     .discord {
         width: 100%;
-        height: 60%;
+        height: 70%;
     }
 }

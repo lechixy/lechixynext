@@ -1,27 +1,28 @@
 import { FaGithub, FaInstagram, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa'
+import { SocialValues } from 'utils/socials'
 
-export default function getIcon(name: string, styles: any) {
-    if (name === 'Instagram') {
+export default function getIcon(name: SocialValues, styles: any) {
+    if (name === 'ig') {
         return (
             <FaInstagram className={styles.app_icon} />
         )
     }
-    if (name === 'Twitch') {
+    if (name === 'tw') {
         return (
             <FaTwitch className={styles.app_icon} />
         )
     }
-    if (name === 'Steam') {
+    if (name === 'steam') {
         return (
             <FaSteam className={styles.app_icon} />
         )
     }
-    if (name === 'Spotify') {
+    if (name === 'sp') {
         return (
             <FaSpotify className={styles.app_icon} />
         )
     }
-    if (name === 'GitHub') {
+    if (name === 'github') {
         return (
             <FaGithub className={styles.app_icon} />
         )

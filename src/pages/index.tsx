@@ -40,7 +40,7 @@ const Main: NextPage<any> = ({ background }) => {
               },
             };
 
-            interval = jsConvert.d.heartbeat_interval;
+            intervalTime = jsConvert.d.heartbeat_interval;
             ws.send(JSON.stringify(op2));
 
             interval = setInterval(sendHeartbeat, intervalTime);
@@ -222,10 +222,10 @@ const Main: NextPage<any> = ({ background }) => {
                     href={social.url}
                     target={"_blank"}
                     rel={"noreferrer"}
-                    className={`${styles.app} ${styles[`app_${social.name.toLowerCase()}`]}`}
+                    className={`${styles.app} ${styles[`app_${social.value.toLowerCase()}`]}`}
                     key={social.name}
                   >
-                    {getIcon(social.name, styles)}
+                    {getIcon(social.value, styles)}
                     {social.name}
                   </a>
                 );
