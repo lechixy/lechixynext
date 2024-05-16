@@ -8,7 +8,7 @@ import Discord from "components/Discord";
 import { WebSocketContext } from "utils/lanyard";
 import getIcon from "components/Icon";
 import Spinner from "components/Spinner";
-import { Util } from "utils/Util";
+import { isMobile, Util } from "utils/Util";
 
 const Main: NextPage<any> = ({ background }) => {
   const [data, setData] = useState(null);
@@ -130,9 +130,10 @@ const Main: NextPage<any> = ({ background }) => {
     let interval: NodeJS.Timeout | null = null;
 
     if (seasonContent.seasonParticle.length > 0) {
+      let spawnEvery = isMobile(navigator) ? 400 : 150;
       interval = setInterval(() => {
         createParticles();
-      }, 150);
+      }, spawnEvery);
     }
 
     function createParticles() {

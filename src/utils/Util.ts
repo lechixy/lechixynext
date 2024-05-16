@@ -1,5 +1,9 @@
 import { snowflake } from "./icons_svg";
 
+export function isMobile(navigator: Navigator): boolean {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
 type BoundingObject = {
     xCenter: number;
     yCenter: number;
