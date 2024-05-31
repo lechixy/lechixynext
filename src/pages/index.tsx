@@ -218,6 +218,7 @@ const Main: NextPage<any> = ({ background }) => {
             <div className={styles.stuff_header}>Stuffs</div>
             <div className={styles.stuff_item}>
               {socials.map((social) => {
+                if (social.value == "ig") return null;
                 return (
                   <a
                     href={social.url}

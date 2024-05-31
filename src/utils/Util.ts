@@ -16,7 +16,7 @@ type SeasonContent = {
 }
 
 const backgrounds = [
-    "/backgrounds/0.png",
+    //"/backgrounds/0.png",
     "/backgrounds/1.jpg",
     "/backgrounds/2.png",
     "/backgrounds/3.png",
@@ -32,7 +32,7 @@ const backgrounds = [
     "/backgrounds/15.png",
     "/backgrounds/16.png",
     "/backgrounds/17.png",
-    "/backgrounds/18.jpg",
+    //"/backgrounds/18.jpg",
     "/backgrounds/19.png",
     "/backgrounds/20.png",
     "/backgrounds/21.png",

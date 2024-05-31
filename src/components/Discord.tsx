@@ -86,13 +86,13 @@ export const Discord: FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.discord_button}>
+                    {/* <div className={styles.discord_button}>
                         <a href={`https://discord.com/users/${info.discord_user.id}`} target="_blank" style={{ 'textDecoration': 'none' }} rel="noreferrer">
                             <DiscordButton info={
                                 { text: `Discord`, is_link: true }
                             } />
                         </a>
-                    </div>
+                    </div> */}
                 </div>
                 <div className={styles.discord_header_bottom}>
                     <div className={styles.user}>
