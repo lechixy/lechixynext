@@ -59,11 +59,11 @@ export class Util {
         const month = now.getMonth() + 1; // Months are 0-indexed, so add 1
         const day = now.getDate();
 
-        if ((month === 3 && day >= 20) || (month === 4) || (month === 5)) {
+        if ((month === 3) || (month === 4) || (month === 5)) {
             return "spring";
-        } else if ((month === 6 && day >= 21) || (month === 7) || (month === 8)) {
+        } else if ((month === 6) || (month === 7) || (month === 8)) {
             return "summer";
-        } else if ((month === 9 && day >= 22) || (month === 10) || (month === 11)) {
+        } else if ((month === 9) || (month === 10) || (month === 11)) {
             return "autumn";
         } else {
             return "winter";

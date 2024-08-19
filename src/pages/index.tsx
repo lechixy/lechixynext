@@ -129,7 +129,7 @@ const Main: NextPage<any> = ({ background }) => {
 
     let interval: NodeJS.Timeout | null = null;
 
-    if (seasonContent.seasonParticle.length > 0) {
+    if (!seasonContent.seasonParticle.length) {
       let spawnEvery = isMobile(navigator) ? 400 : 150;
       interval = setInterval(() => {
         createParticles();

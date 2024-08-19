@@ -64,7 +64,7 @@ export const Spotify: FC = () => {
 
             setPercent(`${percent}%`)
             setTimestamps({ current, length })
-        }, 250);
+        }, 500);
 
         return () => {
             clearInterval(interval);
