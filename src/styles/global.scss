@@ -36,6 +36,8 @@
 }
 
 :root {
+    --background: black;
+    --user-primary: #00ffff;
     //Main colors
     --discord-background: rgba(0, 0, 0, 0.5);
     --discord-floating: rgba(0, 0, 0, 1);
@@ -51,11 +53,13 @@
     --autumn: #ff4545, #ff8800, #fcff51;
     //Apps
     --instagram-color: #ff00ae;
-    --twitch-color: #6600ff;
-    --steam-color: #0066c0;
+    --twitch-color: #8400ff;
+    --steam-color: #00ffff;
     --spotify-color: #00ff44;
-    --github-color: #0077ff;
+    --github-color: #000000;
     --lechsbott-color: #ebe700;
+    --discord-color: #5865f2;
+    --gallery-color: #ef0355;
     //Some discord colors
     --button-secondary-background: #4f545c;
     --button-secondary-background-hover: #686d73;
@@ -98,11 +102,33 @@
     margin: 0;
     padding: 0;
     outline: 0;
+    box-sizing: border-box;
 }
 
 html {
     scroll-behavior: smooth;
     font-family: "DM Sans", "Whitney", sans-serif;
+    color: white;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #00000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ffffff;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 @keyframes fall {
@@ -127,7 +153,6 @@ html {
 }
 
 .tooltip {
-    visibility: hidden;
     opacity: 0;
     width: auto;
     cursor: default;

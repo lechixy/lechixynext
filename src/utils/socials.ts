@@ -1,3 +1,5 @@
+import { HTMLAttributeAnchorTarget } from "react";
+
 const socials: SocialType[] = [
     {
         value: 'sp',
@@ -25,17 +27,30 @@ const socials: SocialType[] = [
         url: 'https://steamcommunity.com/id/lechixy/'
     },
     {
+        value: 'gallery',
+        name: 'Gallery',
+        type: '_self',
+        url: '/gallery'
+    },
+    {
+        value: 'dc',
+        name: 'Reaver',
+        url: 'https://discord.gg/reaver'
+    },
+    {
         value: 'lechsbott',
         name: 'Add lechsbott',
         url: 'https://discord.com/oauth2/authorize?client_id=753906874729889853&permissions=8&scope=bot%20applications.commands'
     },
 ]
 
-export type SocialValues = "ig" | "tw" | "steam" | "sp" | "github" | "lechsbott";
+export type SocialValues = "ig" | "tw" | "steam" | "sp" | "github" | "lechsbott" | "gallery" | "dc";
+
 
 type SocialType = {
     value: SocialValues;
     name?: string;
+    type?: HTMLAttributeAnchorTarget;
     url: string
 }
 

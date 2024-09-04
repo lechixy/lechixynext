@@ -82,7 +82,7 @@
                     height: 100%;
                 }
                 .spotify_img_tooltip {
-                    transform: translateY(96px) scale(0.9);
+                    transform: translateY(96px) scale(0.95);
                     .spotify_img_tooltip_arrow {
                         border-bottom-color: var(--discord-floating);
                         position: absolute;
@@ -95,7 +95,7 @@
             .spotify_img:hover > .spotify_img_tooltip {
                 opacity: 1;
                 visibility: visible;
-                transform: translateY(108px) scale(1);
+                transform: translateY(111px) scale(1);
             }
             .spotify_text {
                 display: flex;

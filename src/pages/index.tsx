@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useRef, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import styles from "styles/main/Home.module.scss";
 import socials from "utils/socials";
 import { GetServerSidePropsResult, GetStaticPropsContext, NextPage } from "next";
@@ -9,10 +9,47 @@ import { WebSocketContext } from "utils/lanyard";
 import getIcon from "components/Icon";
 import Spinner from "components/Spinner";
 import { isMobile, Util } from "utils/Util";
+import { ApiRespond } from "utils/types";
+import { extractColors } from "extract-colors";
+import { DynamicColorContext } from "utils/dynamicColor";
+import Link from "next/link";
 
 const Main: NextPage<any> = ({ background }) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<ApiRespond | null>(null);
+  const [seasonEmojis, setSeasonEmojis] = useState("");
+  let season = Util.getSeasonName();
   const bg = background;
+
+  const [dynamicColor, setDynamicColor] = useState(`var(--${season})`);
+
+  useEffect(() => {
+    //console.log(data)
+    if (data && data.spotify) {
+      extractColors(data.spotify.album_art_url, {
+        crossOrigin: "anonymous"
+      })
+        .then(colors => {
+          //console.log(colors)
+          //let newColors = colors.length >= 3 ? `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}` : `${colors[0].hex}, ${colors[1].hex}`;
+          let newColors = `${colors[0].hex}, ${colors[1].hex}`
+          setDynamicColor(newColors)
+          let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
+          stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
+
+          let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
+          bottom_text.style.background = `linear-gradient(to right, ${newColors})`;
+        })
+        .catch(console.error);
+    } else {
+      setDynamicColor(`var(--${season})`)
+      console.log("NO SPOTIFY SO SETTING SEASONAL")
+      let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
+      stuffs_header.style.background = `linear-gradient(to right, ${dynamicColor})`;
+
+      let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
+      bottom_text.style.background = `linear-gradient(to right, ${dynamicColor})`;
+    }
+  }, [data])
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -116,16 +153,13 @@ const Main: NextPage<any> = ({ background }) => {
     const seasonContent = Util.getSeasonContent(season);
 
     //Season Theme
-    let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
-    stuffs_header.style.background = `linear-gradient(to right, var(--${season}))`;
-
     let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
-    bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
     let bottom_text_span = bottom_text.querySelector(`span`) as HTMLSpanElement;
     bottom_text_span.textContent = seasonContent.seasonEmojis
 
     let season_tooltip = document.querySelector(`.${styles.season_tooltip} .tooltip_text`) as HTMLDivElement;
     season_tooltip.textContent = season.charAt(0).toUpperCase() + season.slice(1).toLowerCase();
+    setSeasonEmojis(season.charAt(0).toUpperCase() + season.slice(1).toLowerCase());
 
     let interval: NodeJS.Timeout | null = null;
 
@@ -200,7 +234,7 @@ const Main: NextPage<any> = ({ background }) => {
         clearInterval(interval);
       }
     };
-  }, []);
+  }, [data]);
 
   return (
     <div className={styles.main}>
@@ -212,49 +246,48 @@ const Main: NextPage<any> = ({ background }) => {
           <img src={bg} alt="background" />
         </div>
       </div>
-      <div className={styles.container}>
-        <div className={styles.stuff}>
-          <div>
-            <div className={styles.stuff_header}>Stuffs</div>
-            <div className={styles.stuff_item}>
-              {socials.map((social) => {
-                if (social.value == "ig") return null;
-                return (
-                  <a
-                    href={social.url}
-                    target={"_blank"}
-                    rel={"noreferrer"}
-                    className={`${styles.app} ${styles[`app_${social.value.toLowerCase()}`]}`}
-                    key={social.name}
-                  >
-                    {getIcon(social.value, styles)}
-                    {social.name}
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-          <div
-            className={styles.bottom_text}
-          >
-            <div className={`tooltip ${styles.season_tooltip}`}>
-              <div className={`tooltip_arrow ${styles.season_tooltip_arrow}`}></div>
-              <div className={"tooltip_text"}>
+      <WebSocketContext.Provider value={data}>
+        <DynamicColorContext.Provider value={dynamicColor}>
+          <div className={styles.container}>
+            <div className={styles.stuff}>
+              <div>
+                <div className={styles.stuff_header}>
+                  <div>Stuffs</div>
+                </div>
+                <div className={styles.stuff_item}>
+                  {socials.map((social) => {
+                    if (social.value == "ig") return null;
+                    return (
+                      <Link
+                        href={social.url}
+                        target={social.type && social.type != "_blank" ? social.type : "_blank"}
+                        className={`${styles.app} ${styles[`app_${social.value.toLowerCase()}`]}`}
+                        key={social.name}
+                      >
+                        {getIcon(social.value, styles)}
+                        <div>{social.name}</div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+              <div
+                className={`season_tooltip ${styles.bottom_text}`}
+              >
+                <div className={`tooltip ${styles.season_tooltip}`}>
+                  <div className={`tooltip_arrow ${styles.season_tooltip_arrow}`}></div>
+                  <div className={"tooltip_text"}>
+                  </div>
+                </div>
+                <span></span>
               </div>
             </div>
-            <span></span>
-          </div>
-        </div>
-        <div className={styles.discord}>
-          {data ? (
-            <WebSocketContext.Provider value={data}>
+            <div className={styles.discord}>
               <Discord />
-            </WebSocketContext.Provider>
-          ) : (
-            <Spinner />
-          )}
-        </div>
-      </div>
+            </div>
+          </div>
+        </DynamicColorContext.Provider>
+      </WebSocketContext.Provider>
       <div className={styles.layer_container} />
       {/* <div className={styles.preloader} >
         <Spinner />

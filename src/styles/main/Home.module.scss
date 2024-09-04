@@ -1,3 +1,5 @@
+// Tooltips
+
 .main {
     height: 100vh;
     width: 100%;
@@ -101,16 +103,18 @@
 
     .stuff_header {
         padding: 10px;
-        text-align: center;
-        font-size: 25px;
-        font-weight: bolder;
         // background: linear-gradient(to right, var(--cherry));
-        color: #fff;
         transition: var(--animation-1);
         // &:hover {
         //     background: transparent;
         //     color: black;
         // }
+        div {
+            color: white;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bolder;
+        }
     }
 
     .app {
@@ -123,12 +127,15 @@
         text-decoration: none;
         font-weight: bold;
         .app_icon {
-            width: 20px;
-            height: 20px;
+            width: 26px;
+            height: 26px;
             padding-right: 5px;
         }
+        div {
+            line-height: 26px;
+        }
         &:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.25);
         }
     }
 
@@ -163,6 +170,12 @@
     .app_lechsbott:hover {
         color: var(--lechsbott-color);
     }
+    .app_dc:hover {
+        color: var(--discord-color);
+    }
+    .app_gallery:hover {
+        color: var(--gallery-color);
+    }
 
     .bottom_text {
         color: white;
@@ -178,7 +191,7 @@
         //     background: transparent;
         // }
         .season_tooltip {
-            transform: translateY(-30px) scale(0.7);
+            transform: translateY(-30px) scale(0.95);
             .season_tooltip_arrow {
                 border-top-color: var(--discord-floating);
                 position: absolute;
@@ -192,7 +205,7 @@
     .bottom_text:hover > .season_tooltip {
         opacity: 1;
         visibility: visible;
-        transform: translateY(-44px) scale(1);
+        transform: translateY(-45px) scale(1);
     }
 }
 
@@ -285,5 +298,4 @@
         backdrop-filter: none;
     }
     // Blur
-
 }

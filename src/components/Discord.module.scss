@@ -63,7 +63,7 @@
         border-radius: 50%;
         z-index: 3;
         .avatar_status_tooltip {
-            transform: translateX(25px) scale(0.9);
+            transform: translateX(25px) scale(0.95);
             .avatar_status_tooltip_arrow {
                 border-right-color: var(--discord-floating);
                 position: absolute;
@@ -78,7 +78,7 @@
 .avatar_status:hover > .avatar_status_tooltip {
     opacity: 1;
     visibility: visible;
-    transform: translateX(37px) scale(1);
+    transform: translateX(40px) scale(1);
 }
 
 .discord_button{
@@ -134,7 +134,7 @@
         &:hover > .custom_status_emoji_tooltip {
             opacity: 1;
             visibility: visible;
-            transform: translateY(37px) scale(1);
+            transform: translateY(40px) scale(1);
         }
     }
     .custom_status_text {

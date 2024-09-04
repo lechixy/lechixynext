@@ -5,6 +5,9 @@ import styles from 'components/activity/Spotify.module.scss';
 import Link from 'next/link';
 import { useContext, WebSocketContext } from 'utils/lanyard';
 import { Util } from 'utils/Util';
+import { Tooltip } from 'react-tooltip';
+import { extractColors } from 'extract-colors';
+import { DynamicColorContext } from 'utils/dynamicColor';
 
 type ApiRespond = {
 
@@ -37,10 +40,10 @@ type ApiRespond = {
 export const Spotify: FC = () => {
 
     const info = useContext(WebSocketContext) as unknown as ApiRespond
+    const dynamicColor = useContext(DynamicColorContext);
 
     let spotify = info.spotify
-    let season = Util.getSeasonName();
-
+    
     //Live values
     let [percent, setPercent] = useState("0%")
     let [timestamps, setTimestamps] = useState({ current: "0:00", length: "0:00" })
@@ -87,7 +90,7 @@ export const Spotify: FC = () => {
         <div className={styles.type_2}>
             <div className={styles.background}>
                 <div className={styles.background_container}>
-                    <img src={spotify.album_art_url} alt={`${spotify.album}`} />
+                    <img id="album_art" src={spotify.album_art_url} alt={`${spotify.album}`} />
                 </div>
                 <div className={styles.background_gradient}></div>
             </div>
@@ -102,7 +105,7 @@ export const Spotify: FC = () => {
                     </svg>
                 </div>
                 <div className={styles.spotify}>
-                    <a href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} target="_blank" rel="noreferrer">
+                    <a className='album_cover' href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} target="_blank" rel="noreferrer">
                         <div className={styles.spotify_img}>
                             <div className={`tooltip ${styles.spotify_img_tooltip}`}>
                                 <div className={`tooltip_arrow ${styles.spotify_img_tooltip_arrow}`}></div>
@@ -135,7 +138,7 @@ export const Spotify: FC = () => {
                     <div className={styles.spotify_statusbar_bg}>
                         <div style={{
                             "width": `${percent}`,
-                            "background": `linear-gradient(45deg, var(--${season}))`,
+                            "background": `linear-gradient(45deg, ${dynamicColor})`,
                         }} className={styles.spotify_statusbar}>
                         </div>
                     </div>

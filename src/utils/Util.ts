@@ -54,6 +54,11 @@ export const status_colors = {
 };
 
 export class Util {
+
+    static youtubeThumbnail(videoId: string): string {
+        return `https://img.youtube.com/vi/${videoId}/hq720.jpg`
+    }
+
     static getSeasonName(): Season {
         const now = new Date();
         const month = now.getMonth() + 1; // Months are 0-indexed, so add 1
@@ -71,17 +76,17 @@ export class Util {
     }
     static getSeasonContent(season: Season): SeasonContent {
         let particle: string = snowflake;
-        let emojis: string = "🍓❄️";
+        let emojis: string = "❄️";
 
         if (season == "spring") {
             particle = "🌸"
-            emojis = "🍓🌸"
+            emojis = "🌸"
         } else if (season == "summer") {
-            emojis = "🍓🌞"
+            emojis = "🌞"
             particle = ""
         } else if (season == "autumn") {
             particle = "🍂"
-            emojis = "🍓🍂"
+            emojis = "🍂"
         }
 
         return {

@@ -1,4 +1,4 @@
-import { FaGithub, FaInstagram, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa'
+import { FaDiscord, FaGithub, FaHeart, FaInstagram, FaMoon, FaRegHeart, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa'
 import { SocialValues } from 'utils/socials'
 
 export default function getIcon(name: SocialValues, styles: any) {
@@ -30,6 +30,16 @@ export default function getIcon(name: SocialValues, styles: any) {
     if (name === 'lechsbott') {
         return (
             <FaStar className={styles.app_icon} />
+        )
+    }
+    if (name == "dc"){
+        return (
+            <FaDiscord className={styles.app_icon} />
+        )
+    }
+    if (name == "gallery"){
+        return (
+            <FaHeart className={styles.app_icon} />
         )
     }
 }
