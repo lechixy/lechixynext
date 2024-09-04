@@ -1,9 +1,14 @@
 .presence {
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
     overflow-y: scroll;
+}
+.presence::-webkit-scrollbar {
+    display: none;
+}
+
+.blank {
+    width: 100%;
+    height: 20px;
 }
 
 .offline {

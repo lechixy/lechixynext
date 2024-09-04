@@ -271,19 +271,19 @@
 // Optimization for mobile
 @media (max-width: 650px) {
     .main {
-        height: 150vh;
+        height: 200vh;
     }
     .layer_container {
-        height: 150vh;
+        height: 200vh;
     }
     .background {
-        height: 150vh;
+        height: 200vh;
     }
     .container {
         flex-direction: column;
         .stuff {
             width: 100%;
-            height: 30%;
+            height: 50%;
             backdrop-filter: none;
         }
     }

@@ -21,11 +21,35 @@ const Gallery: NextPage = () => {
         }
     }, [router])
 
+    useEffect(() => {
+        const videos = document.querySelector(`div.${styles.videos}`) as HTMLDivElement;
+        if (videos) {
+            videos.addEventListener("wheel", (ev) => handleScroll(ev));
+        }
+
+        function handleScroll(e: WheelEvent) {
+            console.log("works")
+            if (e.deltaY > 0) {
+                videos.scrollLeft += 100;
+                e.preventDefault();
+            }
+            else {
+                videos.scrollLeft -= 100;
+                e.preventDefault();
+            }
+        }
+
+        return () => {
+            if (videos) {
+                videos.removeEventListener("wheel", (ev) => handleScroll(ev));
+            }
+        }
+    }, [player])
+
     let category = router.query.category as unknown as number;
     let item = router.query.item
     let currentCategory = gallery[category]
     let currentMedia = currentCategory?.items.find(video => video.videoId == item)
-    console.log(currentMedia)
 
     return (
         <div className={styles.main}>
@@ -34,15 +58,13 @@ const Gallery: NextPage = () => {
             </Head>
             <div className={styles.container}>
                 <div className={styles.navigation}>
-                    {currentMedia && (
-                        <Link href={"/gallery"}>
-                            <div className={styles.icon}>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                                    <path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
-                                </svg>
-                            </div>
-                        </Link>
-                    )}
+                    <Link href={currentMedia ? "/gallery" : "/"}>
+                        <div className={styles.icon}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
+                            </svg>
+                        </div>
+                    </Link>
                     <div className={styles.title}>{currentMedia ? `${currentCategory.title} | ${currentMedia.title}` : `Gallery`}</div>
                 </div>
                 <div className={styles.gallery}>

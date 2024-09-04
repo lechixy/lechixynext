@@ -22,6 +22,9 @@ export const Presence: FC = () => {
             {activity && (
                 <GameActivity />
             )}
+            {isListening && activity && (
+                <div className={styles.blank}></div>
+            )}
             {noActivity && (
                 <div className={styles.offline}>
                     <span>Well... there is no activity to show you</span>
