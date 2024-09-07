@@ -1,17 +1,21 @@
 import Head from "next/head";
 import styles from './Gallery.module.scss';
-import { NextPage } from "next";
-import { gallery } from "data/gallery";
+import { GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from "next";
 import { Util } from "utils/Util";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { playlist_info, YouTubePlayList } from 'play-dl';
+import { GalleryResponse, YouTubePl } from "pages/api/gallery";
+import { gallery } from "data/gallery";
+import Spinner from "components/Spinner";
+import Spinner_2 from "components/Spinner_2";
 
-
-const Gallery: NextPage = () => {
+const Gallery: NextPage<any> = () => {
 
     const router = useRouter()
     const [player, setPlayer] = useState(false);
+    const [galleryData, setGalleryData] = useState<YouTubePl | null>(null);
 
     useEffect(() => {
         if (router.query.category && router.query.item) {
@@ -46,10 +50,22 @@ const Gallery: NextPage = () => {
         }
     }, [player])
 
+    useEffect(() => {
+        let localApi = fetch("/api/gallery")
+            .then((data) => data.json())
+            .then((res: GalleryResponse) => {
+                if (res.code == 200) {
+                    setGalleryData(res.data!.ytdata)
+                } else {
+                    setGalleryData(null);
+                }
+            })
+    }, [])
+
     let category = router.query.category as unknown as number;
     let item = router.query.item
     let currentCategory = gallery[category]
-    let currentMedia = currentCategory?.items.find(video => video.videoId == item)
+    let currentMedia = galleryData?.videos.find(video => video.id == item)
 
     return (
         <div className={styles.main}>
@@ -72,7 +88,7 @@ const Gallery: NextPage = () => {
                         <div className={styles.watch}>
                             <div className={styles.player}>
                                 <iframe
-                                    src={`https://www.youtube.com/embed/${currentMedia?.videoId}`}
+                                    src={`https://www.youtube.com/embed/${currentMedia?.id}`}
                                     title={currentMedia?.title}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     referrerPolicy="strict-origin-when-cross-origin" allowFullScreen>
@@ -90,21 +106,25 @@ const Gallery: NextPage = () => {
                                     <div className={styles.description}>{gallery[0].description}</div>
                                 </div>
                                 <div className={styles.videos}>
-                                    {gallery[0].items.sort((a, b) => b.addedAt - a.addedAt).map(video => {
-                                        return (
-                                            <Link href={`/gallery?category=0&item=${video.videoId}`} key={video.videoId}>
-                                                <div className={styles.video}>
-                                                    <img draggable={false} src={Util.youtubeThumbnail(video.videoId)} alt={video.title} />
-                                                    <div style={{
-                                                        backgroundImage: `linear-gradient(hsla(0, 0%, 0%, 30%), hsla(0, 0%, 0%, 30%)), url(${Util.youtubeThumbnail(video.videoId)})`
-                                                    }} className={styles.overlay}></div>
-                                                    <div className={styles.content}>
-                                                        <div className={styles.title}>{video.title}</div>
+                                    {galleryData ? (
+                                        galleryData.videos.reverse().map(video => {
+                                            return (
+                                                <Link href={`/gallery?category=0&item=${video.id}`} key={video.id}>
+                                                    <div className={styles.video}>
+                                                        <img draggable={false} src={Util.youtubeThumbnail(video.id)} alt={video.title} />
+                                                        <div style={{
+                                                            backgroundImage: `linear-gradient(hsla(0, 0%, 0%, 30%), hsla(0, 0%, 0%, 30%)), url(${Util.youtubeThumbnail(video.id)})`
+                                                        }} className={styles.overlay}></div>
+                                                        <div className={styles.content}>
+                                                            <div className={styles.title}>{video.title}</div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </Link>
-                                        )
-                                    })}
+                                                </Link>
+                                            )
+                                        })
+                                    ) : (
+                                        <Spinner_2 />
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -113,6 +133,7 @@ const Gallery: NextPage = () => {
             </div>
         </div>
     )
-}
+};
+
 
 export default Gallery;

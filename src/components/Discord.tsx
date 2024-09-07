@@ -13,7 +13,9 @@ export const Discord: FC = () => {
 
     if (!info) {
         return (
-            <Spinner />
+            <div className={styles.discord_body}>
+                <Spinner />
+            </div>
         )
     } else {
         let status_color =
