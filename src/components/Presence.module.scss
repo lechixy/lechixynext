@@ -2,6 +2,12 @@
     width: 100%;
     overflow-y: scroll;
 }
+.presence.noActivity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
 .presence::-webkit-scrollbar {
     display: none;
 }

@@ -44,6 +44,13 @@ const backgrounds = [
     "/backgrounds/27.png",
     "/backgrounds/28.jpg",
     "/backgrounds/29.png",
+    "/backgrounds/30.webp",
+    "/backgrounds/31.jpg",
+    "/backgrounds/32.png",
+    "/backgrounds/33.webp",
+    "/backgrounds/34.webp",
+    "/backgrounds/35.webp",
+    "/backgrounds/36.webp",
 ]
 
 export const status_colors = {

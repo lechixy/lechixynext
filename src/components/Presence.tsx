@@ -15,7 +15,7 @@ export const Presence: FC = () => {
     const noActivity = !activity && !isOffline && !isListening
 
     return (
-        <div className={styles.presence}>
+        <div className={`${styles.presence} ${noActivity || isOffline ? styles.noActivity : ""}`}>
             {isListening && (
                 <Spotify />
             )}
