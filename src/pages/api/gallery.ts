@@ -71,12 +71,22 @@ export default async function handler(
         })
     }
 
+    let sortedTitled = request
+    let seperators = ["[", "「"]
+        ; (await sortedTitled.all_videos()).forEach((vid) => {
+            seperators.forEach(sep => {
+                if (vid.title?.includes(sep)) {
+                    vid.title = vid.title.split(sep)[0];
+                }
+            })
+        })
+
     data = {
         title: gallery[0].title,
         description: gallery[0].description,
         link: gallery[0].description,
         type: "ytplaylist",
-        ytdata: JSON.parse(JSON.stringify(request))
+        ytdata: JSON.parse(JSON.stringify(sortedTitled))
     }
 
     res.status(200).json({

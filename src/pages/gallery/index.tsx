@@ -10,11 +10,13 @@ import { GalleryResponse, YouTubePl } from "pages/api/gallery";
 import { gallery } from "data/gallery";
 import Spinner from "components/Spinner";
 import Spinner_2 from "components/Spinner_2";
+import YouTube, { YouTubeProps } from "react-youtube"
 
 const Gallery: NextPage<any> = () => {
 
     const router = useRouter()
     const [player, setPlayer] = useState(false);
+    const [playing, setPlaying] = useState(true);
     const [galleryData, setGalleryData] = useState<YouTubePl | null>(null);
 
     useEffect(() => {
@@ -24,31 +26,6 @@ const Gallery: NextPage<any> = () => {
             setPlayer(false);
         }
     }, [router])
-
-    useEffect(() => {
-        const videos = document.querySelector(`div.${styles.videos}`) as HTMLDivElement;
-        if (videos) {
-            videos.addEventListener("wheel", (ev) => handleScroll(ev));
-        }
-
-        function handleScroll(e: WheelEvent) {
-            console.log("works")
-            if (e.deltaY > 0) {
-                videos.scrollLeft += 100;
-                e.preventDefault();
-            }
-            else {
-                videos.scrollLeft -= 100;
-                e.preventDefault();
-            }
-        }
-
-        return () => {
-            if (videos) {
-                videos.removeEventListener("wheel", (ev) => handleScroll(ev));
-            }
-        }
-    }, [player])
 
     useEffect(() => {
         let localApi = fetch("/api/gallery")
@@ -62,6 +39,14 @@ const Gallery: NextPage<any> = () => {
             })
     }, [])
 
+    const onStateChanged: YouTubeProps['onStateChange'] = (event) => {
+        if (event.data == 1) {
+            setPlaying(false);
+        } else {
+            setPlaying(true);
+        }
+    }
+
     let category = router.query.category as unknown as number;
     let item = router.query.item
     let currentCategory = gallery[category]
@@ -71,9 +56,10 @@ const Gallery: NextPage<any> = () => {
         <div className={styles.main}>
             <Head>
                 <title>lechixy | gallery</title>
+
             </Head>
             <div className={styles.container}>
-                <div className={styles.navigation}>
+                <div className={`${styles.navigation} ${playing ? "" : styles.playing}`}>
                     <Link href={currentMedia ? "/gallery" : "/"}>
                         <div className={styles.icon}>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -87,19 +73,24 @@ const Gallery: NextPage<any> = () => {
                     {player ? (
                         <div className={styles.watch}>
                             <div className={styles.player}>
-                                <iframe
+                                {currentMedia && (
+                                    <YouTube className={styles.youtube} onStateChange={onStateChanged} videoId={currentMedia.id} title={currentMedia.title} />
+                                )}
+                                {/* <iframe
                                     src={`https://www.youtube.com/embed/${currentMedia?.id}`}
                                     title={currentMedia?.title}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     referrerPolicy="strict-origin-when-cross-origin" allowFullScreen>
-                                </iframe>
+                                </iframe> */}
                             </div>
                             <div className={styles.about}>
                                 <div className={styles.title}>{currentMedia?.title}</div>
+                                <div>{`${currentMedia?.durationRaw} - ${currentMedia?.channel.name}`}</div>
                             </div>
                         </div>
                     ) : (
                         <div className={styles.categories}>
+                            <div className={styles.blank} />
                             <div className={styles.category}>
                                 <div className={styles.top}>
                                     <div className={styles.title}>{gallery[0].title}</div>

@@ -23,20 +23,27 @@
     width: 100%;
     height: 70px;
     padding: 0px 16px;
-    position: relative;
-    .icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        color: white;
+    position: fixed;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 60%, transparent);
+    backdrop-filter: blur(2px);
+    transform: translateY(0);
+    transition: all var(--animation-1);
+    z-index: 15;
+    a {
         margin-right: 16px;
-        cursor: pointer;
-        transition: all var(--animation-1);
-        svg {
-            fill: currentColor;
-            width: 28px;
-            height: 28px;
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+            cursor: pointer;
+            transition: all var(--animation-1);
+            svg {
+                fill: currentColor;
+                width: 28px;
+                height: 28px;
+            }
         }
     }
     .icon:hover {
@@ -55,11 +62,26 @@
     }
 }
 
+.navigation.playing {
+    opacity: 0;
+    transform: translateY(-70px);
+}
+
+@keyframes navAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .gallery {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: calc(100% - 70px);
+    height: 100%;
+    overflow-y: auto;
 }
 
 .watch {
@@ -69,18 +91,34 @@
         display: flex;
         width: 100%;
         height: 100%;
-        iframe {
+        .youtube {
             border: none;
             width: 100%;
             height: 100%;
+            iframe {
+                border: none;
+                width: 100%;
+                height: 100%;
+            }
         }
     }
     .about {
         display: flex;
         flex-direction: column;
-        width: 35%;
-        height: 100%;
+        align-items: center;
+        width: 100%;
+        padding: 20px 30px;
+        .title {
+            font-size: 36px;
+            text-align: center;
+            font-weight: bold;
+        }
     }
+}
+
+.blank {
+    width: 100%;
+    height: 70px;
 }
 
 .categories {
@@ -88,7 +126,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding: 12px 16px; 
+        padding: 12px 16px;
         background: rgb(15, 15, 15);
         .top {
             display: flex;
@@ -104,12 +142,9 @@
         }
         .videos {
             display: flex;
-            flex-wrap: nowrap;
             gap: 1rem;
+            flex-wrap: wrap;
             width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-            height: 100%;
             padding: 1rem;
             .video {
                 position: relative;
@@ -137,7 +172,8 @@
                     right: -4px;
                     bottom: -4px;
                     left: -4px;
-                    background-position: center top;
+                    background-position: bottom;
+                    transform: scaleY(-1);
                     z-index: -1;
                     background-size: 100%;
                     filter: blur(5px);
@@ -164,8 +200,8 @@
                 transform: translateY(-4px) scale(1.05);
             }
         }
-        .videos::-webkit-scrollbar { 
-            display: none;  /* Safari and Chrome */
+        .videos::-webkit-scrollbar {
+            display: none; /* Safari and Chrome */
         }
     }
 }
@@ -173,6 +209,13 @@
 // Optimization for mobile
 @media (max-width: 650px) {
     .navigation {
+        backdrop-filter: none;
+        background: linear-gradient(to bottom, black 40%, transparent);
+        .title {
+            font-size: 20px;
+        }
+    }
+    .watch .about {
         .title {
             font-size: 20px;
         }
