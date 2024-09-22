@@ -104,14 +104,107 @@
     }
     .about {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         width: 100%;
-        padding: 20px 30px;
-        .title {
-            font-size: 36px;
-            text-align: center;
-            font-weight: bold;
+        height: 140px;
+        .queue {
+            display: flex;
+            height: 100%;
+            width: 20%;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: all var(--animation-1);
+            .queueContainer {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 16px;
+                width: 100%;
+                height: 100%;
+                z-index: 3;
+                transition: all var(--animation-1);
+                .queueTitle {
+                    font-weight: bold;
+                }
+                .queueVideoName {
+                    line-height: 1.6rem;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    max-height: 3.2rem;
+                    width: 100%;
+                }
+            }
+            img {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: all var(--animation-1);
+            }
+            .gradient {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                z-index: 2;
+            }
+            .gradient.previousGradient {
+                background: linear-gradient(to left, black 5%, rgba(0, 0, 0, 0.5));
+            }
+            .gradient.nextGradient {
+                background: linear-gradient(to right, black 5%, rgba(0, 0, 0, 0.5));
+            }
+        }
+        .queue:hover {
+            img {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+        }
+        .queue.previousVideo:hover {
+            .queueContainer {
+                transform: scale(1.1) translateX(12px);
+            }
+        }
+        .queue.nextVideo:hover {
+            .queueContainer {
+                transform: scale(1.1) translateX(-12px);
+            }
+        }
+        // .queue.videoAvailable {
+        //     cursor: pointer;
+        // }
+        .queue.previousVideo {
+            .queueContainer {
+                align-items: flex-start;
+                text-align: start;
+            }
+        }
+        .queue.nextVideo {
+            .queueContainer {
+                align-items: flex-end;
+                text-align: end;
+            }
+        }
+        .videoInfo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            .title {
+                font-size: 36px;
+                font-weight: bold;
+            }
+            div {
+                text-align: center;
+            }
         }
     }
 }
@@ -142,6 +235,7 @@
         }
         .videos {
             display: flex;
+            justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
             width: 100%;
@@ -216,8 +310,15 @@
         }
     }
     .watch .about {
-        .title {
-            font-size: 20px;
+        .queue {
+            width: 25%;
+            .queueContainer {
+            }
+        }
+        .videoInfo {
+            .title {
+                font-size: 20px;
+            }
         }
     }
 }

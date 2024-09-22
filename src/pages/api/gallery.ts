@@ -1,10 +1,15 @@
 import { gallery } from 'data/gallery';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { playlist_info } from 'play-dl';
+import { playlist_info, YouTubeVideo } from 'play-dl';
 
 export type GalleryResponse = {
     code: number;
     data: Gallery | null;
+}
+
+type YouTubeVideoExtended = YouTubeVideo & {
+    isFirst: boolean;
+    isLast: boolean;
 }
 
 type YouTubeChannel = {
@@ -45,13 +50,16 @@ export type YouTubePl = {
         title: string;
         url: string;
         views: number;
+        isLast: boolean;
+        isFirst: boolean;
     }[];
 }
 
-type Gallery = {
+export type Gallery = {
     title: string;
     description: string;
     link: string;
+    id: string;
     type: "ytplaylist";
     ytdata: YouTubePl | null;
 }
@@ -71,22 +79,13 @@ export default async function handler(
         })
     }
 
-    let sortedTitled = request
-    let seperators = ["[", "「"]
-        ; (await sortedTitled.all_videos()).forEach((vid) => {
-            seperators.forEach(sep => {
-                if (vid.title?.includes(sep)) {
-                    vid.title = vid.title.split(sep)[0];
-                }
-            })
-        })
-
     data = {
         title: gallery[0].title,
         description: gallery[0].description,
-        link: gallery[0].description,
+        link: gallery[0].link,
+        id: gallery[0].id,
         type: "ytplaylist",
-        ytdata: JSON.parse(JSON.stringify(sortedTitled))
+        ytdata: JSON.parse(JSON.stringify(request))
     }
 
     res.status(200).json({

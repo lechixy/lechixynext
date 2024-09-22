@@ -5,16 +5,22 @@ import { ApiRespond } from "utils/types";
 import Presence from "components/Presence";
 import { DiscordButton } from "components/DiscordButton";
 import { useContext, WebSocketContext } from "utils/lanyard";
-import { status_colors } from "utils/Util";
+import { status_colors, Util } from "utils/Util";
 import Spinner from "./Spinner";
 
-export const Discord: FC = () => {
+type DiscordProps = {
+    loadingText: string;
+}
+
+export const Discord: FC<DiscordProps> = ({ loadingText }) => {
     const info = useContext(WebSocketContext) as unknown as ApiRespond | null;
 
     if (!info) {
         return (
             <div className={styles.discord_body}>
-                <Spinner />
+                <div className={styles.discordLoading}>
+                    <Spinner text={loadingText} />
+                </div>
             </div>
         )
     } else {

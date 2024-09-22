@@ -9,15 +9,15 @@ import { playlist_info, YouTubePlayList } from 'play-dl';
 import { GalleryResponse, YouTubePl } from "pages/api/gallery";
 import { gallery } from "data/gallery";
 import Spinner from "components/Spinner";
-import Spinner_2 from "components/Spinner_2";
-import YouTube, { YouTubeProps } from "react-youtube"
+import YouTube, { YouTubeEvent, YouTubePlayer, YouTubeProps } from "react-youtube"
 
 const Gallery: NextPage<any> = () => {
 
     const router = useRouter()
     const [player, setPlayer] = useState(false);
-    const [playing, setPlaying] = useState(true);
+    const [playing, setPlaying] = useState(false);
     const [galleryData, setGalleryData] = useState<YouTubePl | null>(null);
+    const [youtubeApi, setYoutubeApi] = useState<YouTubePlayer | null>(null);
 
     useEffect(() => {
         if (router.query.category && router.query.item) {
@@ -32,7 +32,24 @@ const Gallery: NextPage<any> = () => {
             .then((data) => data.json())
             .then((res: GalleryResponse) => {
                 if (res.code == 200) {
+                    let correctData = res.data?.ytdata
+                    let seperators = ["[", "「"];
+                    correctData?.videos.forEach((vid, index) => {
+                        // Defining isFirst, isLast for about section
+                        vid.isFirst = false;
+                        vid.isLast = false;
+
+                        seperators.forEach(sep => {
+                            if (vid.title?.includes(sep)) {
+                                vid.title = vid.title.split(sep)[0];
+                            }
+                        })
+                    })
+                    correctData!.videos[0].isFirst = true;
+                    correctData!.videos[correctData!.videos.length - 1].isLast = true;
+
                     setGalleryData(res.data!.ytdata)
+                    console.log(res.data!.ytdata)
                 } else {
                     setGalleryData(null);
                 }
@@ -40,26 +57,56 @@ const Gallery: NextPage<any> = () => {
     }, [])
 
     const onStateChanged: YouTubeProps['onStateChange'] = (event) => {
+        // If a video selected from playlist button on YouTubePlayer load all playlist again
+        if (event.data == 5 && galleryData) {
+            let videoIds = galleryData.videos.map(video => video.id);
+            let currentMediaIndex = galleryData.videos.findIndex(video => video.id == currentMedia?.id)
+            event.target.loadPlaylist(videoIds, currentMediaIndex);
+        }
+        // If video id is not equal to current video id update it
+        //console.log(event.target.playerInfo.videoData)
+        if (event.target.playerInfo.videoData?.video_id) {
+            router.replace(`/gallery?category=0&item=${event.target.playerInfo.videoData.video_id}`, undefined, { shallow: true })
+            //router.push({query: {category: 0, item: event.target.playerInfo.videoData.video_id}}, undefined, { shallow: true });
+        }
+        console.log(event.data);
+        // If video is playing
         if (event.data == 1) {
-            setPlaying(false);
-        } else {
             setPlaying(true);
+        } else {
+            setPlaying(false);
+        }
+    }
+
+    const onReady: YouTubeProps['onReady'] = (event) => {
+        setYoutubeApi(event.target);
+        if (galleryData) {
+            let videoIds = galleryData.videos.map(video => video.id);
+            let currentMediaIndex = galleryData.videos.findIndex(video => video.id == currentMedia?.id)
+            event.target.loadPlaylist(videoIds, currentMediaIndex);
         }
     }
 
     let category = router.query.category as unknown as number;
     let item = router.query.item
     let currentCategory = gallery[category]
-    let currentMedia = galleryData?.videos.find(video => video.id == item)
+    let currentMedia = galleryData?.videos.find(video => video.id == item);
+    let currentIndex = galleryData?.videos.findIndex(video => video.id == item);
+    let previousVideo = galleryData?.videos[currentIndex! - 1] ?? galleryData?.videos[currentIndex!];
+    let nextVideo = galleryData?.videos[currentIndex! + 1] ?? galleryData?.videos[currentIndex!];
+
+    useEffect(() => {
+        if (currentMedia) {
+            document.title = `lechixy | ${currentMedia?.title}`;
+        } else {
+            document.title = `lechixy | gallery`;
+        }
+    }, [currentMedia])
 
     return (
         <div className={styles.main}>
-            <Head>
-                <title>lechixy | gallery</title>
-
-            </Head>
             <div className={styles.container}>
-                <div className={`${styles.navigation} ${playing ? "" : styles.playing}`}>
+                <div className={`${styles.navigation} ${playing ? styles.playing : ""}`}>
                     <Link href={currentMedia ? "/gallery" : "/"}>
                         <div className={styles.icon}>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -74,7 +121,7 @@ const Gallery: NextPage<any> = () => {
                         <div className={styles.watch}>
                             <div className={styles.player}>
                                 {currentMedia && (
-                                    <YouTube className={styles.youtube} onStateChange={onStateChanged} videoId={currentMedia.id} title={currentMedia.title} />
+                                    <YouTube className={styles.youtube} onReady={onReady} onStateChange={onStateChanged} videoId={currentMedia.id} title={currentMedia.title} />
                                 )}
                                 {/* <iframe
                                     src={`https://www.youtube.com/embed/${currentMedia?.id}`}
@@ -84,8 +131,34 @@ const Gallery: NextPage<any> = () => {
                                 </iframe> */}
                             </div>
                             <div className={styles.about}>
-                                <div className={styles.title}>{currentMedia?.title}</div>
-                                <div>{`${currentMedia?.durationRaw} - ${currentMedia?.channel.name}`}</div>
+                                <div className={`${styles.queue} ${styles.previousVideo} ${nextVideo?.isFirst ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.previousVideo() }} >
+                                    {previousVideo && (
+                                        <>
+                                            <div className={styles.queueContainer}>
+                                                <div className={styles.queueTitle}>{previousVideo.isFirst ? "First" : "Previous"}</div>
+                                                <div className={styles.queueVideoName}>{previousVideo.title}</div>
+                                            </div>
+                                            <div className={`${styles.gradient} ${styles.previousGradient}`} />
+                                            <img src={previousVideo.thumbnail.url} alt={previousVideo.title} />
+                                        </>
+                                    )}
+                                </div>
+                                <div className={styles.videoInfo}>
+                                    <div className={styles.title}>{currentMedia?.title}</div>
+                                    <div>{`${currentMedia?.durationRaw} - ${currentMedia?.channel.name}`}</div>
+                                </div>
+                                <div className={`${styles.queue} ${styles.nextVideo} ${nextVideo?.isLast ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.nextVideo() }} >
+                                    {nextVideo && (
+                                        <>
+                                            <div className={styles.queueContainer}>
+                                                <div className={styles.queueTitle}>{nextVideo.isLast ? "Last" : "Next"}</div>
+                                                <div className={styles.queueVideoName}>{nextVideo.title}</div>
+                                            </div>
+                                            <div className={`${styles.gradient} ${styles.nextGradient}`} />
+                                            <img src={nextVideo.thumbnail.url} alt={nextVideo.title} />
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     ) : (
@@ -114,7 +187,7 @@ const Gallery: NextPage<any> = () => {
                                             )
                                         })
                                     ) : (
-                                        <Spinner_2 />
+                                        <Spinner text="Loading playlist..." />
                                     )}
                                 </div>
                             </div>

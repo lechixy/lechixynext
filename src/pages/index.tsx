@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "styles/main/Home.module.scss";
 import socials from "utils/socials";
 import { GetServerSidePropsResult, GetStaticPropsContext, NextPage } from "next";
@@ -7,14 +7,18 @@ import Head from "next/head";
 import Discord from "components/Discord";
 import { WebSocketContext } from "utils/lanyard";
 import getIcon from "components/Icon";
-import Spinner from "components/Spinner";
 import { isMobile, Util } from "utils/Util";
 import { ApiRespond } from "utils/types";
 import { extractColors } from "extract-colors";
 import { DynamicColorContext } from "utils/dynamicColor";
 import Link from "next/link";
 
-const Main: NextPage<any> = ({ background }) => {
+type MainProps = {
+  background: string;
+  loadingText: string;
+}
+
+const Main: NextPage<MainProps> = ({ background, loadingText }) => {
   const [data, setData] = useState<ApiRespond | null>(null);
   const [seasonEmojis, setSeasonEmojis] = useState("");
   let season = Util.getSeasonName();
@@ -239,7 +243,7 @@ const Main: NextPage<any> = ({ background }) => {
   return (
     <div className={styles.main}>
       <Head>
-        <title>lechixy | challenge accepted!</title>
+        <title>lechixy | you are my special</title>
       </Head>
       <div className={styles.background}>
         <div>
@@ -283,7 +287,7 @@ const Main: NextPage<any> = ({ background }) => {
               </div>
             </div>
             <div className={styles.discord}>
-              <Discord />
+              <Discord loadingText={loadingText} />
             </div>
           </div>
         </DynamicColorContext.Provider>
@@ -296,12 +300,14 @@ const Main: NextPage<any> = ({ background }) => {
   );
 };
 
-export function getServerSideProps(context: GetStaticPropsContext): GetServerSidePropsResult<any> {
+export function getServerSideProps(context: GetStaticPropsContext): GetServerSidePropsResult<MainProps> {
   let bg = Util.getRandomBackground();
+  let loadingText = Util.getRandomLoadingText();
 
   return {
     props: {
       background: bg,
+      loadingText: loadingText
     },
   };
 }

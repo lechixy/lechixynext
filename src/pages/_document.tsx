@@ -2,7 +2,7 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
     render() {
-        return (
+        return (    
             <Html lang="en">
                 <Head>
                     <meta name="theme-color" content="#00fff8"></meta>
