@@ -167,7 +167,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
 
     let interval: NodeJS.Timeout | null = null;
 
-    if (!seasonContent.seasonParticle.length) {
+    if (seasonContent.renderParticle) {
       let spawnEvery = isMobile(navigator) ? 400 : 150;
       interval = setInterval(() => {
         createParticles();

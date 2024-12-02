@@ -12,6 +12,7 @@ type BoundingObject = {
 type Season = "spring" | "summer" | "autumn" | "winter"
 type SeasonContent = {
     seasonEmojis: string;
+    renderParticle: boolean;
     seasonParticle: string;
 }
 
@@ -154,21 +155,29 @@ export class Util {
         }
     }
     static getSeasonContent(season: Season): SeasonContent {
+        /**
+         * Season default is Winter cause it's my fav <3
+         */
         let particle: string = snowflake;
         let emojis: string = "❄️";
+        let renderParticle = true;
 
         if (season == "spring") {
             particle = "🌸"
             emojis = "🌸"
+            renderParticle = true;
         } else if (season == "summer") {
             emojis = "🌞"
             particle = ""
+            renderParticle = false;
         } else if (season == "autumn") {
             particle = "🍂"
             emojis = "🍂"
+            renderParticle = true;
         }
 
         return {
+            renderParticle,
             seasonParticle: particle,
             seasonEmojis: emojis
         }
