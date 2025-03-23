@@ -46,7 +46,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
         .catch(console.error);
     } else {
       setDynamicColor(`var(--${season})`)
-      console.log("NO SPOTIFY SO SETTING SEASONAL")
+      Util.log("No data from Spotify, using seasonal color...");
       let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
       stuffs_header.style.background = `linear-gradient(to right, ${dynamicColor})`;
 
@@ -168,7 +168,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
     let interval: NodeJS.Timeout | null = null;
 
     if (seasonContent.renderParticle) {
-      let spawnEvery = isMobile(navigator) ? 400 : 150;
+      let spawnEvery = isMobile(navigator) ? 450 : 200;
       interval = setInterval(() => {
         createParticles();
       }, spawnEvery);
@@ -204,7 +204,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
 
       // If site in mobile version
       if (window.innerWidth < 650) {
-        end_y = end_y + 50;
+        end_y = end_y + 100;
       }
 
       particle_div.animate(
@@ -260,7 +260,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
                 </div>
                 <div className={styles.stuff_item}>
                   {socials.map((social) => {
-                    if (social.value == "ig") return null;
+                    if (social.value == "ig" || social.value == "dc") return null;
                     return (
                       <Link
                         href={social.url}
@@ -301,7 +301,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
 };
 
 export function getServerSideProps(context: GetStaticPropsContext): GetServerSidePropsResult<MainProps> {
-  let bg = Util.getRandomBackground();
+  let bg = Util.getRandomSeasonalBackground();
   let loadingText = Util.getRandomLoadingText();
 
   return {

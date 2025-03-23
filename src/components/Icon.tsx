@@ -1,7 +1,17 @@
-import { FaDiscord, FaGithub, FaHeart, FaInstagram, FaMoon, FaRegHeart, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa'
+import { FaDiscord, FaGithub, FaHeart, FaInstagram, FaKickstarter, FaMoon, FaRegHeart, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa'
 import { SocialValues } from 'utils/socials'
 
 export default function getIcon(name: SocialValues, styles: any) {
+    if (name == "kick"){
+        return (
+            <FaKickstarter className={styles.app_icon} />
+        )
+    }
+    if (name == "gallery"){
+        return (
+            <FaHeart className={styles.app_icon} />
+        )
+    }
     if (name === 'ig') {
         return (
             <FaInstagram className={styles.app_icon} />
@@ -37,9 +47,5 @@ export default function getIcon(name: SocialValues, styles: any) {
             <FaDiscord className={styles.app_icon} />
         )
     }
-    if (name == "gallery"){
-        return (
-            <FaHeart className={styles.app_icon} />
-        )
-    }
+    
 }

@@ -16,6 +16,41 @@ type SeasonContent = {
     seasonParticle: string;
 }
 
+const seasonalBackgrounds = {
+    winter: [
+        "/backgrounds/winter/0.png",
+        "/backgrounds/winter/1.jpg",
+        "/backgrounds/winter/2.jpg",
+        "/backgrounds/winter/3.png",
+        "/backgrounds/winter/4.png",
+        "/backgrounds/winter/5.webp",
+    ],
+    spring: [
+        "/backgrounds/spring/0.png",
+        "/backgrounds/spring/1.png",
+        "/backgrounds/spring/2.png",
+        "/backgrounds/spring/3.png",
+        "/backgrounds/spring/4.png",
+        "/backgrounds/spring/5.jpg",
+        "/backgrounds/spring/6.jpg",
+        "/backgrounds/spring/7.jpg",
+        "/backgrounds/spring/8.jpg",
+    ],
+    summer: [
+        "/backgrounds/summer/0.png",
+        "/backgrounds/summer/1.ong",
+        "/backgrounds/summer/2.jpg",
+        "/backgrounds/summer/3.png",
+        "/backgrounds/summer/4.png",
+        "/backgrounds/summer/5.png",
+    ],
+    autumn: [
+        "/backgrounds/38.jpg",
+    ]
+}
+
+/** 
+ * ! DEPRECATED
 const backgrounds = [
     //"/backgrounds/0.png",
     "/backgrounds/1.jpg",
@@ -54,6 +89,7 @@ const backgrounds = [
     "/backgrounds/36.png",
     "/backgrounds/37.jpg"
 ]
+*/
 
 export const status_colors = {
     online: "#2eff2e, #007c00",
@@ -71,7 +107,6 @@ export const loadingTexts = [
     "Who think that writing that boring \"Loading...\" text can helpful?",
     "And you don't seem to understand",
     "Check one, two, ah!",
-    "Ah! Hey baby",
     "I never seen a such a liar",
     "Sanırım Türkçe yazı yazmayı unutmuşum",
     "Tensaitekina aidoru sama",
@@ -79,7 +114,6 @@ export const loadingTexts = [
     "Chu!",
     "Oh love me Mister!",
     "Lost in paradise!",
-    "Şimdi vazgeçemem ben inan, kurşun adres sormaz ki",
     "But you belong to me, ooh, you belong to me",
     "Eres mi mamacita, ¿qué tal, mi margarita?",
     "İfadeler seslerden daha seslidir ve Sago sessizlerin sesidir...",
@@ -124,7 +158,28 @@ export const loadingTexts = [
 
 export class Util {
 
-    static getRandomLoadingText(){
+    /**
+     * Random background from seasonal backgrounds
+     */
+    static getRandomSeasonalBackground() {
+        let season = this.getSeasonName();
+        let random = Math.floor(Math.random() * seasonalBackgrounds[season].length)
+        return seasonalBackgrounds[season][random]
+    }
+
+    /**
+     * Log message with lech's log style
+     * @param message string
+     */
+    static log(message: string) {
+        const styles = ['color: cyan'].join(';');
+        const styles2 = ['color: white'].join(';');
+
+        let chalkmessage = `%c[lechixy\'s log]%c ${message}`
+        console.log(chalkmessage, styles, styles2);
+    }
+
+    static getRandomLoadingText() {
         let random = Math.floor(Math.random() * loadingTexts.length)
         return loadingTexts[random]
     }
@@ -139,7 +194,7 @@ export class Util {
         return `https://img.youtube.com/vi/${videoId}/hq720.jpg`
     }
 
-    static getSeasonName(): Season {
+    static getSeasonName(): "spring" | "summer" | "autumn" | "winter" | Season {
         const now = new Date();
         const month = now.getMonth() + 1; // Months are 0-indexed, so add 1
         const day = now.getDate();
@@ -257,8 +312,11 @@ export class Util {
         }
     }
 
+    /** 
+    * ! DEPRECATED
     static getRandomBackground() {
         let random = Math.floor(Math.random() * backgrounds.length)
         return backgrounds[random]
     }
+    */
 }

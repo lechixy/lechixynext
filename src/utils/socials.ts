@@ -17,11 +17,6 @@ const socials: SocialType[] = [
         url: 'https://www.instagram.com/lechixy/'
     },
     {
-        value: 'tw',
-        name: 'Twitch',
-        url: 'https://twitch.tv/lechixy/'
-    },
-    {
         value: 'steam',
         name: 'Steam',
         url: 'https://steamcommunity.com/id/lechixy/'
@@ -31,6 +26,16 @@ const socials: SocialType[] = [
         name: 'Gallery',
         type: '_self',
         url: '/gallery'
+    },
+    {
+        value: 'kick',
+        name: 'Kick',
+        url: 'https://kick.com/lechixy'
+    },
+    {
+        value: 'tw',
+        name: 'Twitch',
+        url: 'https://twitch.tv/lechixy/'
     },
     {
         value: 'dc',
@@ -44,7 +49,7 @@ const socials: SocialType[] = [
     },
 ]
 
-export type SocialValues = "ig" | "tw" | "steam" | "sp" | "github" | "lechsbott" | "gallery" | "dc";
+export type SocialValues = "ig" | "tw" | "steam" | "sp" | "github" | "lechsbott" | "gallery" | "dc" | "kick";
 
 
 type SocialType = {

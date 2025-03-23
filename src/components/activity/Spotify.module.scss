@@ -148,6 +148,7 @@
                 width: 100%;
                 position: relative;
                 z-index: 1;
+                transition: all 250ms ease-in;
             }
             .spotify_statusbar::before {
                 content: "";

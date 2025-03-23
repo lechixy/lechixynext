@@ -4,7 +4,8 @@ personal website repository
 ✨ if you want to see live: https://lechixy.netlify.app ✨
 
 some url's in the site...
-- [If you want to see a flower](https://lechixy.netlify.app/cilek)
+- [Want to see cool edits?](https://lechixy.netlify.app/gallery)
+- [Flower that i just made for a special person 💖](https://lechixy.netlify.app/cilek)
 - [Will you be my valentine?](https://lechixy.netlify.app/valentine)
 - [Just a basic calendar](https://lechixy.netlify.app/calendar)
 

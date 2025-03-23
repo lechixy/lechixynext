@@ -1,0 +1,62 @@
+/* Container for the entire progress bar */
+.progress-bar {
+    position: relative;
+    width: 100%;
+    height: 10px; /* adjust height as needed */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Container for the wave layers */
+.wave-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Common styles for all waves */
+.wave {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    /* repeat pattern horizontally if using a background image */
+    background-repeat: no-repeat;
+    animation: moveWave 3s linear infinite;
+}
+
+/* First wave: primary shade */
+.wave1 {
+    background-color: #1e90ff; /* primary color shade */
+    opacity: 0.6;
+    animation-delay: 0s;
+    /* Adjust the clip-path to get a wave-like shape */
+    clip-path: polygon(0 50%, 20% 45%, 40% 55%, 60% 45%, 80% 55%, 100% 50%, 100% 100%, 0 100%);
+}
+
+/* Second wave: second shade */
+.wave2 {
+    background-color: #1c86ee; /* slightly darker shade */
+    opacity: 0.6;
+    animation-delay: -1s;
+    clip-path: polygon(0 50%, 20% 55%, 40% 45%, 60% 55%, 80% 45%, 100% 50%, 100% 100%, 0 100%);
+}
+
+/* Third wave: third shade */
+.wave3 {
+    background-color: #1874cd; /* even darker shade */
+    opacity: 0.6;
+    animation-delay: -2s;
+    clip-path: polygon(0 50%, 20% 45%, 40% 55%, 60% 45%, 80% 55%, 100% 50%, 100% 100%, 0 100%);
+}
+
+/* Keyframes for the horizontal wave motion */
+@keyframes moveWave {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
