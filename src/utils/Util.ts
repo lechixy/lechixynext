@@ -35,6 +35,7 @@ const seasonalBackgrounds = {
         "/backgrounds/spring/6.jpg",
         "/backgrounds/spring/7.jpg",
         "/backgrounds/spring/8.jpg",
+        //"/backgrounds/spring/9_muted.mp4",
     ],
     summer: [
         "/backgrounds/summer/0.png",
@@ -43,6 +44,7 @@ const seasonalBackgrounds = {
         "/backgrounds/summer/3.png",
         "/backgrounds/summer/4.png",
         "/backgrounds/summer/5.png",
+        //"/backgrounds/summer/6.mp4",
     ],
     autumn: [
         "/backgrounds/38.jpg",
@@ -102,7 +104,6 @@ export const loadingTexts = [
     "Wait, a little pookie...",
     "Loading, just for you",
     "Getting cute data from server",
-    "Chotto matte",
     "Little Little, in to the middle!",
     "Who think that writing that boring \"Loading...\" text can helpful?",
     "And you don't seem to understand",
@@ -111,7 +112,6 @@ export const loadingTexts = [
     "Sanırım Türkçe yazı yazmayı unutmuşum",
     "Tensaitekina aidoru sama",
     "Ichibanboshi wo yadoshiteiru",
-    "Chu!",
     "Oh love me Mister!",
     "Lost in paradise!",
     "But you belong to me, ooh, you belong to me",
@@ -164,7 +164,15 @@ export class Util {
     static getRandomSeasonalBackground() {
         let season = this.getSeasonName();
         let random = Math.floor(Math.random() * seasonalBackgrounds[season].length)
-        return seasonalBackgrounds[season][random]
+        return {
+            src: seasonalBackgrounds[season][random],
+            animated: seasonalBackgrounds[season][random].endsWith('.mp4')
+        }
+
+        // return {
+        //     src: "/backgrounds/spring/9.mp4",
+        //     animated: true
+        // }
     }
 
     /**

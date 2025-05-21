@@ -35,9 +35,34 @@
     src: url("/fonts/Monocraft.otf") format("otf");
 }
 
+@font-face {
+    font-family: NetflixSans;
+    src: url("/fonts/NetflixSans-Regular.otf") format("otf");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: NetflixSans;
+    src: url("/fonts/NetflixSans-Light.otf") format("otf");
+    font-weight: lighter;
+}
+
+@font-face {
+    font-family: NetflixSans;
+    src: url("/fonts/NetflixSans-Medium.otf") format("otf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: NetflixSans;
+    src: url("/fonts/NetflixSans-Bold.otf") format("otf");
+    font-weight: bolder;
+}
+
 :root {
     --background: black;
     --user-primary: #00ffff;
+    --border: 1px solid rgba(255, 255, 255, 0.25);
     //Main colors
     --discord-background: rgba(0, 0, 0, 0.5);
     --discord-floating: rgba(0, 0, 0, 1);
@@ -120,7 +145,7 @@ html {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: black;
 }
 
 /* Handle */
@@ -131,7 +156,7 @@ html {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: #333333;
 }
 
 @keyframes fall {

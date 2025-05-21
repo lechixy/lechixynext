@@ -12,9 +12,13 @@ import { ApiRespond } from "utils/types";
 import { extractColors } from "extract-colors";
 import { DynamicColorContext } from "utils/dynamicColor";
 import Link from "next/link";
+import { FaBars, FaVolumeDown, FaVolumeMute } from "react-icons/fa";
 
 type MainProps = {
-  background: string;
+  background: {
+    src: string;
+    animated: boolean;
+  };
   loadingText: string;
 }
 
@@ -23,6 +27,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
   const [seasonEmojis, setSeasonEmojis] = useState("");
   let season = Util.getSeasonName();
   const bg = background;
+  const [videoMuted, setVideoMuted] = useState(true);
 
   const [dynamicColor, setDynamicColor] = useState(`var(--${season})`);
 
@@ -240,14 +245,34 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
     };
   }, [data]);
 
+  function changeVideoVolume() {
+    let video = document.querySelector("video") as HTMLVideoElement;
+    video.volume = 0.25;
+    if (video.muted) {
+      setVideoMuted(false);
+    } else {
+      setVideoMuted(true);
+    }
+  }
+
   return (
     <div className={styles.main}>
       <Head>
-        <title>lechixy | you are my special</title>
+        <title>lechixy's website | flawless</title>
       </Head>
-      <div className={styles.background}>
+      <div className={styles.background} onClick={() => bg.animated && changeVideoVolume()}>
         <div>
-          <img src={bg} alt="background" />
+          {bg.animated ? (
+            <>
+              <video src={bg.src} controls={false} disablePictureInPicture loop autoPlay muted={videoMuted} />
+              <button className={styles.muteButton} onClick={() => changeVideoVolume()}
+              >
+                {videoMuted ? <FaVolumeMute /> : <FaVolumeDown />}
+              </button>
+            </>
+          ) : (
+            <img src={bg.src} alt="background" />
+          )}
         </div>
       </div>
       <WebSocketContext.Provider value={data}>
@@ -273,6 +298,13 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
                       </Link>
                     );
                   })}
+                  <Link
+                    href={""}
+                    className={`${styles.app}`}
+                  >
+                    <FaBars className={styles.app_icon} />
+                    <div>Settings (soon)</div>
+                  </Link>
                 </div>
               </div>
               <div
