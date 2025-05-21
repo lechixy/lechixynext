@@ -1,24 +1,37 @@
 .main {
-    height: 120vh;
-    width: 100vh;
-    background: rgb(0, 0, 0);
+    height: 110vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+    position: relative;
 }
 
 .nav {
-    position: absolute;
+    position: fixed;
     top: 0;
-    height: 68px;
     width: 100%;
+    height: 68px;
     background: linear-gradient(rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
     color: white;
+    z-index: 10;
     display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 10;
-    .container {
+    .navItems {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 95%;
+        height: 100%;
         .menus {
             display: flex;
             align-items: center;
@@ -31,17 +44,17 @@
                     filter: saturate(300%);
                 }
             }
-            div {
+            span {
                 margin: 0 10px;
                 cursor: pointer;
                 color: #e5e5e5;
                 font-size: 14px;
                 transition: var(--animation-1);
             }
-            div:hover {
+            span:hover {
                 opacity: 0.7;
             }
-            div:nth-child(2) {
+            span:nth-child(2) {
                 color: white;
                 font-weight: bold;
             }
@@ -80,16 +93,14 @@
 }
 
 .page {
-    display: flex;
     position: relative;
-    justify-content: center;
-    align-items: center;
+    height: 100%;
     width: 100%;
     .enterance {
         position: absolute;
         top: 0;
         width: 100%;
-        height: 110vh;
+        height: 100%;
         display: flex;
         align-items: center;
         .background {
@@ -137,6 +148,9 @@
                     align-items: center;
                     transition: var(--animation-1);
                     user-select: none;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 .play:hover {
                     cursor: pointer;
@@ -184,5 +198,36 @@
         position: absolute;
         bottom: 0;
         pointer-events: none;
+    }
+}
+
+// Optimization for mobile
+@media (max-width: 650px) {
+    .nav {
+        .navItems {
+            .menus {
+                span {
+                    display: none;
+                }
+            }
+            .buttons {
+                .kids {
+                    display: none;
+                }
+            }
+        }
+    }
+    .page {
+        .enterance {
+            .content {
+                .buttons {
+                    flex-direction: column;
+                    gap: 10px 0px;
+                    div {
+                        padding: 6px 10px;
+                    }
+                }
+            }
+        }
     }
 }
