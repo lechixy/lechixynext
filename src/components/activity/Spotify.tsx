@@ -87,7 +87,7 @@ export const Spotify: FC = () => {
     // }, [])
 
     return (
-        <div className={styles.type_2}>
+        <div className={`${styles.type_2} ${styles.show}`}>
             <div className={styles.background}>
                 <div className={styles.background_container}>
                     <img id="album_art" src={spotify.album_art_url} alt={`${spotify.album}`} />
@@ -112,7 +112,7 @@ export const Spotify: FC = () => {
                                 <div className={`tooltip_text ${styles.spotify_img_tooltip_text}`}>{spotify.album}</div>
                             </div>
                             <div>
-                                <img src={spotify.album_art_url} alt={`${spotify.album}`} />
+                                <img crossOrigin='anonymous' src={spotify.album_art_url} alt={`${spotify.album}`} />
                             </div>
                         </div>
                     </a>

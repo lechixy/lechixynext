@@ -47,7 +47,7 @@ export const WatchActivity: FC = () => {
 
     const [start, setStart] = useState<any>(null)
     let [percent, setPercent] = useState("0%")
-    let [timestamps, setTimestamps] = useState({ current: "0:00", length: "0:00" })
+    let [timestamps, setTimestamps] = useState({ current: "0:00", length: "1:00" })
 
     useEffect(() => {
         if (!activityStatus.timestamps) {
@@ -103,7 +103,7 @@ export const WatchActivity: FC = () => {
     }, [activityStatus]);
 
     return (
-        <div className={styles.activity}>
+        <div className={`${styles.activity} ${styles.show}`}>
             <div className={styles.header}>
                 <span>WATCHING {activityStatus.name.toUpperCase()}</span>
             </div>

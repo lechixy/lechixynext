@@ -1,21 +1,23 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styles from 'components/Presence.module.scss';
 import { WebSocketContext, useContext } from 'utils/lanyard';
 import { ApiRespond } from 'utils/types';
 import { Spotify } from 'components/activity/Spotify';
 import { GameActivity } from 'components/activity/Game';
 import { WatchActivity } from './activity/Watch';
+import { AnimatePresence } from 'framer-motion';
 
 export const Presence: FC = () => {
 
     const info = useContext(WebSocketContext) as unknown as ApiRespond
+
+    const isListening = info.listening_to_spotify
     const isPlaying = info.activities.find(x => x.type === 0)
     const isWatching = info.activities.find(x => x.type === 3)
-    const isListening = info.listening_to_spotify
     const isOffline = info.discord_status === "offline"
     //We using this because we don't want Custom Status to be counted as an activity
-    const numberOfActivities = info.activities.find(x => x.type === 4) ? 
-        info.activities.length-1 : info.activities.length
+    const numberOfActivities = info.activities.find(x => x.type === 4) ?
+        info.activities.length - 1 : info.activities.length
     const atLeastTwoActivities = numberOfActivities >= 2
     const noActivity = !isPlaying && !isOffline && !isListening && !isWatching
 

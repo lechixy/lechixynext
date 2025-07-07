@@ -19,48 +19,91 @@ type MainProps = {
     src: string;
     animated: boolean;
   };
+  bingImage: string;
   loadingText: string;
 }
 
-const Main: NextPage<MainProps> = ({ background, loadingText }) => {
+const useBackground: "bing" | "seasonal" = "bing";
+
+const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
+
   const [data, setData] = useState<ApiRespond | null>(null);
   const [seasonEmojis, setSeasonEmojis] = useState("");
-  let season = Util.getSeasonName();
-  const bg = background;
-  const [videoMuted, setVideoMuted] = useState(true);
 
+  /**
+   * * Background Selection *
+   */
+  let bg: string = bingImage;
+  if (useBackground === "bing") {
+    bg = bingImage;
+  } else if (useBackground === "seasonal") {
+    bg = background.src;
+  }
+
+  let season = Util.getSeasonName();
+  const [videoMuted, setVideoMuted] = useState(true);
   const [dynamicColor, setDynamicColor] = useState(`var(--${season})`);
 
   useEffect(() => {
     //console.log(data)
     if (data && data.spotify) {
       extractColors(data.spotify.album_art_url, {
-        crossOrigin: "anonymous"
+        crossOrigin: "anonymous",
+        pixels: 100000,
+        colorValidator: (r, g, b, a = 255) => a > 200,
+        distance: 0.15,
       })
         .then(colors => {
           //console.log(colors)
           //let newColors = colors.length >= 3 ? `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}` : `${colors[0].hex}, ${colors[1].hex}`;
-          let newColors = `${colors[0].hex}, ${colors[1].hex}`
+          let newColors = `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}`
           setDynamicColor(newColors)
           let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
           stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
 
           let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
           bottom_text.style.background = `linear-gradient(to right, ${newColors})`;
+
+          let isWhiteOrBlack = Util.handleTextColor(colors[1]);
+          console.log(isWhiteOrBlack)
+          let stuffs_header_text = document.querySelector(`.${styles.stuffHeaderText}`) as HTMLDivElement;
+          stuffs_header_text.style.color = isWhiteOrBlack;
         })
         .catch(console.error);
     } else {
-      setDynamicColor(`var(--${season})`)
-      Util.log("No data from Spotify, using seasonal color...");
-      let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
-      stuffs_header.style.background = `linear-gradient(to right, var(--${season}))`;
 
-      let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
-      bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
+      extractColors(bg, {
+        crossOrigin: "anonymous",
+      })
+        .then(colors => {
+          //console.log(colors)
+          //let newColors = colors.length >= 3 ? `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}` : `${colors[0].hex}, ${colors[1].hex}`;
+          let newColors = `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}`
+          setDynamicColor(newColors)
+          let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
+          stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
+
+          let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
+          bottom_text.style.background = `linear-gradient(to right, ${newColors})`;
+
+          let isWhiteOrBlack = Util.handleTextColor(colors[1]);
+          let stuffs_header_text = document.querySelector(`.${styles.stuffHeaderText}`) as HTMLDivElement;
+          stuffs_header_text.style.color = isWhiteOrBlack;
+        })
+        .catch(console.error);
+      // setDynamicColor(`var(--${season})`)
+      // Util.log("No data from Spotify, using seasonal color...");
+      // let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
+      // stuffs_header.style.background = `linear-gradient(to right, var(--${season}))`;
+
+      // let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
+      // bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
     }
+
   }, [data])
 
   useEffect(() => {
+    // * WebSocket Connection *
     let interval: NodeJS.Timeout;
     let intervalTime: number;
     let ws: WebSocket;
@@ -260,18 +303,18 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
       <Head>
         <title>lechixy's website | flawless</title>
       </Head>
-      <div className={styles.background} onClick={() => bg.animated && changeVideoVolume()}>
+      <div className={styles.background} onClick={() => background.animated && changeVideoVolume()}>
         <div>
-          {bg.animated ? (
+          {background.animated ? (
             <>
-              <video src={bg.src} controls={false} disablePictureInPicture loop autoPlay muted={videoMuted} />
+              <video src={background.src} controls={false} disablePictureInPicture loop autoPlay muted={videoMuted} />
               <button className={styles.muteButton} onClick={() => changeVideoVolume()}
               >
                 {videoMuted ? <FaVolumeMute /> : <FaVolumeDown />}
               </button>
             </>
           ) : (
-            <img src={bg.src} alt="background" />
+            <img src={bg} alt="background" />
           )}
         </div>
       </div>
@@ -281,7 +324,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
             <div className={styles.stuff}>
               <div>
                 <div className={styles.stuff_header}>
-                  <div>Stuffs</div>
+                  <div className={styles.stuffHeaderText}>Stuffs</div>
                 </div>
                 <div className={styles.stuff_item}>
                   {socials.map((social) => {
@@ -298,12 +341,6 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
                       </Link>
                     );
                   })}
-                  <div
-                    className={`${styles.app}`}
-                  >
-                    <FaBars className={styles.app_icon} />
-                    <div>Settings (soon)</div>
-                  </div>
                 </div>
               </div>
               <div
@@ -324,7 +361,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
         </DynamicColorContext.Provider>
       </WebSocketContext.Provider>
       <div className={styles.layer_container}>
-        
+
       </div>
       {/* <div className={styles.preloader} >
         <Spinner />
@@ -333,13 +370,15 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
   );
 };
 
-export function getServerSideProps(context: GetStaticPropsContext): GetServerSidePropsResult<MainProps> {
+export async function getServerSideProps(context: GetStaticPropsContext): Promise<GetServerSidePropsResult<MainProps>> {
   let bg = Util.getRandomSeasonalBackground();
+  let bing = await Util.getTodaysBingImage()
   let loadingText = Util.getRandomLoadingText();
 
   return {
     props: {
       background: bg,
+      bingImage: bing,
       loadingText: loadingText
     },
   };

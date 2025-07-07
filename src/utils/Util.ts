@@ -1,3 +1,4 @@
+import { FinalColor } from "extract-colors/lib/types/Color";
 import { snowflake } from "./icons_svg";
 
 export function isMobile(navigator: Navigator): boolean {
@@ -38,12 +39,12 @@ const seasonalBackgrounds = {
         //"/backgrounds/spring/9_muted.mp4",
     ],
     summer: [
-        "/backgrounds/summer/0.png",
-        "/backgrounds/summer/1.png",
-        "/backgrounds/summer/2.jpg",
-        "/backgrounds/summer/3.png",
-        "/backgrounds/summer/4.png",
-        "/backgrounds/summer/5.png",
+        // "/backgrounds/summer/0.png",
+        // "/backgrounds/summer/1.png",
+        // "/backgrounds/summer/3.png",
+        // "/backgrounds/summer/4.png",
+        // "/backgrounds/summer/5.png",
+        "/backgrounds/summer/7.jpg",
         //"/backgrounds/summer/6.mp4",
     ],
     autumn: [
@@ -157,6 +158,42 @@ export const loadingTexts = [
 ]
 
 export class Util {
+    /**
+     * This function is used to handle the text color based on the season.
+     * It returns a boolean value indicating whether the text color should be white or black.
+     * @returns {boolean} - true if the text color should be white, false if it should be black
+     */
+    static handleTextColor(bgColor: FinalColor) {
+        function getLuminance(r: number, g: number, b: number) {
+            // sRGB -> Linear dönüşüm
+            const a = [r, g, b].map(function (v) {
+                v /= 255;
+                return v <= 0.03928
+                    ? v / 12.92
+                    : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            // Luminance hesaplama (ITU-R BT.709 standardı)
+            return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+        }
+
+        // rgb(r, g, b) formatını parçalayalım
+        const luminance = getLuminance(bgColor.red, bgColor.green, bgColor.blue);
+
+        // 0.5 eşik değeri, istenirse ayarlanabilir
+        return luminance > 0.5 ? 'black' : 'white';
+    }
+
+    /**
+     * This function is used to get the Bing image of the day.
+     * It fetches the image from the Bing API and returns the image URL.
+     */
+    static getTodaysBingImage() {
+        return fetch("https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US")
+            .then((response) => response.json())
+            .then((data) => {
+                return `https://www.bing.com${data.images[0].url}`
+            })
+    }
 
     /**
      * Random background from seasonal backgrounds
@@ -230,7 +267,7 @@ export class Util {
             emojis = "🌸"
             renderParticle = true;
         } else if (season == "summer") {
-            emojis = "🌞"
+            emojis = "⛱️🌞"
             particle = ""
             renderParticle = false;
         } else if (season == "autumn") {
