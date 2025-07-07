@@ -39,7 +39,7 @@ const seasonalBackgrounds = {
     ],
     summer: [
         "/backgrounds/summer/0.png",
-        "/backgrounds/summer/1.ong",
+        "/backgrounds/summer/1.png",
         "/backgrounds/summer/2.jpg",
         "/backgrounds/summer/3.png",
         "/backgrounds/summer/4.png",

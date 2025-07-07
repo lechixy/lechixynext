@@ -53,10 +53,10 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
       setDynamicColor(`var(--${season})`)
       Util.log("No data from Spotify, using seasonal color...");
       let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
-      stuffs_header.style.background = `linear-gradient(to right, ${dynamicColor})`;
+      stuffs_header.style.background = `linear-gradient(to right, var(--${season}))`;
 
       let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
-      bottom_text.style.background = `linear-gradient(to right, ${dynamicColor})`;
+      bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
     }
   }, [data])
 
@@ -298,13 +298,12 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
                       </Link>
                     );
                   })}
-                  <Link
-                    href={""}
+                  <div
                     className={`${styles.app}`}
                   >
                     <FaBars className={styles.app_icon} />
                     <div>Settings (soon)</div>
-                  </Link>
+                  </div>
                 </div>
               </div>
               <div
@@ -324,7 +323,9 @@ const Main: NextPage<MainProps> = ({ background, loadingText }) => {
           </div>
         </DynamicColorContext.Provider>
       </WebSocketContext.Provider>
-      <div className={styles.layer_container} />
+      <div className={styles.layer_container}>
+        
+      </div>
       {/* <div className={styles.preloader} >
         <Spinner />
       </div> */}

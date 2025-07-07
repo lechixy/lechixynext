@@ -1,0 +1,135 @@
+.activity {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 16px;
+    .header {
+        color: var(--header-secondary);
+        text-shadow: 0px 0px 25px black;
+        margin-bottom: 8px;
+        font-size: 12px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        cursor: default;
+        font-family: "Whitney";
+        span {
+            font-weight: bolder;
+        }
+    }
+    .activityContainer {
+        display: flex;
+        z-index: 1;
+        align-items: center;
+        .activityAssets {
+            display: flex;
+            flex-direction: row;
+            border-radius: 10px;
+            overflow: hidden;
+            .activityLargeImg {
+                display: flex;
+                justify-content: center;
+                position: relative;
+
+                .activitySmallImg {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    background: rgba(0, 0, 0, 0.4);
+                    border-radius: 10px 0px 0px 0px;
+                    backdrop-filter: blur(10px);
+                }
+
+                img {
+                    object-fit: cover;
+                    display: block;
+                }
+                &::after {
+                    content: "";
+                    width: 100%;
+                    position: absolute;
+                    height: 100%;
+                }
+                .activity_large_tooltip {
+                    transform: translateY(96px) scale(0.95);
+                    .activity_large_tooltip_arrow {
+                        border-bottom-color: var(--discord-floating);
+                        position: absolute;
+                        bottom: 100%;
+                        width: 0;
+                        height: 0;
+                    }
+                }
+                &:hover > .activity_large_tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(108px) scale(1);
+                }
+            }
+            // .activity_small {
+            //     display: flex;
+            //     justify-content: center;
+            // }
+            // .activity_small_img {
+            //     border-radius: 50%;
+            //     object-fit: cover;
+            //     position: absolute;
+            //     bottom: 240px;
+            //     width: 30px;
+            //     height: 30px;
+            //     box-shadow: var(--discord-elevation-high);
+            // }
+        }
+        .activityContent {
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            cursor: default;
+            .activityContentDetails {
+                color: white;
+                font-weight: 600;
+            }
+            .activityContentState {
+                color: #dcddde;
+            }
+            .activityContentTimestamp {
+                color: #dcddde;
+            }
+        }
+    }
+    .activityBar {
+        z-index: 0;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .activityStatusBarBg {
+            width: 100%;
+            margin-top: 10px;
+            height: 4px;
+            position: relative;
+            margin: 0px 10px;
+            background-color: rgba(107, 109, 114, 0.2);
+            border-radius: 10px;
+            .activityStatusBar {
+                background: white;
+                border-radius: 10px;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                z-index: 1;
+                transition: all 250ms ease-in;
+            }
+        }
+        .activityTimestamp {
+            color: #dcddde;
+            font-size: small;
+            cursor: default;
+            font-family: monospace;
+        }
+    }
+}
