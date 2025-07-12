@@ -32,19 +32,6 @@ export const Discord: FC<DiscordProps> = ({ loadingText }) => {
                     : info.discord_status === "dnd"
                         ? status_colors.dnd
                         : status_colors.offline;
-        let status_text =
-            info.discord_status === "online"
-                ? "Online"
-                : info.discord_status === "idle"
-                    ? "Idle"
-                    : info.discord_status === "dnd"
-                        ? "Do not disturb"
-                        : "Offline";
-
-        let active_on: string[] = [];
-        if (info.active_on_discord_desktop) active_on.push("Desktop");
-        if (info.active_on_discord_web) active_on.push("Web");
-        if (info.active_on_discord_mobile) active_on.push("Mobile");
         let avatarType = info.discord_user.avatar.startsWith("a_") ? ".gif" : ".png";
         let avatar_url = `https://cdn.discordapp.com/avatars/${info.discord_user.id}/${info.discord_user.avatar}${avatarType}?size=128`;
         
@@ -66,14 +53,6 @@ export const Discord: FC<DiscordProps> = ({ loadingText }) => {
                             </div>
                             {/* {ref={avatar_status}} */}
                             <div className={styles.avatar_status} style={{ background: `linear-gradient(135deg, ${status_color})` }}>
-                                <div className={`tooltip ${styles.avatar_status_tooltip}`}>
-                                    <div className={`tooltip_arrow ${styles.avatar_status_tooltip_arrow}`}></div>
-                                    <div className={"tooltip_text"}>
-                                        {status_text === "Offline"
-                                            ? status_text
-                                            : `${status_text} on ${active_on.join(", ")}`}
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         {/* <div className={styles.discord_button}>

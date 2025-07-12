@@ -1,24 +1,9 @@
-@keyframes entry_animation {
-    0% {
-        transform: translateY(10px) scale(0);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0px) scale(1);
-        opacity: 1;
-    }
-}
-
-.activity.show {
-    animation: entry_animation 0.5s ease forwards;
-}
-
-.activity {
+.watchActivity {
     display: flex;
     width: 100%;
     flex-direction: column;
     justify-content: center;
-    padding: 10px 16px;
+    padding: 0px 16px;
     .header {
         color: var(--header-secondary);
         text-shadow: 0px 0px 25px black;
@@ -54,17 +39,12 @@
                     background: rgba(0, 0, 0, 0.4);
                     border-radius: 10px 0px 0px 0px;
                     backdrop-filter: blur(10px);
+                    padding: 4px;
                 }
 
                 img {
                     object-fit: cover;
                     display: block;
-                }
-                &::after {
-                    content: "";
-                    width: 100%;
-                    position: absolute;
-                    height: 100%;
                 }
                 .activity_large_tooltip {
                     transform: translateY(96px) scale(0.95);

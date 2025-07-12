@@ -10,22 +10,17 @@
     }
 }
 
-@keyframes entry_animation {
+
+@keyframes shine {
     0% {
-        transform: translateY(10px) scale(0);
-        opacity: 0;
+        background-position: 100%;
     }
     100% {
-        transform: translateY(0px) scale(1);
-        opacity: 1;
+        background-position: -100%;
     }
 }
 
-.type_2.show {
-    animation: entry_animation 0.5s ease forwards;
-}
-
-.type_2 {
+.spotifyActivity {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -81,60 +76,51 @@
         }
         .spotify {
             display: flex;
-            .spotify_img {
+            .spotifyLargeImg {
                 display: flex;
                 justify-content: center;
                 cursor: pointer;
                 margin-right: 8px;
+                z-index: 10;
                 position: relative;
                 img {
                     display: block;
-                    border-radius: 5px;
+                    border-radius: var(--rad);
                     object-fit: cover;
                     height: 100px;
                     width: 100px;
                 }
-                &::after {
-                    content: "";
-                    width: 100%;
-                    position: absolute;
-                    height: 100%;
-                }
-                .spotify_img_tooltip {
-                    transform: translateY(96px) scale(0.95);
-                    .spotify_img_tooltip_arrow {
-                        border-bottom-color: var(--discord-floating);
-                        position: absolute;
-                        bottom: 100%;
-                        width: 0;
-                        height: 0;
-                    }
-                }
             }
-            .spotify_img:hover > .spotify_img_tooltip {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(111px) scale(1);
-            }
-            .spotify_text {
+            .spotifyText {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 overflow: hidden;
                 cursor: default;
-                .spotify_text_song {
-                    color: white;
-                    font-weight: 600;
+                .spotifyTextSong {
+                    font-weight: bolder;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
+                    color: transparent;
+                    background: linear-gradient(
+                        120deg,
+                        rgba(255, 255, 255, 1) 30%,
+                        #b2b2b2 50%,
+                        rgba(255, 255, 255, 1) 70%
+                    );
+                    background-size: 400% 100%;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    animation:
+                        shine 4s linear infinite;
                 }
-                .spotify_text_artist {
-                    color: #dcddde;
+                .spotifyTextArtist {
+                    color: #cacaca;
                     white-space: pre-wrap;
                 }
-                .spotify_text_album {
-                    color: #dcddde;
+                .spotifyTextAlbum {
+                    color: #cacaca;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;

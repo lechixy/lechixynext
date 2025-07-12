@@ -1,4 +1,62 @@
-// Tooltips
+//* Tooltip */
+.layers .newTooltip {
+    background: black;
+    border-radius: var(--rad);
+    color: white;
+    padding: 8px 12px;
+    z-index: 999;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    display: flex;
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
+    transition: 100ms cubic-bezier(0.85, 0, 0.15, 1);
+    transition-property: opacity, transform, scale;
+    a {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &.bgInfo {
+        transform: translateY(30px) scale(0.4) translateX(-10px);
+        transform-origin: right;
+    }
+    &.statusInfo {
+        transform: translateY(0px) scale(0.4) translateX(-20px);
+        transform-origin: left;
+    }
+    &.seasonInfo {
+        transform: translateY(20px) scale(0.4) translateX(0px);
+        transform-origin: bottom;
+    }
+    &.activityLargeImage {
+        transform: translateY(-20px) scale(0.4) translateX(0px);
+        transform-origin: center;
+    }
+    &.activitySmallImage {
+        transform: translateY(-20px) scale(0.4) translateX(0px);
+        transform-origin: center;
+    }
+}
+
+.layers .newTooltip.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0px) scale(1) translateX(0px);
+}
+
+//* Home */
 
 .main {
     height: 100vh;
@@ -8,12 +66,18 @@
     align-items: center;
 }
 
-.layer_container {
+.layerContainer {
     height: 100vh;
     width: 100%;
     position: absolute;
     pointer-events: none;
     overflow: hidden;
+    z-index: 900;
+    .layers {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
 }
 
 .particle {
@@ -59,46 +123,69 @@
     height: 100%;
     inset: 0;
     background-color: var(--discord-background);
-    div {
+    // * Image Background *
+    img {
         width: 100%;
         height: 100%;
-        img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-        }
-        .muteButton {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            bottom: 0;
-            right: 0;
-            margin-right: 6px;
-            margin-bottom: 6px;
-            background: var(--discord-background);
-            backdrop-filter: blur(3px);
-            padding: 6px;
-            border-radius: 50%;
-            aspect-ratio: 1/1;
+        display: block;
+        object-fit: cover;
+    }
+    .backgroundInfo {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        bottom: 0;
+        right: 0;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        background: var(--discord-background);
+        backdrop-filter: blur(3px);
+        padding: 6px;
+        border-radius: 50%;
+        color: white;
+        box-shadow: var(--discord-elevation-high);
+        border: var(--border);
+        z-index: 2;
+        transition: var(--animation-1);
+        cursor: pointer;
+        svg {
             color: white;
-            box-shadow: var(--discord-elevation-high);
-            border: var(--border);
-            z-index: 2;
-            transition: var(--animation-1);
-            cursor: pointer;
+            font-size: 10px;
+        }
+    }
 
-            &:hover {
-                transform: scale(1.05);
-                background: var(--discord-floating);
-            }
+    // * Video Background *
+    video {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+    .muteButton {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        bottom: 0;
+        right: 0;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        background: var(--discord-background);
+        backdrop-filter: blur(3px);
+        padding: 6px;
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+        color: white;
+        box-shadow: var(--discord-elevation-high);
+        border: var(--border);
+        z-index: 2;
+        transition: var(--animation-1);
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.05);
+            background: var(--discord-floating);
         }
     }
     &::after {
@@ -132,129 +219,143 @@
         backdrop-filter: blur(3px);
         z-index: 1;
         overflow: hidden;
-    }
 
-    .stuff_header {
-        padding: 10px;
-        // background: linear-gradient(to right, var(--cherry));
-        transition: var(--animation-1);
-        // &:hover {
-        //     background: transparent;
-        //     color: black;
-        // }
-        .stuffHeaderText {
+        .stuff_header {
+            padding: 10px;
+            border-bottom: var(--border);
+            // background: linear-gradient(to right, var(--cherry));
+            transition: var(--animation-1);
+            // &:hover {
+            //     background: transparent;
+            //     color: black;
+            // }
+            .stuffHeaderText {
+                color: white;
+                text-align: center;
+                font-size: 25px;
+                font-weight: bolder;
+            }
+        }
+
+        @keyframes entry {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .stuffApps {
+            //animation: entry 1000ms ease-out;
+
+            .app {
+                padding: 10px;
+                transition: var(--animation-1);
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: #000;
+                text-decoration: none;
+                font-weight: bold;
+                position: relative;
+
+                .app_icon {
+                    width: 26px;
+                    height: 26px;
+                    padding-right: 5px;
+                }
+                div {
+                    line-height: 20px;
+                }
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.25);
+                    * {
+                        animation: selectMe 500ms ease-in-out infinite alternate;
+                    }
+                }
+
+                //* Hover Effect *
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: radial-gradient(
+                        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                        rgba(255, 255, 255, 0.3) 0%,
+                        rgba(255, 255, 255, 0.05) 40%,
+                        transparent 70%
+                    );
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                    pointer-events: none;
+                }
+    
+                &:hover::before {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes selectMe {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(5px);
+                }
+            }
+
+            .app_ig:hover {
+                color: var(--instagram-color);
+            }
+
+            .app_tw:hover {
+                color: var(--twitch-color);
+            }
+
+            .app_steam:hover {
+                color: var(--steam-color);
+            }
+
+            .app_sp:hover {
+                color: var(--spotify-color);
+            }
+
+            .app_github:hover {
+                color: var(--github-color);
+            }
+
+            .app_lechsbott:hover {
+                color: var(--lechsbott-color);
+            }
+            .app_dc:hover {
+                color: var(--discord-color);
+            }
+            .app_gallery:hover {
+                color: var(--gallery-color);
+            }
+            .app_kick:hover {
+                color: var(--kick-color);
+            }
+        }
+
+        .bottomText {
             color: white;
+            font-size: 16px;
             text-align: center;
-            font-size: 25px;
-            font-weight: bolder;
+            background: linear-gradient(to right, var(--cherry));
+            padding: 10px;
+            transition: var(--animation-1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: visible;
+            border-top: var(--border);
         }
-    }
-
-    .app {
-        padding: 10px;
-        transition: var(--animation-1);
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: #000;
-        text-decoration: none;
-        font-weight: bold;
-        .app_icon {
-            width: 26px;
-            height: 26px;
-            padding-right: 5px;
-        }
-        div {
-            line-height: 20px;
-        }
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.25);
-            * {
-                animation: selectMe 500ms ease-in-out infinite alternate;
-            }
-        }
-    }
-
-    @keyframes selectMe {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(5px);
-        }
-        
-    }
-
-    @keyframes hue {
-        0% {
-            filter: hue-rotate(0deg);
-        }
-        100% {
-        }
-    }
-
-    .app_ig:hover {
-        color: var(--instagram-color);
-    }
-
-    .app_tw:hover {
-        color: var(--twitch-color);
-    }
-
-    .app_steam:hover {
-        color: var(--steam-color);
-    }
-
-    .app_sp:hover {
-        color: var(--spotify-color);
-    }
-
-    .app_github:hover {
-        color: var(--github-color);
-    }
-
-    .app_lechsbott:hover {
-        color: var(--lechsbott-color);
-    }
-    .app_dc:hover {
-        color: var(--discord-color);
-    }
-    .app_gallery:hover {
-        color: var(--gallery-color);
-    }
-    .app_kick:hover {
-        color: var(--kick-color);
-    }
-
-    .bottom_text {
-        color: white;
-        font-size: 16px;
-        text-align: center;
-        background: linear-gradient(to right, var(--cherry));
-        padding: 10px;
-        transition: var(--animation-1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        // &:hover {
-        //     background: transparent;
-        // }
-        .season_tooltip {
-            transform: translateY(-30px) scale(0.95);
-            .season_tooltip_arrow {
-                border-top-color: var(--discord-floating);
-                position: absolute;
-                top: 100%;
-                width: 0;
-                height: 0;
-            }
-        }
-    }
-
-    .bottom_text:hover > .season_tooltip {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(-45px) scale(1);
     }
 
     .discord {
@@ -320,9 +421,9 @@
 @media (max-width: 650px) {
     .main {
         height: 200vh;
-    }
-    .layer_container {
-        height: 200vh;
+        .layerContainer {
+            height: 200vh;
+        }
     }
     .background {
         height: 200vh;
@@ -334,10 +435,10 @@
             height: 50%;
             backdrop-filter: none;
         }
-    }
-    .discord {
-        width: 100%;
-        height: 70%;
+        .discord {
+            width: 100%;
+            height: 70%;
+        }
     }
     .discord_loading {
         backdrop-filter: none;

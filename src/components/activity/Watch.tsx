@@ -103,7 +103,7 @@ export const WatchActivity: FC = () => {
     }, [activityStatus]);
 
     return (
-        <div className={`${styles.activity} ${styles.show}`}>
+        <div className={`${styles.watchActivity} ${styles.show}`}>
             <div className={styles.header}>
                 <span>WATCHING {activityStatus.name.toUpperCase()}</span>
             </div>

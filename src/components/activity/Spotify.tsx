@@ -43,7 +43,7 @@ export const Spotify: FC = () => {
     const dynamicColor = useContext(DynamicColorContext);
 
     let spotify = info.spotify
-    
+
     //Live values
     let [percent, setPercent] = useState("0%")
     let [timestamps, setTimestamps] = useState({ current: "0:00", length: "0:00" })
@@ -74,6 +74,53 @@ export const Spotify: FC = () => {
         }
     }, [spotify])
 
+
+    useEffect(() => {
+        // Selectors
+        let spotifyText = document.querySelector(`.${styles.spotifyTextSong}`) as HTMLDivElement;
+        let spotifyStatusBar = document.querySelector(`.${styles.spotify_statusbar}`) as HTMLDivElement;
+
+        // * Shining song name effect
+        let dynamicFirstColor = dynamicColor.split(',')[0]
+
+        function isWhiteColor(color: string) {
+            let rgb = Util.hexToRgb(color)
+            const minValue = Math.min(rgb.r, rgb.g, rgb.b);
+            const maxValue = Math.max(rgb.r, rgb.g, rgb.b);
+
+            return minValue >= 205 && (maxValue - minValue) <= 20;
+        }
+
+        let decidedDynamicColor = dynamicColor.split(',')[0]
+        if (isWhiteColor(dynamicFirstColor)) {
+            decidedDynamicColor = `#6d6d6d`;
+        }
+
+        spotifyText.style.background = `linear-gradient(120deg, rgba(255, 255, 255, 1) 30%, ${decidedDynamicColor} 50%, rgba(255, 255, 255, 1) 70%)`;
+        spotifyText.style.backgroundSize = `200% 100%`;
+        spotifyText.style.backgroundClip = `text`;
+        spotifyText.style.color = `transparent`;
+
+        // * Status bar color
+        let dynamicSecondColor = dynamicColor.split(',')[1]
+        let dynamicThirdColor = dynamicColor.split(',')[2]
+
+        console.log(dynamicThirdColor)
+        function isDarkColor(color: string) {
+            let rgb = Util.hexToRgb(color)
+            // Tüm RGB değerleri 50 ve altındaysa karanlık kabul et
+            const maxValue = Math.max(rgb.r, rgb.g, rgb.b);
+
+            return maxValue <= 50;
+        }
+
+        let decidedDynamicColorForStatusBar = dynamicColor
+        if (isDarkColor(dynamicThirdColor)) {
+            decidedDynamicColorForStatusBar = `${dynamicFirstColor}, ${dynamicSecondColor}, white`;
+        }
+        spotifyStatusBar.style.background = `linear-gradient(45deg, ${decidedDynamicColorForStatusBar})`;
+    }, [dynamicColor])
+
     // useEffect(() => {
     //     let spotify_image = document.querySelector(`.${styles.spotify_img}`) as HTMLDivElement;
     //     let center = getBoundingBox(spotify_image);
@@ -87,7 +134,7 @@ export const Spotify: FC = () => {
     // }, [])
 
     return (
-        <div className={`${styles.type_2} ${styles.show}`}>
+        <div className={`${styles.spotifyActivity} ${styles.show}`}>
             <div className={styles.background}>
                 <div className={styles.background_container}>
                     <img id="album_art" src={spotify.album_art_url} alt={`${spotify.album}`} />
@@ -106,28 +153,25 @@ export const Spotify: FC = () => {
                 </div>
                 <div className={styles.spotify}>
                     <a className='album_cover' href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} target="_blank" rel="noreferrer">
-                        <div className={styles.spotify_img}>
-                            <div className={`tooltip ${styles.spotify_img_tooltip}`}>
-                                <div className={`tooltip_arrow ${styles.spotify_img_tooltip_arrow}`}></div>
-                                <div className={`tooltip_text ${styles.spotify_img_tooltip_text}`}>{spotify.album}</div>
-                            </div>
-                            <div>
-                                <img crossOrigin='anonymous' src={spotify.album_art_url} alt={`${spotify.album}`} />
-                            </div>
+                        <div className={styles.spotifyLargeImg}>
+                            <img crossOrigin='anonymous' src={spotify.album_art_url} alt={`${spotify.album}`} />
                         </div>
                     </a>
-                    <div className={styles.spotify_text}>
-                        <span className={styles.spotify_text_song} title={`${spotify.song}`}>
+                    <div className={styles.spotifyText}>
+                        <span
+                            className={styles.spotifyTextSong}
+                            title={`${spotify.song}`}
+                        >
                             <a className={styles.underline} href={`https://open.spotify.com/track/${spotify.track_id}`} target="_blank" rel="noreferrer">
                                 {spotify.song}
                             </a>
                         </span>
-                        <span className={styles.spotify_text_artist} title={`by ${spotify.artist}`}>
+                        <span className={styles.spotifyTextArtist} title={`by ${spotify.artist}`}>
                             by <a className={styles.underline} href={`https://open.spotify.com/search/${encodeURIComponent(spotify.artist)}`} target="_blank" rel="noreferrer">
                                 {spotify.artist}
                             </a>
                         </span>
-                        <span className={styles.spotify_text_album} title={`on ${spotify.album}`}>
+                        <span className={styles.spotifyTextAlbum} title={`on ${spotify.album}`}>
                             on <a className={styles.underline} href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} target="_blank" rel="noreferrer">
                                 {spotify.album}
                             </a>
@@ -137,8 +181,7 @@ export const Spotify: FC = () => {
                 <div className={styles.bar}>
                     <div className={styles.spotify_statusbar_bg}>
                         <div style={{
-                            "width": `${percent}`,
-                            "background": `linear-gradient(45deg, ${dynamicColor})`,
+                            "width": `${percent}`
                         }} className={styles.spotify_statusbar}>
                         </div>
                     </div>

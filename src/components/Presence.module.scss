@@ -1,7 +1,31 @@
 .presence {
     width: 100%;
     overflow-y: scroll;
+    & > :nth-child(1) {
+        opacity: 0;
+        animation: entry_animation 0.5s ease forwards;
+    }
+    & > :nth-child(3) {
+        opacity: 0;
+        animation: entry_animation 0.5s ease forwards 0.3s;
+    }
+    & > :nth-child(5) {
+        opacity: 0;
+        animation: entry_animation 0.5s ease forwards 0.5s;
+    }
 }
+
+@keyframes entry_animation {
+    0% {
+        transform: translateY(10px) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0px) scale(1);
+        opacity: 1;
+    }
+}
+
 .presence.noActivity {
     display: flex;
     align-items: center;
@@ -21,6 +45,28 @@
     font-weight: bold;
     justify-content: center;
     align-items: center;
-    color: #989898;
+    color: rgba(181, 181, 181, 0.5);
+    text-align: center;
     height: 100%;
+    width: 100%;
+
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0.8) 50%,
+        rgba(255, 255, 255, 0) 60%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shine 7s linear infinite;
+}
+
+@keyframes shine {
+    0% {
+        background-position: 100%;
+    }
+    100% {
+        background-position: -100%;
+    }
 }

@@ -14,7 +14,6 @@ export const GameActivity: FC = () => {
     let large_icon = gamestatus?.assets?.large_image && Util.decideContent(gamestatus, 'large')
     let small_icon = gamestatus?.assets?.small_image && Util.decideContent(gamestatus, 'small')
     let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
-    let large_text = gamestatus?.assets?.large_text ? `${gamestatus.assets.large_text}` : undefined;
     let small_text = gamestatus?.assets?.small_text ? `${gamestatus.assets.small_text}` : undefined;
     let game_name = gamestatus?.name ? `${gamestatus.name}` : undefined;
 
@@ -41,19 +40,13 @@ export const GameActivity: FC = () => {
     }, [gamestatus]);
 
     return (
-        <div className={styles.gamestatus}>
+        <div className={styles.gameActivity}>
             <div className={styles.header}>
-                <span title={`Playing a game`}>PLAYING A GAME</span>
+                <span title={`Playing a game`}>PLAYING {game_name?.toUpperCase()}</span>
             </div>
             <div className={styles.game_activity}>
                 <div className={styles.activity_img}>
-                    <div className={styles.activity_large}>
-                        {large_text && (
-                            <div className={`tooltip ${styles.activity_large_tooltip}`}>
-                                <div className={`tooltip_arrow ${styles.activity_large_tooltip_arrow}`}></div>
-                                <div className={`tooltip_text`}>{large_text}</div>
-                            </div>
-                        )}
+                    <div className={styles.activityLargeImg}>
                         <div>
                             {large_icon ? (
                                 <img src={large_icon} height={100} width={100} alt={game_name} />

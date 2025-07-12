@@ -155,13 +155,50 @@ export const loadingTexts = [
     "Her şeyin bedeli var güzelliğininde, bir gün gelir ödenir...",
     "Love really hurts without you",
     "Got a sweet Asian chick, she go lo mein"
-]
+];
+
+export type BingImageResponse = {
+    images: {
+        startdate: string;
+        fullstartdate: string;
+        enddate: string;
+        url: string;
+        urlbase: string;
+        copyright: string;
+        copyrightlink: string;
+        title: string;
+        quiz: string;
+        wp: boolean;
+        hsh: string;
+        drk: number;
+        top: number;
+        bot: number;
+    }[];
+}
 
 export class Util {
+    static hexToRgb(hex: string) {
+        // "#" işareti varsa kaldır
+        hex = hex.replace(/^#/, '');
+
+        // 3 karakterlik kısa formdaysa (örneğin #FFF), 6 karaktere çevir (#FFFFFF gibi)
+        if (hex.length === 3) {
+            hex = hex.split('').map(c => c + c).join('');
+        }
+
+        // 6 karakterli hex kodunu RGB'ye çevir
+        const bigint = parseInt(hex, 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        console.log(r, g, b)
+
+        return { r, g, b };
+    }
+
     /**
      * This function is used to handle the text color based on the season.
      * It returns a boolean value indicating whether the text color should be white or black.
-     * @returns {boolean} - true if the text color should be white, false if it should be black
      */
     static handleTextColor(bgColor: FinalColor) {
         function getLuminance(r: number, g: number, b: number) {
@@ -187,11 +224,28 @@ export class Util {
      * This function is used to get the Bing image of the day.
      * It fetches the image from the Bing API and returns the image URL.
      */
-    static getTodaysBingImage() {
+    static async getTodaysBingImage(): Promise<BingImageResponse> {
         return fetch("https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US")
             .then((response) => response.json())
             .then((data) => {
-                return `https://www.bing.com${data.images[0].url}`
+                return {
+                    images: data.images.map((image: any) => ({
+                        startdate: image.startdate,
+                        fullstartdate: image.fullstartdate,
+                        enddate: image.enddate,
+                        url: `https://www.bing.com${image.url}`,
+                        urlbase: `https://www.bing.com${image.urlbase}`,
+                        copyright: image.copyright,
+                        copyrightlink: image.copyrightlink,
+                        title: image.title,
+                        quiz: `https://www.bing.com${image.quiz}`,
+                        wp: image.wp,
+                        hsh: image.hsh,
+                        drk: image.drk,
+                        top: image.top,
+                        bot: image.bot
+                    }))
+                }
             })
     }
 

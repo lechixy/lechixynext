@@ -7,23 +7,29 @@ import Head from "next/head";
 import Discord from "components/Discord";
 import { WebSocketContext } from "utils/lanyard";
 import getIcon from "components/Icon";
-import { isMobile, Util } from "utils/Util";
+import { BingImageResponse, isMobile, Util } from "utils/Util";
 import { ApiRespond } from "utils/types";
 import { extractColors } from "extract-colors";
 import { DynamicColorContext } from "utils/dynamicColor";
 import Link from "next/link";
-import { FaBars, FaVolumeDown, FaVolumeMute } from "react-icons/fa";
+import { FaInfo, FaVolumeDown, FaVolumeMute } from "react-icons/fa";
+import Tooltips from "components/Tooltips";
 
 type MainProps = {
   background: {
     src: string;
     animated: boolean;
   };
-  bingImage: string;
+  bingImage: BingImageResponse;
   loadingText: string;
 }
 
-const useBackground: "bing" | "seasonal" = "bing";
+export type BgInfo = {
+  bingImage: BingImageResponse;
+  usingBackground: "bing" | "seasonal";
+}
+
+const usingBackground: "bing" | "seasonal" = "bing";
 
 const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
 
@@ -33,11 +39,16 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
   /**
    * * Background Selection *
    */
-  let bg: string = bingImage;
-  if (useBackground === "bing") {
-    bg = bingImage;
-  } else if (useBackground === "seasonal") {
+  let bg: string = bingImage.images[0].url;
+  if (usingBackground === "bing") {
+    bg = bingImage.images[0].url;
+  } else if (usingBackground === "seasonal") {
     bg = background.src;
+  }
+
+  let bgInfo: BgInfo = {
+    bingImage,
+    usingBackground,
   }
 
   let season = Util.getSeasonName();
@@ -61,11 +72,10 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
           let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
           stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
 
-          let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
-          bottom_text.style.background = `linear-gradient(to right, ${newColors})`;
+          let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
+          bottomText.style.background = `linear-gradient(to right, ${newColors})`;
 
           let isWhiteOrBlack = Util.handleTextColor(colors[1]);
-          console.log(isWhiteOrBlack)
           let stuffs_header_text = document.querySelector(`.${styles.stuffHeaderText}`) as HTMLDivElement;
           stuffs_header_text.style.color = isWhiteOrBlack;
         })
@@ -83,8 +93,8 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
           let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
           stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
 
-          let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
-          bottom_text.style.background = `linear-gradient(to right, ${newColors})`;
+          let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
+          bottomText.style.background = `linear-gradient(to right, ${newColors})`;
 
           let isWhiteOrBlack = Util.handleTextColor(colors[1]);
           let stuffs_header_text = document.querySelector(`.${styles.stuffHeaderText}`) as HTMLDivElement;
@@ -103,6 +113,24 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
   }, [data])
 
   useEffect(() => {
+    function updateMousePosition(e: MouseEvent, element: HTMLAnchorElement) {
+      const rect = element.getBoundingClientRect();
+      const x = Math.floor(((e.clientX - rect.left) / rect.width) * 100);
+      const y = Math.floor(((e.clientY - rect.top) / rect.height) * 100);
+
+      element.style.setProperty('--mouse-x', `${x}%`);
+      element.style.setProperty('--mouse-y', `${y}%`);
+    }
+
+    // Tüm hover efektli elementleri seç
+    const hoverElements = document.querySelectorAll(`.${styles.app}`) as NodeListOf<HTMLAnchorElement>;
+
+    hoverElements.forEach(element => {
+      element.addEventListener('mousemove', (e) => {
+        updateMousePosition(e, element);
+      });
+    });
+
     // * WebSocket Connection *
     let interval: NodeJS.Timeout;
     let intervalTime: number;
@@ -205,12 +233,10 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
     const seasonContent = Util.getSeasonContent(season);
 
     //Season Theme
-    let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
-    let bottom_text_span = bottom_text.querySelector(`span`) as HTMLSpanElement;
-    bottom_text_span.textContent = seasonContent.seasonEmojis
+    let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
+    let bottomTextSpan = bottomText.querySelector(`span`) as HTMLSpanElement;
+    bottomTextSpan.textContent = seasonContent.seasonEmojis
 
-    let season_tooltip = document.querySelector(`.${styles.season_tooltip} .tooltip_text`) as HTMLDivElement;
-    season_tooltip.textContent = season.charAt(0).toUpperCase() + season.slice(1).toLowerCase();
     setSeasonEmojis(season.charAt(0).toUpperCase() + season.slice(1).toLowerCase());
 
     let interval: NodeJS.Timeout | null = null;
@@ -304,19 +330,24 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
         <title>lechixy's website | flawless</title>
       </Head>
       <div className={styles.background} onClick={() => background.animated && changeVideoVolume()}>
-        <div>
-          {background.animated ? (
-            <>
-              <video src={background.src} controls={false} disablePictureInPicture loop autoPlay muted={videoMuted} />
-              <button className={styles.muteButton} onClick={() => changeVideoVolume()}
-              >
-                {videoMuted ? <FaVolumeMute /> : <FaVolumeDown />}
-              </button>
-            </>
-          ) : (
+        {background.animated ? (
+          <>
+            <video src={background.src} controls={false} disablePictureInPicture loop autoPlay muted={videoMuted} />
+            <button className={styles.muteButton} onClick={() => changeVideoVolume()}
+            >
+              {videoMuted ? <FaVolumeMute /> : <FaVolumeDown />}
+            </button>
+          </>
+        ) : (
+          <>
             <img src={bg} alt="background" />
-          )}
-        </div>
+            {usingBackground === "bing" && (
+              <div className={styles.backgroundInfo}>
+                <FaInfo />
+              </div>
+            )}
+          </>
+        )}
       </div>
       <WebSocketContext.Provider value={data}>
         <DynamicColorContext.Provider value={dynamicColor}>
@@ -326,7 +357,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
                 <div className={styles.stuff_header}>
                   <div className={styles.stuffHeaderText}>Stuffs</div>
                 </div>
-                <div className={styles.stuff_item}>
+                <div className={styles.stuffApps}>
                   {socials.map((social) => {
                     if (social.value == "ig" || social.value == "dc") return null;
                     return (
@@ -344,14 +375,9 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
                 </div>
               </div>
               <div
-                className={`season_tooltip ${styles.bottom_text}`}
+                className={styles.bottomText}
               >
-                <div className={`tooltip ${styles.season_tooltip}`}>
-                  <div className={`tooltip_arrow ${styles.season_tooltip_arrow}`}></div>
-                  <div className={"tooltip_text"}>
-                  </div>
-                </div>
-                <span></span>
+                <span>this will change i guess</span>
               </div>
             </div>
             <div className={styles.discord}>
@@ -360,8 +386,12 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
           </div>
         </DynamicColorContext.Provider>
       </WebSocketContext.Provider>
-      <div className={styles.layer_container}>
-
+      <div className={styles.layerContainer}>
+        <div className={styles.layers}>
+          {data && (
+            <Tooltips data={data} bgInfo={bgInfo} />
+          )}
+        </div>
       </div>
       {/* <div className={styles.preloader} >
         <Spinner />

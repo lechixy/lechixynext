@@ -31,26 +31,26 @@ export const Presence: FC = () => {
             {atLeastTwoActivities && (
                 <div className={styles.blank} style={{ height: "10px" }}></div>
             )}
-            {isWatching && (
-                <WatchActivity />
+            {isPlaying && (
+                <GameActivity />
             )}
             {numberOfActivities == 3 && (
                 <div className={styles.blank} style={{ height: "10px" }}></div>
             )}
-            {isPlaying && (
-                <GameActivity />
+            {isWatching && (
+                <WatchActivity />
             )}
             {atLeastTwoActivities && (
                 <div className={styles.blank} style={{ height: "30px" }}></div>
             )}
             {noActivity && (
                 <div className={styles.offline}>
-                    <span>Well... there is no activity to show you</span>
+                    <span>Well... looks like things are quiet for now.</span>
                 </div>
             )}
             {isOffline && (
                 <div className={styles.offline}>
-                    <span>Offline, there is nothing to show</span>
+                    <span>Currently offline... so nothing to see right now.</span>
                 </div>
             )}
         </div>
