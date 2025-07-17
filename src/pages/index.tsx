@@ -123,7 +123,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
     }
 
     // Tüm hover efektli elementleri seç
-    const hoverElements = document.querySelectorAll(`.${styles.app}`) as NodeListOf<HTMLAnchorElement>;
+    const hoverElements = document.querySelectorAll(`.${styles.social}`) as NodeListOf<HTMLAnchorElement>;
 
     hoverElements.forEach(element => {
       element.addEventListener('mousemove', (e) => {
@@ -364,11 +364,16 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
                       <Link
                         href={social.url}
                         target={social.type && social.type != "_blank" ? social.type : "_blank"}
-                        className={`${styles.app} ${styles[`app_${social.value.toLowerCase()}`]}`}
+                        className={`${styles.social} ${styles[`social_${social.value.toLowerCase()}`]}`}
                         key={social.name}
                       >
-                        {getIcon(social.value, styles)}
-                        <div>{social.name}</div>
+                        <div className={styles.socialIcon}>
+                          {getIcon(social.value, styles)}
+                        </div>
+                        <div className={styles.socialInfo}>
+                          <div className={styles.socialName}>{social.name}</div>
+                          <div className={styles.socialDetails}>{social.details}</div>
+                        </div>
                       </Link>
                     );
                   })}

@@ -2,12 +2,10 @@
 import moment from 'moment';
 import { FC, useState, useEffect } from 'react';
 import styles from 'components/activity/Spotify.module.scss';
-import Link from 'next/link';
 import { useContext, WebSocketContext } from 'utils/lanyard';
 import { Util } from 'utils/Util';
-import { Tooltip } from 'react-tooltip';
-import { extractColors } from 'extract-colors';
 import { DynamicColorContext } from 'utils/dynamicColor';
+import PresenceStyles from 'components/Presence.module.scss';
 
 type ApiRespond = {
 
@@ -81,7 +79,7 @@ export const Spotify: FC = () => {
         let spotifyStatusBar = document.querySelector(`.${styles.spotify_statusbar}`) as HTMLDivElement;
 
         // * Shining song name effect
-        let dynamicFirstColor = dynamicColor.split(',')[0]
+        let dynamicFirstColor = dynamicColor.split(',')[0].trim();
 
         function isWhiteColor(color: string) {
             let rgb = Util.hexToRgb(color)
@@ -102,20 +100,32 @@ export const Spotify: FC = () => {
         spotifyText.style.color = `transparent`;
 
         // * Status bar color
-        let dynamicSecondColor = dynamicColor.split(',')[1]
-        let dynamicThirdColor = dynamicColor.split(',')[2]
+        let dynamicSecondColor = dynamicColor.split(',')[1].trim();
+        let dynamicThirdColor = dynamicColor.split(',')[2].trim();
 
         console.log(dynamicThirdColor)
-        function isDarkColor(color: string) {
-            let rgb = Util.hexToRgb(color)
-            // Tüm RGB değerleri 50 ve altındaysa karanlık kabul et
-            const maxValue = Math.max(rgb.r, rgb.g, rgb.b);
 
-            return maxValue <= 50;
+        // Rengin parlaklığını hesaplayan fonksiyon
+        function calculateBrightness(r: number, g: number, b: number) {
+            // W3C tarafından önerilen formül: (299*R + 587*G + 114*B) / 1000
+            return (299 * r + 587 * g + 114 * b) / 1000;
+        }
+
+        // Rengin cırtlak/parlak olup olmadığını kontrol eden fonksiyon
+        function isBrightColor(color: string) {
+            let rgb = Util.hexToRgb(color)
+            console.log(rgb)
+
+            // Parlaklığı hesapla (0-255 arası)
+            const brightness = calculateBrightness(rgb.r, rgb.g, rgb.b);
+            console.log(brightness)
+
+            // Parlaklık 140'tan büyükse cırtlak/parlak kabul et
+            return brightness > 135;
         }
 
         let decidedDynamicColorForStatusBar = dynamicColor
-        if (isDarkColor(dynamicThirdColor)) {
+        if (!isBrightColor(dynamicThirdColor)) {
             decidedDynamicColorForStatusBar = `${dynamicFirstColor}, ${dynamicSecondColor}, white`;
         }
         spotifyStatusBar.style.background = `linear-gradient(45deg, ${decidedDynamicColorForStatusBar})`;
@@ -134,7 +144,7 @@ export const Spotify: FC = () => {
     // }, [])
 
     return (
-        <div className={`${styles.spotifyActivity} ${styles.show}`}>
+        <div className={`${styles.spotifyActivity} ${PresenceStyles.entryAnimation}`}>
             <div className={styles.background}>
                 <div className={styles.background_container}>
                     <img id="album_art" src={spotify.album_art_url} alt={`${spotify.album}`} />

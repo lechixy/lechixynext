@@ -1,15 +1,15 @@
 .presence {
     width: 100%;
     overflow-y: scroll;
-    & > :nth-child(1) {
+    & > .entryAnimation:nth-child(1) {
         opacity: 0;
         animation: entry_animation 0.5s ease forwards;
     }
-    & > :nth-child(3) {
+    & > .entryAnimation.blank:nth-child(3) {
         opacity: 0;
         animation: entry_animation 0.5s ease forwards 0.3s;
     }
-    & > :nth-child(5) {
+    & > .entryAnimation:nth-child(5) {
         opacity: 0;
         animation: entry_animation 0.5s ease forwards 0.5s;
     }
@@ -59,7 +59,18 @@
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: shine 7s linear infinite;
+    animation:
+        shine 7s linear infinite,
+        notActivityEntryAnimation 1s ease forwards;
+}
+
+@keyframes notActivityEntryAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes shine {

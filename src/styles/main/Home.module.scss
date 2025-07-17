@@ -247,11 +247,12 @@
         }
 
         .stuffApps {
+            overflow: hidden;
             //animation: entry 1000ms ease-out;
 
-            .app {
+            .social {
                 padding: 10px;
-                transition: var(--animation-1);
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 display: flex;
                 align-items: center;
                 text-decoration: none;
@@ -260,18 +261,54 @@
                 font-weight: bold;
                 position: relative;
 
-                .app_icon {
-                    width: 26px;
-                    height: 26px;
-                    padding-right: 5px;
+                .socialIcon {
+                    display: flex;
+                    transition: transform 0.3s ease;
+                    padding-right: 6px;
+                    svg {
+                        width: 26px;
+                        height: 26px;
+                    }
                 }
-                div {
-                    line-height: 20px;
+
+                .socialInfo {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    .socialName {
+                        font-size: 16px;
+                        //transition: transform 0.3s ease;
+                    }
+                    .socialDetails {
+                        color: white;
+                        font-weight: lighter;
+                        font-size: 12px;
+                        max-height: 0;
+                        opacity: 0;
+                        white-space: pre-line;
+                        overflow: hidden;
+                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        transform: translateY(-15px) scale(0.95);
+                        transform-origin: center;
+                    }
                 }
+
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.25);
-                    * {
-                        animation: selectMe 500ms ease-in-out infinite alternate;
+                    transform: translateY(-2px);
+
+                    .socialIcon {
+                        transform: scale(1.1);
+                    }
+
+                    // .socialName {
+                    //     transform: translateY(-2px);
+                    // }
+
+                    .socialDetails {
+                        max-height: 120px;
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
                     }
                 }
 
@@ -293,51 +330,42 @@
                     transition: opacity 0.3s ease;
                     pointer-events: none;
                 }
-    
+
                 &:hover::before {
                     opacity: 1;
                 }
             }
 
-            @keyframes selectMe {
-                0% {
-                    transform: translateX(0);
-                }
-                100% {
-                    transform: translateX(5px);
-                }
-            }
-
-            .app_ig:hover {
+            .social_ig:hover {
                 color: var(--instagram-color);
             }
 
-            .app_tw:hover {
+            .social_tw:hover {
                 color: var(--twitch-color);
             }
 
-            .app_steam:hover {
+            .social_steam:hover {
                 color: var(--steam-color);
             }
 
-            .app_sp:hover {
+            .social_sp:hover {
                 color: var(--spotify-color);
             }
 
-            .app_github:hover {
+            .social_github:hover {
                 color: var(--github-color);
             }
 
-            .app_lechsbott:hover {
+            .social_lechsbott:hover {
                 color: var(--lechsbott-color);
             }
-            .app_dc:hover {
+            .social_dc:hover {
                 color: var(--discord-color);
             }
-            .app_gallery:hover {
+            .social_gallery:hover {
                 color: var(--gallery-color);
             }
-            .app_kick:hover {
+            .social_kick:hover {
                 color: var(--kick-color);
             }
         }

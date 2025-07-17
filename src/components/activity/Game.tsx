@@ -5,6 +5,7 @@ import { ApiRespond } from 'utils/types';
 import { useContext, WebSocketContext } from 'utils/lanyard';
 import moment from 'moment';
 import { Util } from 'utils/Util';
+import PresenceStyles from 'components/Presence.module.scss';
 
 export const GameActivity: FC = () => {
 
@@ -16,6 +17,8 @@ export const GameActivity: FC = () => {
     let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
     let small_text = gamestatus?.assets?.small_text ? `${gamestatus.assets.small_text}` : undefined;
     let game_name = gamestatus?.name ? `${gamestatus.name}` : undefined;
+
+    console.log(large_icon)
 
     const [start, setStart] = useState<any>(null)
 
@@ -40,7 +43,7 @@ export const GameActivity: FC = () => {
     }, [gamestatus]);
 
     return (
-        <div className={styles.gameActivity}>
+        <div className={`${styles.gameActivity} ${PresenceStyles.entryAnimation}`}>
             <div className={styles.header}>
                 <span title={`Playing a game`}>PLAYING {game_name?.toUpperCase()}</span>
             </div>

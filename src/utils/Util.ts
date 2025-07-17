@@ -1,6 +1,10 @@
 import { FinalColor } from "extract-colors/lib/types/Color";
 import { snowflake } from "./icons_svg";
 
+export const gameIcons = {
+    lol: "https://cdn.discordapp.com/app-icons/401518684763586560/2c1781b672e14e86b7bec677eee2fbde.png?size=160&keep_aspect_ratio=false"
+}
+
 export function isMobile(navigator: Navigator): boolean {
     return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 }
@@ -177,24 +181,25 @@ export type BingImageResponse = {
 }
 
 export class Util {
-    static hexToRgb(hex: string) {
-        // "#" işareti varsa kaldır
-        hex = hex.replace(/^#/, '');
+    static hexToRgb(hex: string): { r: number; g: number; b: number } {
+        // "#" karakterini kaldır ve küçük harfe çevir
+        const cleanedHex = hex.replace(/^#/, '').toLowerCase();
 
-        // 3 karakterlik kısa formdaysa (örneğin #FFF), 6 karaktere çevir (#FFFFFF gibi)
-        if (hex.length === 3) {
-            hex = hex.split('').map(c => c + c).join('');
-        }
+        // 3 karakterli formu 6 karakterliye dönüştür (#abc -> #aabbcc)
+        const fullHex = cleanedHex.length === 3
+            ? cleanedHex.split('').map(c => c + c).join('')
+            : cleanedHex;
+        // Regex ile uygunluk kontrolü
+        if (!/^([0-9a-f]{6})$/.test(fullHex)) return { r: 0, g: 0, b: 0 };
 
-        // 6 karakterli hex kodunu RGB'ye çevir
-        const bigint = parseInt(hex, 16);
-        const r = (bigint >> 16) & 255;
-        const g = (bigint >> 8) & 255;
-        const b = bigint & 255;
-        console.log(r, g, b)
+
+        const r = parseInt(fullHex.substring(0, 2), 16);
+        const g = parseInt(fullHex.substring(2, 4), 16);
+        const b = parseInt(fullHex.substring(4, 6), 16);
 
         return { r, g, b };
     }
+
 
     /**
      * This function is used to handle the text color based on the season.

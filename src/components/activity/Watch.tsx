@@ -5,6 +5,7 @@ import { ApiRespond } from 'utils/types';
 import { useContext, WebSocketContext } from 'utils/lanyard';
 import moment from 'moment';
 import { Util } from 'utils/Util';
+import PresenceStyles from 'components/Presence.module.scss';
 
 type WatchActivity = {
     application_id: string;
@@ -103,7 +104,7 @@ export const WatchActivity: FC = () => {
     }, [activityStatus]);
 
     return (
-        <div className={`${styles.watchActivity} ${styles.show}`}>
+        <div className={`${styles.watchActivity} ${PresenceStyles.entryAnimation}`}>
             <div className={styles.header}>
                 <span>WATCHING {activityStatus.name.toUpperCase()}</span>
             </div>
