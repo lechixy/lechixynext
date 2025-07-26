@@ -45,12 +45,14 @@ export const Presence: FC = () => {
             )}
             {noActivity && (
                 <div className={styles.offline}>
-                    <span>Well... looks like things are quiet for now.</span>
+                    <span className={styles.offlineText}>Well... looks like things are quiet for now.</span>
+                    <span className={styles.offlineGlow}>Well... looks like things are quiet for now.</span>
                 </div>
             )}
             {isOffline && (
                 <div className={styles.offline}>
-                    <span>Currently offline... so nothing to see right now.</span>
+                    <span className={styles.offlineText}>Currently offline... so nothing to see right now.</span>
+                    <span className={styles.offlineGlow}>Currently offline... so nothing to see right now.</span>
                 </div>
             )}
         </div>

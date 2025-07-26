@@ -75,7 +75,8 @@ export const Spotify: FC = () => {
 
     useEffect(() => {
         // Selectors
-        let spotifyText = document.querySelector(`.${styles.spotifyTextSong}`) as HTMLDivElement;
+        let spotifyTextSongs = document.querySelectorAll(
+            `.${styles.spotifyTextSongContainer} .${styles.underline} span`) as NodeListOf<HTMLSpanElement>;
         let spotifyStatusBar = document.querySelector(`.${styles.spotify_statusbar}`) as HTMLDivElement;
 
         // * Shining song name effect
@@ -94,10 +95,9 @@ export const Spotify: FC = () => {
             decidedDynamicColor = `#6d6d6d`;
         }
 
-        spotifyText.style.background = `linear-gradient(120deg, rgba(255, 255, 255, 1) 30%, ${decidedDynamicColor} 50%, rgba(255, 255, 255, 1) 70%)`;
-        spotifyText.style.backgroundSize = `200% 100%`;
-        spotifyText.style.backgroundClip = `text`;
-        spotifyText.style.color = `transparent`;
+        spotifyTextSongs.forEach(text => {
+            text.style.setProperty('--dynamic-color', decidedDynamicColor);
+        })
 
         // * Status bar color
         let dynamicSecondColor = dynamicColor.split(',')[1].trim();
@@ -168,14 +168,21 @@ export const Spotify: FC = () => {
                         </div>
                     </a>
                     <div className={styles.spotifyText}>
-                        <span
-                            className={styles.spotifyTextSong}
-                            title={`${spotify.song}`}
-                        >
+                        <div className={styles.spotifyTextSongContainer}>
                             <a className={styles.underline} href={`https://open.spotify.com/track/${spotify.track_id}`} target="_blank" rel="noreferrer">
-                                {spotify.song}
+                                <span
+                                    className={styles.spotifyTextSong}
+                                    title={`${spotify.song}`}
+                                >
+                                    {spotify.song}
+                                </span>
+                                <span
+                                    className={styles.spotifyTextSongGlow}
+                                >
+                                    {spotify.song}
+                                </span>
                             </a>
-                        </span>
+                        </div>
                         <span className={styles.spotifyTextArtist} title={`by ${spotify.artist}`}>
                             by <a className={styles.underline} href={`https://open.spotify.com/search/${encodeURIComponent(spotify.artist)}`} target="_blank" rel="noreferrer">
                                 {spotify.artist}

@@ -42,26 +42,40 @@
 
 .offline {
     display: flex;
-    font-weight: bold;
     justify-content: center;
     align-items: center;
     color: rgba(181, 181, 181, 0.5);
-    text-align: center;
+    animation: notActivityEntryAnimation 1s ease forwards;
     height: 100%;
     width: 100%;
+    position: relative;
 
-    background: linear-gradient(
-        120deg,
-        rgba(255, 255, 255, 0) 40%,
-        rgba(255, 255, 255, 0.8) 50%,
-        rgba(255, 255, 255, 0) 60%
-    );
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation:
-        shine 7s linear infinite,
-        notActivityEntryAnimation 1s ease forwards;
+    .offlineText {
+        position: absolute;
+        z-index: 2;
+    }
+
+    .offlineGlow {
+        position: absolute;
+        z-index: 1;
+        opacity: var(--glow-text-gradient-opacity);
+        filter: blur(4px);
+    }
+
+    span {
+        font-weight: bold;
+        text-align: center;
+        background: linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0) 40%,
+            rgba(255, 255, 255, 0.8) 50%,
+            rgba(255, 255, 255, 0) 60%
+        );
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: shine 7s linear infinite;
+    }
 }
 
 @keyframes notActivityEntryAnimation {
