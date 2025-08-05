@@ -7,30 +7,50 @@ import moment from 'moment';
 import { Util } from 'utils/Util';
 import PresenceStyles from 'components/Presence.module.scss';
 
-export const GameActivity: FC = () => {
+type GameActivity = {
+    application_id: string;
+    assets: {
+        large_image: string;
+        small_image: string;
+        large_text?: string;
+        small_text?: string;
+    }
+    buttons?: string[];
+    created_at: number;
+    details: string;
+    flags?: number;
+    id: string;
+    name: string;
+    platform?: string;
+    session_id?: string;
+    state: string;
+    timestamps: {
+        start: number;
+        end?: number;
+    }
+    type: number;
+}
 
-    const info = useContext(WebSocketContext) as unknown as ApiRespond
+export const GameActivity: FC<{ activity: GameActivity }> = ({ activity }) => {
 
-    let gamestatus = info.activities.find(x => x.type === 0);
-    let large_icon = gamestatus?.assets?.large_image && Util.decideContent(gamestatus, 'large')
-    let small_icon = gamestatus?.assets?.small_image && Util.decideContent(gamestatus, 'small')
+    let activityStatus = activity;
+
+    let large_icon = activityStatus?.assets?.large_image && Util.decideContent(activityStatus, 'large')
+    let small_icon = activityStatus?.assets?.small_image && Util.decideContent(activityStatus, 'small')
     let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
-    let small_text = gamestatus?.assets?.small_text ? `${gamestatus.assets.small_text}` : undefined;
-    let game_name = gamestatus?.name ? `${gamestatus.name}` : undefined;
-
-    console.log(large_icon)
+    let game_name = activityStatus?.name ? `${activityStatus.name}` : undefined;
 
     const [start, setStart] = useState<any>(null)
 
     useEffect(() => {
-        if (!gamestatus.timestamps) {
+        if (!activityStatus.timestamps) {
             setStart(null)
             return;
         }
 
         const interval = setInterval(() => {
             //Elapsed
-            let elapsedMs = Date.now() - gamestatus!.timestamps?.start
+            let elapsedMs = Date.now() - activityStatus!.timestamps?.start
             let elapsedSec = moment.duration(elapsedMs).asSeconds()
 
             //Elapsed timestamp
@@ -40,7 +60,7 @@ export const GameActivity: FC = () => {
         }, 500)
 
         return () => clearInterval(interval)
-    }, [gamestatus]);
+    }, [activityStatus]);
 
     return (
         <div className={`${styles.gameActivity} ${PresenceStyles.entryAnimation}`}>
@@ -70,8 +90,8 @@ export const GameActivity: FC = () => {
                 </div>
                 <div className={styles.activity_text}>
                     <span className={styles.activity_text_title} title={game_name}>{game_name}</span>
-                    <span className={styles.activity_text_details} title={gamestatus?.details}>{gamestatus?.details}</span>
-                    <span className={styles.activity_text_state} title={gamestatus?.state}>{gamestatus?.state}</span>
+                    <span className={styles.activity_text_details} title={activityStatus?.details}>{activityStatus?.details}</span>
+                    <span className={styles.activity_text_state} title={activityStatus?.state}>{activityStatus?.state}</span>
                     {start ? <span className={styles.activity_text_timestamp}>{start} elapsed</span> : null}
                 </div>
             </div>

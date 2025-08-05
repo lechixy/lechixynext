@@ -33,9 +33,9 @@ const Tooltips: FC<TooltipsProps> = (props) => {
     if (data.active_on_discord_web) activeOn.push("Web");
     if (data.active_on_discord_mobile) activeOn.push("Mobile");
 
-    let watchSmallText = data.activities.find(activity => activity.type === 3)?.assets.small_text;
+    let watchSmallText = data.activities.find(activity => activity.type === 3)?.assets?.small_text;
 
-    let gameLargeText = data.activities.find(activity => activity.type === 0)?.assets.large_text;
+    let gameLargeText = data.activities.find(activity => activity.type === 0)?.assets?.large_text;
 
     return (
         <>

@@ -14,6 +14,7 @@ import { DynamicColorContext } from "utils/dynamicColor";
 import Link from "next/link";
 import { FaInfo, FaVolumeDown, FaVolumeMute } from "react-icons/fa";
 import Tooltips from "components/Tooltips";
+import KeyboardMovementContainer from "components/KeyboardMovement";
 
 type MainProps = {
   background: {
@@ -351,7 +352,9 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
       </div>
       <WebSocketContext.Provider value={data}>
         <DynamicColorContext.Provider value={dynamicColor}>
-          <div className={styles.container}>
+          <KeyboardMovementContainer
+            moveDistance={100}
+          >
             <div className={styles.stuff}>
               <div>
                 <div className={styles.stuff_header}>
@@ -388,7 +391,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
             <div className={styles.discord}>
               <Discord loadingText={loadingText} />
             </div>
-          </div>
+          </KeyboardMovementContainer>
         </DynamicColorContext.Provider>
       </WebSocketContext.Provider>
       <div className={styles.layerContainer}>

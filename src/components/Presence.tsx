@@ -5,23 +5,20 @@ import { ApiRespond } from 'utils/types';
 import { Spotify } from 'components/activity/Spotify';
 import { GameActivity } from 'components/activity/Game';
 import { WatchActivity } from './activity/Watch';
-import { AnimatePresence } from 'framer-motion';
 
 export const Presence: FC = () => {
 
     const info = useContext(WebSocketContext) as unknown as ApiRespond
 
     const isListening = info.listening_to_spotify
-    const isPlaying = info.activities.find(x => x.type === 0)
+    const playingActivities = info.activities.filter(x => x.type === 0)
     const isWatching = info.activities.find(x => x.type === 3)
     const isOffline = info.discord_status === "offline"
     //We using this because we don't want Custom Status to be counted as an activity
     const numberOfActivities = info.activities.find(x => x.type === 4) ?
         info.activities.length - 1 : info.activities.length
     const atLeastTwoActivities = numberOfActivities >= 2
-    const noActivity = !isPlaying && !isOffline && !isListening && !isWatching
-
-    console.log("Presence", info);
+    const noActivity = !playingActivities.length && !isOffline && !isListening && !isWatching
 
     return (
         <div className={`${styles.presence} ${noActivity || isOffline ? styles.noActivity : ""}`}>
@@ -31,9 +28,9 @@ export const Presence: FC = () => {
             {atLeastTwoActivities && (
                 <div className={styles.blank} style={{ height: "10px" }}></div>
             )}
-            {isPlaying && (
-                <GameActivity />
-            )}
+            {playingActivities.map((activity) => (
+                <GameActivity key={activity.id} activity={activity} />
+            ))}
             {numberOfActivities == 3 && (
                 <div className={styles.blank} style={{ height: "10px" }}></div>
             )}

@@ -1,4 +1,4 @@
-import { FaDiscord, FaGithub, FaHeart, FaInstagram, FaKickstarter, FaMoon, FaRegHeart, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa'
+import { FaCode, FaDiscord, FaGithub, FaHeart, FaInstagram, FaKickstarter, FaMoon, FaRegHeart, FaSpotify, FaStar, FaSteam, FaTwitch } from 'react-icons/fa'
 import { SocialValues } from 'utils/socials'
 
 export default function getIcon(name: SocialValues, styles: any) {
@@ -47,5 +47,9 @@ export default function getIcon(name: SocialValues, styles: any) {
             <FaDiscord className={styles.app_icon} />
         )
     }
-    
+    if (name == "sourcecode"){
+        return (
+            <FaCode className={styles.app_icon} />
+        )
+    }
 }

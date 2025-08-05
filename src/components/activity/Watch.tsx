@@ -15,14 +15,14 @@ type WatchActivity = {
         large_text?: string;
         small_text?: string;
     }
-    buttons: string[];
+    buttons?: string[];
     created_at: number;
     details: string;
-    flags: number;
+    flags?: number;
     id: string;
     name: string;
-    platform: string;
-    session_id: string;
+    platform?: string;
+    session_id?: string;
     state: string;
     timestamps: {
         start: number;
@@ -38,7 +38,6 @@ export const WatchActivity: FC = () => {
     let activityStatus: WatchActivity = info.activities.find(x => x.type === 3);
     let largeIcon = activityStatus.assets.large_image &&
         `https://${activityStatus.assets.large_image.split("https/")[1]}`
-    let largeText = activityStatus.assets.large_text
     let smallIcon = activityStatus.assets.small_image &&
         `https://${activityStatus.assets.small_image.split("https/")[1]}`
     //let small_icon = gamestatus?.assets?.small_image && Util.decideContent(gamestatus, 'small')
