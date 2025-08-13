@@ -116,13 +116,11 @@ export const WatchActivity: FC = () => {
                                 <div className={`tooltip_text`}>{largeText}</div>
                             </div>
                         )} */}
-                        <div>
-                            {largeIcon ? (
-                                <img src={largeIcon} height={100} width={100} />
-                            ) : (
-                                <img src={noicon} height={100} width={100} />
-                            )}
-                        </div>
+                        {largeIcon ? (
+                            <img src={largeIcon} height={100} width={100} />
+                        ) : (
+                            <img src={noicon} height={100} width={100} />
+                        )}
                         <div className={styles.activitySmallImg}>
                             <img className={styles.activitySmallImgElement} src={smallIcon} height={30} width={30} />
                         </div>
@@ -141,21 +139,21 @@ export const WatchActivity: FC = () => {
                     <span className={styles.activityContentDetails}>{activityStatus.details}</span>
                     <span className={styles.activityContentState}>{activityStatus.state}</span>
                     {start ? <span className={styles.activityContentTimestamp}>{start} elapsed</span> : null}
+                    {timestamps.current == "0:00" && timestamps.length == "0:00" ? null : (
+                        <div className={styles.activityBar}>
+                            <span className={styles.activityTimestamp}>{timestamps.current}</span>
+                            <div className={styles.activityStatusBarBg}>
+                                <div style={{
+                                    "width": `${percent}`,
+                                    "background": `linear-gradient(45deg, white)`,
+                                }} className={styles.activityStatusBar}>
+                                </div>
+                            </div>
+                            <span className={styles.activityTimestamp}>{timestamps.length}</span>
+                        </div>
+                    )}
                 </div>
             </div>
-            {timestamps.current == "0:00" && timestamps.length == "0:00" ? null : (
-                <div className={styles.activityBar}>
-                    <span className={styles.activityTimestamp}>{timestamps.current}</span>
-                    <div className={styles.activityStatusBarBg}>
-                        <div style={{
-                            "width": `${percent}`,
-                            "background": `linear-gradient(45deg, white)`,
-                        }} className={styles.activityStatusBar}>
-                        </div>
-                    </div>
-                    <span className={styles.activityTimestamp}>{timestamps.length}</span>
-                </div>
-            )}
         </div>
     )
 }

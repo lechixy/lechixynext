@@ -363,11 +363,18 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
                 <div className={styles.stuffApps}>
                   {socials.map((social) => {
                     if (social.value == "ig" || social.value == "dc") return null;
+                    let appHoverColorFirst = social.color.replace("1)", "0.3)");
+                    let appHoverColorSecond = social.color.replace("1)", "0.05)");
                     return (
                       <Link
                         href={social.url}
                         target={social.type && social.type != "_blank" ? social.type : "_blank"}
                         className={`${styles.social} ${styles[`social_${social.value.toLowerCase()}`]}`}
+                        style={{
+                          ["--app-color" as any]: social.color,
+                          ["--app-hover-color-1" as any]: appHoverColorFirst,
+                          ["--app-hover-color-2" as any]: appHoverColorSecond
+                        }}
                         key={social.name}
                       >
                         <div className={styles.socialIcon}>

@@ -47,7 +47,7 @@ export default function getIcon(name: SocialValues, styles: any) {
             <FaDiscord className={styles.app_icon} />
         )
     }
-    if (name == "sourcecode"){
+    if (name == "code"){
         return (
             <FaCode className={styles.app_icon} />
         )
