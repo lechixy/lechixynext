@@ -118,6 +118,15 @@
 //     }
 // }
 
+@keyframes shine {
+    0% {
+        background-position: 100%;
+    }
+    100% {
+        background-position: -100%;
+    }
+}
+
 .background {
     position: absolute;
     width: 100%;
@@ -230,11 +239,67 @@
             //     background: transparent;
             //     color: black;
             // }
-            .stuffHeaderText {
-                color: white;
-                text-align: center;
-                font-size: 25px;
-                font-weight: bolder;
+            .stuffHeaderContainer {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                width: 100%;
+                min-height: 30px;
+                .stuffHeaderText {
+                    position: absolute;
+                    z-index: 2;
+
+                    &:hover::after {
+                        opacity: 1;
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 1px;
+                        left: 0;
+                        opacity: 0;
+                        width: 100%;
+                        height: 1px;
+                        background: linear-gradient(
+                            to right,
+                            rgba(255, 255, 255, 1) 30%,
+                            var(--stuff-color-1) 50%,
+                            rgba(255, 255, 255, 1) 70%
+                        );
+                        background-size: 200% 100%;
+                        animation: shine 4s linear infinite;
+                    }
+                }
+                
+                .stuffHeaderTextGlow {
+                    position: absolute;
+                    z-index: 1;
+                    opacity: var(--glow-text-gradient-opacity);
+                    filter: blur(4px);
+                }
+
+                span {
+                    color: white;
+                    text-align: center;
+                    font-size: 25px;
+                    font-weight: bolder;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    color: transparent;
+                    white-space: nowrap;
+                    background: linear-gradient(
+                        to right,
+                        rgba(255, 255, 255, 1) 30%,
+                        var(--stuff-color-1) 50%,
+                        rgba(255, 255, 255, 1) 70%
+                    );
+                    background-size: 200% 100%;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    animation: shine 4s linear infinite;
+                }
             }
         }
 
@@ -276,9 +341,23 @@
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    .socialName {
-                        font-size: 16px;
-                        //transition: transform 0.3s ease;
+                    .socialNameContainer {
+                        display: flex;
+                        position: relative;
+                        width: 100%;
+                        min-height: 21px;
+
+                        .socialName {
+                            font-size: 16px;
+                            position: absolute;
+                            z-index: 2;
+                        }
+                        .socialNameGlow {
+                            position: absolute;
+                            z-index: 1;
+                            filter: blur(4px);
+                            opacity: 0;
+                        }
                     }
                     .socialDetails {
                         color: white;
@@ -345,8 +424,47 @@
                     filter: drop-shadow(0px 0px 10px var(--app-color));
                 }
                 .socialInfo {
-                    .socialName {
-                        filter: drop-shadow(0px 0px 10px var(--app-color));
+                    .socialNameContainer {
+                        .socialName {
+                            &::after {
+                                content: "";
+                                position: absolute;
+                                bottom: 1px;
+                                left: 0;
+                                width: 100%;
+                                height: 1px;
+                                background: linear-gradient(
+                                    to right,
+                                    rgba(255, 255, 255, 1) 30%,
+                                    var(--app-color) 50%,
+                                    rgba(255, 255, 255, 1) 70%
+                                );
+                                background-size: 200% 100%;
+                                animation: shine 4s linear infinite;
+                            }
+                        }
+
+                        .socialNameGlow {
+                            opacity: var(--glow-text-gradient-opacity);
+                        }
+
+                        span {
+                            font-weight: bolder;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            color: transparent;
+                            white-space: nowrap;
+                            background: linear-gradient(
+                                to right,
+                                rgba(255, 255, 255, 1) 30%,
+                                var(--app-color) 50%,
+                                rgba(255, 255, 255, 1) 70%
+                            );
+                            background-size: 200% 100%;
+                            -webkit-background-clip: text;
+                            background-clip: text;
+                            animation: shine 4s linear infinite;
+                        }
                     }
                 }
             }

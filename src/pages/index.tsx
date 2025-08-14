@@ -73,6 +73,9 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
           let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
           stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
 
+          let stuffsHeaderContainer = document.querySelector(`.${styles.stuffHeaderContainer}`) as HTMLDivElement;
+          stuffsHeaderContainer.style.setProperty("--stuff-color-1", colors[0].hex);
+
           let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
           bottomText.style.background = `linear-gradient(to right, ${newColors})`;
 
@@ -93,6 +96,9 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
           setDynamicColor(newColors)
           let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
           stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
+
+          let stuffsHeaderContainer = document.querySelector(`.${styles.stuffHeaderContainer}`) as HTMLDivElement;
+          stuffsHeaderContainer.style.setProperty("--stuff-color-1", colors[0].hex);
 
           let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
           bottomText.style.background = `linear-gradient(to right, ${newColors})`;
@@ -358,7 +364,10 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
             <div className={styles.stuff}>
               <div>
                 <div className={styles.stuff_header}>
-                  <div className={styles.stuffHeaderText}>Stuffs</div>
+                  <div className={styles.stuffHeaderContainer}>
+                    <span className={styles.stuffHeaderText}>Stuffs</span>
+                    <span className={styles.stuffHeaderTextGlow}>Stuffs</span>
+                  </div>
                 </div>
                 <div className={styles.stuffApps}>
                   {socials.map((social) => {
@@ -381,7 +390,10 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
                           {getIcon(social.value, styles)}
                         </div>
                         <div className={styles.socialInfo}>
-                          <div className={styles.socialName}>{social.name}</div>
+                          <div className={styles.socialNameContainer}>
+                            <span className={styles.socialName}>{social.name}</span>
+                            <span className={styles.socialNameGlow}>{social.name}</span>
+                          </div>
                           <div className={styles.socialDetails}>{social.details}</div>
                         </div>
                       </Link>
