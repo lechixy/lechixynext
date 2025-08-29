@@ -85,12 +85,30 @@
                 margin-right: 8px;
                 z-index: 10;
                 position: relative;
+
                 img {
                     display: block;
                     border-radius: var(--rad);
                     object-fit: cover;
                     height: 100px;
                     width: 100px;
+                }
+
+                &::after {
+                    width: 100%;
+                    height: 100%;
+                    background: black;
+                    content: "";
+                    position: absolute;
+                    border-radius: var(--rad);
+                    opacity: 0;
+                    transition: var(--animation-1);
+                }
+
+                &:hover {
+                    &::after {
+                        opacity: var(--largeimg-opacity);
+                    }
                 }
             }
             .spotifyText {
