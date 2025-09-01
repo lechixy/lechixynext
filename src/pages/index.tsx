@@ -233,7 +233,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
   }, []);
 
   useEffect(() => {
-    let layer_container = document.querySelector(`.${styles.layer_container}`);
+    let layerContainer = document.querySelector(`.${styles.layerContainer}`);
 
     const season = Util.getSeasonName();
     //const season = "summer"
@@ -306,7 +306,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
         }
       );
 
-      layer_container?.append(particle_div);
+      layerContainer?.append(particle_div);
 
       let clear_timeout = setTimeout(() => {
         particle_div.remove();

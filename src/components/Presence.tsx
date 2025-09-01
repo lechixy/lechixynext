@@ -31,7 +31,7 @@ export const Presence: FC = () => {
             {playingActivities.map((activity) => (
                 <GameActivity key={activity.id} activity={activity} />
             ))}
-            {numberOfActivities == 3 && (
+            {atLeastTwoActivities && (
                 <div className={styles.blank} style={{ height: "10px" }}></div>
             )}
             {isWatching && (
