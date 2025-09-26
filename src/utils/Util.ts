@@ -295,7 +295,7 @@ export class Util {
     }
 
     static youtubeThumbnail(videoId: string): string {
-        return `https://img.youtube.com/vi/${videoId}/hq720.jpg`
+        return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
     }
 
     static getSeasonName(): "spring" | "summer" | "autumn" | "winter" | Season {

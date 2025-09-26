@@ -33,18 +33,6 @@ const Gallery: NextPage<any> = () => {
             .then((res: GalleryResponse) => {
                 if (res.code == 200) {
                     let correctData = res.data?.ytdata
-                    let seperators = ["[", "「"];
-                    correctData?.videos.forEach((vid, index) => {
-                        // Defining isFirst, isLast for about section
-                        vid.isFirst = false;
-                        vid.isLast = false;
-
-                        seperators.forEach(sep => {
-                            if (vid.title?.includes(sep)) {
-                                vid.title = vid.title.split(sep)[0];
-                            }
-                        })
-                    })
                     correctData!.videos[0].isFirst = true;
                     correctData!.videos[correctData!.videos.length - 1].isLast = true;
 
@@ -57,12 +45,13 @@ const Gallery: NextPage<any> = () => {
     }, [])
 
     const onStateChanged: YouTubeProps['onStateChange'] = (event) => {
-        // If a video selected from playlist button on YouTubePlayer load all playlist again
-        if (event.data == 5 && galleryData) {
-            let videoIds = galleryData.videos.map(video => video.id);
-            let currentMediaIndex = galleryData.videos.findIndex(video => video.id == currentMedia?.id)
-            event.target.loadPlaylist(videoIds, currentMediaIndex);
-        }
+        // // If a video selected from playlist button on YouTubePlayer load all playlist again
+        // if (event.data == 5 && galleryData) {
+        //     let videoIds = galleryData.videos.map(video => video.id);
+        //     let currentMediaIndex = galleryData.videos.findIndex(video => video.id == currentMedia?.id)
+        //     event.target.loadPlaylist(videoIds, currentMediaIndex);
+        // }
+
         // If video id is not equal to current video id update it
         //console.log(event.target.playerInfo.videoData)
         if (event.target.playerInfo.videoData?.video_id) {
@@ -80,11 +69,11 @@ const Gallery: NextPage<any> = () => {
 
     const onReady: YouTubeProps['onReady'] = (event) => {
         setYoutubeApi(event.target);
-        if (galleryData) {
-            let videoIds = galleryData.videos.map(video => video.id);
-            let currentMediaIndex = galleryData.videos.findIndex(video => video.id == currentMedia?.id)
-            event.target.loadPlaylist(videoIds, currentMediaIndex);
-        }
+        // if (galleryData) {
+        //     let videoIds = galleryData.videos.map(video => video.id);
+        //     let currentMediaIndex = galleryData.videos.findIndex(video => video.id == currentMedia?.id)
+        //     event.target.loadPlaylist(videoIds, currentMediaIndex);
+        // }
     }
 
     let category = router.query.category as unknown as number;
@@ -102,6 +91,8 @@ const Gallery: NextPage<any> = () => {
             document.title = `lechixy | gallery`;
         }
     }, [currentMedia])
+
+
 
     return (
         <div className={styles.main}>
@@ -121,7 +112,12 @@ const Gallery: NextPage<any> = () => {
                         <div className={styles.watch}>
                             <div className={styles.player}>
                                 {currentMedia && (
-                                    <YouTube className={styles.youtube} onReady={onReady} onStateChange={onStateChanged} videoId={currentMedia.id} title={currentMedia.title} />
+                                    <YouTube className={styles.youtube} opts={{
+                                        playerVars: {
+                                            // https://developers.google.com/youtube/player_parameters
+                                            autoplay: 1,
+                                        },
+                                    }} onReady={onReady} onStateChange={onStateChanged} videoId={currentMedia.id} title={currentMedia.title} />
                                 )}
                                 {/* <iframe
                                     src={`https://www.youtube.com/embed/${currentMedia?.id}`}
@@ -131,7 +127,7 @@ const Gallery: NextPage<any> = () => {
                                 </iframe> */}
                             </div>
                             <div className={styles.about}>
-                                <div className={`${styles.queue} ${styles.previousVideo} ${nextVideo?.isFirst ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.previousVideo() }} >
+                                <div className={`${styles.queue} ${styles.previousVideo} ${nextVideo?.isFirst ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.loadVideoById(previousVideo!.id) }} >
                                     {previousVideo && (
                                         <>
                                             <div className={styles.queueContainer}>
@@ -147,7 +143,7 @@ const Gallery: NextPage<any> = () => {
                                     <div className={styles.title}>{currentMedia?.title}</div>
                                     <div>{`${currentMedia?.durationRaw} - ${currentMedia?.channel.name}`}</div>
                                 </div>
-                                <div className={`${styles.queue} ${styles.nextVideo} ${nextVideo?.isLast ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.nextVideo() }} >
+                                <div className={`${styles.queue} ${styles.nextVideo} ${nextVideo?.isLast ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.loadVideoById(nextVideo!.id) }} >
                                     {nextVideo && (
                                         <>
                                             <div className={styles.queueContainer}>
