@@ -37,6 +37,13 @@ const Tooltips: FC<TooltipsProps> = (props) => {
 
     let gameLargeText = data.activities.find(activity => activity.type === 0)?.assets?.large_text;
 
+    // Custom Status
+    let customStatus = data.activities.find((x) => x.type === 4);
+    let customStatusEmoji = customStatus?.emoji?.name;
+    let customStatusDiscordEmoji = customStatus?.emoji?.id
+        ? `https://cdn.discordapp.com/emojis/${customStatus?.emoji.id}${customStatus?.emoji.animated ? ".gif" : ".png"}`
+        : null;
+
     return (
         <>
             <NewTooltip
@@ -93,6 +100,13 @@ const Tooltips: FC<TooltipsProps> = (props) => {
                 place="bottom"
             >
                 {gameLargeText}
+            </NewTooltip>
+            <NewTooltip
+                anchorSelect={`.${DiscordStyles.customStatusDiscordEmoji}`}
+                id="customStatusDiscordEmoji"
+                place="bottom"
+            >
+                {customStatusEmoji}
             </NewTooltip>
         </>
     )

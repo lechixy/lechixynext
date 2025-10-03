@@ -1,5 +1,5 @@
 import { FinalColor } from "extract-colors/lib/types/Color";
-import { snowflake } from "./icons_svg";
+import { leaf, snowflake } from "./icons_svg";
 
 export const gameIcons = {
     lol: "https://cdn.discordapp.com/app-icons/401518684763586560/2c1781b672e14e86b7bec677eee2fbde.png?size=160&keep_aspect_ratio=false"
@@ -330,7 +330,7 @@ export class Util {
             particle = ""
             renderParticle = false;
         } else if (season == "autumn") {
-            particle = "🍂"
+            particle = leaf;
             emojis = "🍂"
             renderParticle = true;
         }

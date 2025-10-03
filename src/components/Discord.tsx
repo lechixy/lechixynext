@@ -37,6 +37,7 @@ export const Discord: FC<DiscordProps> = ({ loadingText }) => {
         
         // Custom Status
         let customStatus = info.activities.find((x) => x.type === 4);
+        console.log(customStatus);
         let customStatusEmoji = customStatus?.emoji?.name;
         let customStatusText = customStatus ? customStatus?.state : null;
         let customStatusDiscordEmoji = customStatus?.emoji?.id
@@ -70,15 +71,14 @@ export const Discord: FC<DiscordProps> = ({ loadingText }) => {
                         </div>
                         {customStatus && (
                             <div className={styles.customStatus}>
-                                {customStatusEmoji && (
-                                    <div className={styles.customStatusEmoji}>{customStatusEmoji}</div>
-                                )}
-                                {customStatusDiscordEmoji && (
+                                {customStatusDiscordEmoji ? (
                                     <img
                                         className={styles.customStatusDiscordEmoji}
                                         src={customStatusDiscordEmoji}
                                         alt={customStatusEmoji}
                                     />
+                                ) : customStatusEmoji && (
+                                    <div className={styles.customStatusEmoji}>{customStatusEmoji}</div>
                                 )}
                                 {customStatusText && (
                                     <div className={styles.customStatusText}>{customStatusText}</div>

@@ -37,7 +37,7 @@ export const GameActivity: FC<{ activity: GameActivity }> = ({ activity }) => {
 
     let large_icon = activityStatus?.assets?.large_image && Util.decideContent(activityStatus, 'large')
     let small_icon = activityStatus?.assets?.small_image && Util.decideContent(activityStatus, 'small')
-    let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
+    let noicon = `/images/activityNotFound.png`
     let game_name = activityStatus?.name ? `${activityStatus.name}` : undefined;
 
     const [start, setStart] = useState<any>(null)
