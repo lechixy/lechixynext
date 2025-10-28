@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import HomeStyles from 'styles/main/Home.module.scss';
 
+/*
+ ! This page is created by ChatGPT 5
+*/
+
 interface Position {
     x: number;
     y: number;
