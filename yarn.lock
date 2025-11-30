@@ -1135,3 +1135,8 @@ youtube-player@^5.6.0:
     debug "^4.3.4"
     load-script "^1.0.0"
     sister "^3.0.0"
+
+ytdlp-nodejs@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/ytdlp-nodejs/-/ytdlp-nodejs-2.3.5.tgz#6a812e92a14d8ba684332f421e66fa7ee20a9879"
+  integrity sha512-7V08DRv8C1K0HxJFvRoaoLYFS/reJ9VJBlaMVhEvdi2IsYK/9Hae1Mah65Y+bhk3RAmx7G9eTfpOhkj3bp0Zbw==
