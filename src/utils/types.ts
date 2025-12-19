@@ -2,6 +2,11 @@ export type Props = {
     info: ApiRespond;
 };
 
+export type Github = {
+    last_updated: string;
+    last_commit_url: string;
+}
+
 export type ApiRespond = {
     spotify: {
         track_id: string
@@ -31,6 +36,7 @@ export type ApiRespond = {
     active_on_discord_web: boolean;
     active_on_discord_mobile: boolean;
     active_on_discord_desktop: boolean;
+    github: Github | null;
 } & Object;
 
 export type Season = "winter" | "autumn" | "spring" | "summer"

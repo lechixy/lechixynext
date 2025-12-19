@@ -1,8 +1,8 @@
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
 import { NewTooltip } from "components/Tooltip"
 import { Util } from "utils/Util"
 import moment from "moment"
-import { ApiRespond } from "utils/types"
+import { ApiRespond, Github } from "utils/types"
 import { BgInfo } from "pages/index"
 
 import HomeStyles from "styles/main/Home.module.scss"
@@ -32,6 +32,39 @@ const Tooltips: FC<TooltipsProps> = (props) => {
     if (data.active_on_discord_desktop) activeOn.push("Desktop");
     if (data.active_on_discord_web) activeOn.push("Web");
     if (data.active_on_discord_mobile) activeOn.push("Mobile");
+
+    const [github, setGithub] = useState<Github | null>(null);
+
+    async function getLastGithubCommit() {
+        const res = await fetch(
+            `https://api.github.com/repos/lechixy/lechixynext/commits?per_page=1`,
+            {
+                headers: {
+                    "User-Agent": "lechixy.dev" // GitHub bunu ister
+                }
+            }
+        );
+        if (!res.ok) {
+            console.error("Failed to fetch last commit date from GitHub API");
+            return;
+        }
+
+        const data = await res.json();
+
+        let githubRawData = {
+            last_updated: data[0].commit.committer.date,
+            last_commit_url: `https://github.com/lechixy/lechixynext/commits/main/`
+        };
+        setGithub(githubRawData);
+        console.log("Last github commit:", githubRawData);
+    }
+
+    useEffect(() => {
+        getLastGithubCommit();
+    }, []);
+
+    let seasonText = `${moment().format("MMMM")} • ${Util.getSeasonName().charAt(0).toUpperCase() + Util.getSeasonName().slice(1).toLowerCase()} of ${moment().format("YYYY")}`;
+    let seasonText2 = `Last updated on ${moment(github?.last_updated).format("MMMM Do YYYY, h:mm a")}`;
 
     let watchSmallText = data.activities.find(activity => activity.type === 3)?.assets?.small_text;
 
@@ -71,7 +104,17 @@ const Tooltips: FC<TooltipsProps> = (props) => {
                 id="seasonInfo"
                 place="top"
             >
-                {Util.getSeasonName().charAt(0).toUpperCase() + Util.getSeasonName().slice(1).toLowerCase()}
+                <div style={{ textAlign: "center" }}>
+                    <span>{seasonText}</span>
+                    {github && (
+                        <>
+                            <br />
+                            <a href={github.last_commit_url} target="_blank" >
+                                <span>{seasonText2}</span>
+                            </a>
+                        </>
+                    )}
+                </div>
             </NewTooltip>
             <NewTooltip
                 anchorSelect={`.${WatchStyles.activitySmallImg}`}

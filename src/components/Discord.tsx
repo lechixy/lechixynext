@@ -37,7 +37,6 @@ export const Discord: FC<DiscordProps> = ({ loadingText }) => {
         
         // Custom Status
         let customStatus = info.activities.find((x) => x.type === 4);
-        console.log(customStatus);
         let customStatusEmoji = customStatus?.emoji?.name;
         let customStatusText = customStatus ? customStatus?.state : null;
         let customStatusDiscordEmoji = customStatus?.emoji?.id

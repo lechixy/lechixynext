@@ -8,7 +8,7 @@ import Discord from "components/Discord";
 import { WebSocketContext } from "utils/lanyard";
 import getIcon from "components/Icon";
 import { BingImageResponse, isMobile, Util } from "utils/Util";
-import { ApiRespond } from "utils/types";
+import { ApiRespond, Github } from "utils/types";
 import { extractColors } from "extract-colors";
 import { DynamicColorContext } from "utils/dynamicColor";
 import Link from "next/link";
@@ -51,6 +51,34 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
     bingImage,
     usingBackground,
   }
+
+  async function getLastGithubCommit() {
+    const res = await fetch(
+      `https://api.github.com/repos/lechixy/lechixynext/commits?per_page=1`,
+      {
+        headers: {
+          "User-Agent": "lechixy.dev" // GitHub bunu ister
+        }
+      }
+    );
+    if (!res.ok) {
+      console.error("Failed to fetch last commit date from GitHub API");
+      return;
+    }
+
+    const data = await res.json();
+
+    let githubRawData = {
+      last_updated: data[0].commit.committer.date,
+      last_commit_url: `https://github.com/lechixy/lechixynext/commits/main/`
+    };
+    //setGithub(githubRawData);
+    console.log("Last github commit:", githubRawData);
+  }
+
+  useEffect(() => {
+    //getLastGithubCommit();
+  }, []);
 
   let season = Util.getSeasonName();
   const [videoMuted, setVideoMuted] = useState(true);
@@ -138,6 +166,8 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
       });
     });
 
+
+
     // * WebSocket Connection *
     let interval: NodeJS.Timeout;
     let intervalTime: number;
@@ -173,8 +203,10 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
 
           case 0:
             Util.websocketlog(`${number++}. data received from discord, updating... `);
-            let discordData = jsConvert.d;
+            let discordData: ApiRespond = jsConvert.d;
+            //discordData.github = github;
             setData(discordData);
+            console.log(discordData)
             break;
         }
       });
@@ -363,6 +395,9 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
           >
             <div className={styles.stuff}>
               <div>
+                <div className={styles.stuffHeaderSeason}>
+                  <img src={`/seasons/${Util.getSeasonName()}_header_1.png`} />
+                </div>
                 <div className={styles.stuff_header}>
                   <div className={styles.stuffHeaderContainer}>
                     <span className={styles.stuffHeaderText}>Stuffs</span>

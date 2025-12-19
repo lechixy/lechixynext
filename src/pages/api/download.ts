@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { VideoInfo, YtDlp } from 'ytdlp-nodejs';
 
-const ytDlp = new YtDlp();
+const ytDlp = new YtDlp({
+    binaryPath: `${process.cwd()}/ytdlp.exe`,
+    ffmpegPath: ``,
+});
 
 export default async function handler(
     req: NextApiRequest,

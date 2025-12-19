@@ -103,7 +103,6 @@ export const Spotify: FC = () => {
         let dynamicSecondColor = dynamicColor.split(',')[1].trim();
         let dynamicThirdColor = dynamicColor.split(',')[2].trim();
 
-        console.log(dynamicThirdColor)
 
         // Rengin parlaklığını hesaplayan fonksiyon
         function calculateBrightness(r: number, g: number, b: number) {
@@ -114,11 +113,9 @@ export const Spotify: FC = () => {
         // Rengin cırtlak/parlak olup olmadığını kontrol eden fonksiyon
         function isBrightColor(color: string) {
             let rgb = Util.hexToRgb(color)
-            console.log(rgb)
 
             // Parlaklığı hesapla (0-255 arası)
             const brightness = calculateBrightness(rgb.r, rgb.g, rgb.b);
-            console.log(brightness)
 
             // Parlaklık 140'tan büyükse cırtlak/parlak kabul et
             return brightness > 135;
