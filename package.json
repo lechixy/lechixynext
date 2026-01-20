@@ -24,8 +24,7 @@
     "react-tooltip": "^5.28.0",
     "react-youtube": "^10.1.0",
     "sass": "^1.78.0",
-    "youtube-player": "^5.6.0",
-    "ytdlp-nodejs": "^2.3.5"
+    "youtube-player": "^5.6.0"
   },
   "devDependencies": {
     "@types/node": "^22.5.3",
