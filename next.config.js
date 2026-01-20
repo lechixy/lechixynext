@@ -2,13 +2,25 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: [
-      "static-cdn.jtvnw.net",
-      "cdn.discordapp.com",
-      "i.scdn.co",
-      "discord.com",
-    ]
-  }
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "static-cdn.jtvnw.net",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+      },
+      {
+        protocol: "https",
+        hostname: "i.scdn.co",
+      },
+      {
+        protocol: "https",
+        hostname: "discord.com",
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig

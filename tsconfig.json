@@ -3,7 +3,7 @@
     "baseUrl": "src",
     "strict": true,
     "esModuleInterop": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "target": "es5",
     "lib": [
