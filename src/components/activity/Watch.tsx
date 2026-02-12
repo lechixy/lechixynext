@@ -136,6 +136,7 @@ export const WatchActivity: FC = () => {
                     )} */}
                 </div>
                 <div className={styles.activityContent}>
+                    <span className={styles.activityContentName}>{activityStatus.name}</span>
                     <span className={styles.activityContentDetails}>{activityStatus.details}</span>
                     <span className={styles.activityContentState}>{activityStatus.state}</span>
                     {start ? <span className={styles.activityContentTimestamp}>{start} elapsed</span> : null}
