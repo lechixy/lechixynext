@@ -35,8 +35,11 @@ export const GameActivity: FC<{ activity: GameActivity }> = ({ activity }) => {
 
     let activityStatus = activity;
 
-    let large_icon = activityStatus?.assets?.large_image ?? Util.decideContent(activityStatus, 'large')
-    let small_icon = activityStatus?.assets?.small_image ?? Util.decideContent(activityStatus, 'small')
+    let large_icon: string | null;
+    activityStatus?.assets?.large_image ? large_icon = Util.fixAsset(activityStatus, 'large') : large_icon = null;
+    let small_icon: string | null;
+    activityStatus?.assets?.small_image ? small_icon = Util.fixAsset(activityStatus, 'small') : small_icon = null;
+
     let noicon = `/images/activityNotFound.png`
     let game_name = activityStatus?.name ? `${activityStatus.name}` : undefined;
 

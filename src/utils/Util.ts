@@ -366,11 +366,19 @@ export class Util {
         return `${this.formatTime(hour)}:${this.formatTime(min)}:${this.formatTime(sec)}`;
     }
 
-    static decideContent(status: any, type: 'large' | 'small') {
-        if (status.assets.large_image.startsWith('mp:external')) {
-            return 'https://media.discordapp.net/' + status.assets.large_image.slice(3);
+    static fixAsset(status: any, type: 'large' | 'small') {
+        if (type === 'large') {
+            if (status.assets.large_image.startsWith('mp:external')) {
+                return "https://media.discordapp.net/external/" + status.assets.large_image.split('mp:external/')[1];
+            } else {
+                return `https://cdn.discordapp.com/app-assets/${status.application_id}/${status.assets?.large_image}.png`
+            }
         } else {
-            return `https://cdn.discordapp.com/app-assets/${status.application_id}/${status.assets?.large_image}.png`
+             if (status.assets.small_image.startsWith('mp:external')) {
+                return "https://media.discordapp.net/external/" + status.assets.small_image.split('mp:external/')[1];
+            } else {
+                return `https://cdn.discordapp.com/app-assets/${status.application_id}/${status.assets?.small_image}.png`
+            }
         }
     }
 
