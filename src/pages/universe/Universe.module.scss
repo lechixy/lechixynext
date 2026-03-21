@@ -1,0 +1,49 @@
+.main {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background: black;
+    overflow: hidden;
+}
+
+.galaxyContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.quoteContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+
+    .blurText {
+        font-size: 24px;
+        color: white;
+        text-align: center;
+        // mouse events are disabled to prevent interaction with the text no hover because it needs to be interact with back of the text
+        pointer-events: none;
+        user-select: none;
+    }
+}
+
+.blurOut {
+    animation: blurOut 2s forwards;
+}
+
+@keyframes blurOut {
+    0% {
+        filter: blur(0px);
+        opacity: 1;
+    }
+
+    100% {
+        filter: blur(10px);
+        opacity: 0;
+    }
+}
