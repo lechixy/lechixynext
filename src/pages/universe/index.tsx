@@ -180,9 +180,54 @@ const Universe: NextPage = () => {
     const remountTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
+        window.navigator.mediaSession.metadata = new window.MediaMetadata({
+            title: 'Old Doll - Soft',
+            artist: 'Old Doll',
+            album: 'Soft',
+            artwork: [
+                { src: '/images/old_doll_soft.jpg', sizes: '720x720', type: 'image/jpeg' }
+            ]
+        });
+
+        const audio = document.querySelector('audio') as HTMLAudioElement | null;
+        if (audio) {
+            audio.volume = 0.1;
+            // lay() failed because the user didn't interact with the document first. To fix this, add a user interaction event listener and play the audio in response to a user gesture.
+            const handleUserInteraction = () => {
+                audio.play().catch((err) => {
+                    console.warn('Autoplay failed:', err);
+                });
+                window.removeEventListener('click', handleUserInteraction);
+                window.removeEventListener('touchstart', handleUserInteraction);
+            };
+            window.addEventListener('click', handleUserInteraction);
+            window.addEventListener('touchstart', handleUserInteraction);
+
+            audio.addEventListener('play', () => {
+                window.navigator.mediaSession.playbackState = 'playing';
+            });
+
+            audio.addEventListener('pause', () => {
+                window.navigator.mediaSession.playbackState = 'paused';
+            });
+        }
+
         return () => {
             if (remountTimeoutRef.current) {
                 clearTimeout(remountTimeoutRef.current);
+            }
+
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+
+                audio.removeEventListener('play', () => {
+                    window.navigator.mediaSession.playbackState = 'playing';
+                });
+
+                audio.removeEventListener('pause', () => {
+                    window.navigator.mediaSession.playbackState = 'paused';
+                });
             }
         };
     }, []);
@@ -239,6 +284,28 @@ const Universe: NextPage = () => {
                             />
                         )}
                     </div>
+                </div>
+                <div className={styles.musicContainer}>
+                    <audio controls loop>
+                        <source src="/sounds/old_doll_soft.webm" type="audio/webm" />
+                        Your browser does not support the audio element.
+                    </audio>
+                    {/* <div className={styles.musicInfo}>
+                        <p>Old Doll - Soft</p>
+                    </div>
+                    <div className={styles.play}>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    </div>
+                    <div className={styles.volume}>
+                        <input type="range" min="0" max="1" step="0.01" onChange={(e) => {
+                            const audio = document.querySelector('audio') as HTMLAudioElement | null;
+                            if (audio) {
+                                audio.volume = parseFloat(e.target.value);
+                            }
+                        }} />
+                    </div> */}
                 </div>
             </div>
         </>
