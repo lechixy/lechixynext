@@ -177,7 +177,14 @@ const Universe: NextPage = () => {
     const [currentTextIndex, setCurrentTextIndex] = useState(0);
     const [isTextMounted, setIsTextMounted] = useState(true);
     const [textRenderKey, setTextRenderKey] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
     const remountTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Detect if the device is mobile
+    useEffect(() => {
+        const mobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        setIsMobile(mobile);
+    }, []);
 
     useEffect(() => {
         window.navigator.mediaSession.metadata = new window.MediaMetadata({
@@ -192,16 +199,14 @@ const Universe: NextPage = () => {
         const audio = document.querySelector('audio') as HTMLAudioElement | null;
         if (audio) {
             audio.volume = 0.1;
-            // lay() failed because the user didn't interact with the document first. To fix this, add a user interaction event listener and play the audio in response to a user gesture.
+            // Autoplay failed: NotAllowedError: play() failed because the user didn't interact with the document first.
             const handleUserInteraction = () => {
                 audio.play().catch((err) => {
                     console.warn('Autoplay failed:', err);
                 });
-                window.removeEventListener('click', handleUserInteraction);
-                window.removeEventListener('touchstart', handleUserInteraction);
             };
-            window.addEventListener('click', handleUserInteraction);
-            window.addEventListener('touchstart', handleUserInteraction);
+
+            window.addEventListener('click', handleUserInteraction, { once: true });
 
             audio.addEventListener('play', () => {
                 window.navigator.mediaSession.playbackState = 'playing';
@@ -266,6 +271,7 @@ const Universe: NextPage = () => {
                     autoCenterRepulsion={0}
                     starSpeed={0.5}
                     speed={1}
+                    isMobile={isMobile}
                 />
                 <div className={styles.quoteContainer}>
                     <div className={styles.quote}>

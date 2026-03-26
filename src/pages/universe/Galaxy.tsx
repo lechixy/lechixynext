@@ -190,11 +190,12 @@ interface GalaxyProps {
     repulsionStrength?: number;
     autoCenterRepulsion?: number;
     transparent?: boolean;
+    isMobile?: boolean;
 }
 
 export default function Galaxy({
-  focal = DEFAULT_FOCAL,
-  rotation = DEFAULT_ROTATION,
+    focal = DEFAULT_FOCAL,
+    rotation = DEFAULT_ROTATION,
     starSpeed = 0.5,
     density = 1,
     hueShift = 140,
@@ -209,6 +210,7 @@ export default function Galaxy({
     rotationSpeed = 0.1,
     autoCenterRepulsion = 0,
     transparent = true,
+    isMobile = false,
     ...rest
 }: GalaxyProps) {
     const ctnDom = useRef<HTMLDivElement>(null);
@@ -367,8 +369,24 @@ export default function Galaxy({
         }
 
         if (mouseInteraction) {
-            ctn.addEventListener('mousemove', handleMouseMove);
-            ctn.addEventListener('mouseleave', handleMouseLeave);
+            if (isMobile) {
+                ctn.addEventListener('touchmove', (e) => {
+                    if (e.touches.length > 0) {
+                        const touch = e.touches[0];
+                        const rect = ctn.getBoundingClientRect();
+                        const x = (touch.clientX - rect.left) / rect.width;
+                        const y = 1.0 - (touch.clientY - rect.top) / rect.height;
+                        targetMousePos.current = { x, y };
+                        targetMouseActive.current = 1.0;
+                    }
+                });
+                ctn.addEventListener('touchend', () => {
+                    targetMouseActive.current = 0.0;
+                });
+            } else {
+                ctn.addEventListener('mousemove', handleMouseMove);
+                ctn.addEventListener('mouseleave', handleMouseLeave);
+            }
         }
 
         return () => {
@@ -397,7 +415,8 @@ export default function Galaxy({
         rotationSpeed,
         repulsionStrength,
         autoCenterRepulsion,
-        transparent
+        transparent,
+        isMobile
     ]);
 
     return <div ref={ctnDom} className={styles.galaxyContainer} {...rest} />;
