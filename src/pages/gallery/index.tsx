@@ -95,103 +95,109 @@ const Gallery: NextPage<any> = () => {
 
 
     return (
-        <div className={styles.main}>
-            <div className={styles.container}>
-                <div className={`${styles.navigation} ${playing ? styles.playing : ""}`}>
-                    <Link href={currentMedia ? "/gallery" : "/"}>
-                        <div className={styles.icon}>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                                <path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
-                            </svg>
-                        </div>
-                    </Link>
-                    <div className={styles.title}>{currentMedia ? `${currentCategory.title} | ${currentMedia.title}` : `Gallery`}</div>
-                </div>
-                <div className={styles.gallery}>
-                    {player ? (
-                        <div className={styles.watch}>
-                            <div className={styles.player}>
-                                {currentMedia && (
-                                    <YouTube className={styles.youtube} opts={{
-                                        playerVars: {
-                                            // https://developers.google.com/youtube/player_parameters
-                                            autoplay: 1,
-                                        },
-                                    }} onReady={onReady} onStateChange={onStateChanged} videoId={currentMedia.id} title={currentMedia.title} />
-                                )}
-                                {/* <iframe
+        <>
+            <Head>
+                <title>lechixy's website | gallery</title>
+                <meta name="theme-color" content="#000000"></meta>
+            </Head>
+            <div className={styles.main}>
+                <div className={styles.container}>
+                    <div className={`${styles.navigation} ${playing ? styles.playing : ""}`}>
+                        <Link href={currentMedia ? "/gallery" : "/"}>
+                            <div className={styles.icon}>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                    <path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
+                                </svg>
+                            </div>
+                        </Link>
+                        <div className={styles.title}>{currentMedia ? `${currentCategory.title} | ${currentMedia.title}` : `Gallery`}</div>
+                    </div>
+                    <div className={styles.gallery}>
+                        {player ? (
+                            <div className={styles.watch}>
+                                <div className={styles.player}>
+                                    {currentMedia && (
+                                        <YouTube className={styles.youtube} opts={{
+                                            playerVars: {
+                                                // https://developers.google.com/youtube/player_parameters
+                                                autoplay: 1,
+                                            },
+                                        }} onReady={onReady} onStateChange={onStateChanged} videoId={currentMedia.id} title={currentMedia.title} />
+                                    )}
+                                    {/* <iframe
                                     src={`https://www.youtube.com/embed/${currentMedia?.id}`}
                                     title={currentMedia?.title}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     referrerPolicy="strict-origin-when-cross-origin" allowFullScreen>
                                 </iframe> */}
+                                </div>
+                                <div className={styles.about}>
+                                    <div className={`${styles.queue} ${styles.previousVideo} ${nextVideo?.isFirst ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.loadVideoById(previousVideo!.id) }} >
+                                        {previousVideo && (
+                                            <>
+                                                <div className={styles.queueContainer}>
+                                                    <div className={styles.queueTitle}>{previousVideo.isFirst ? "First" : "Previous"}</div>
+                                                    <div className={styles.queueVideoName}>{previousVideo.title}</div>
+                                                </div>
+                                                <div className={`${styles.gradient} ${styles.previousGradient}`} />
+                                                <img src={previousVideo.thumbnail.url} alt={previousVideo.title} />
+                                            </>
+                                        )}
+                                    </div>
+                                    <div className={styles.videoInfo}>
+                                        <div className={styles.title}>{currentMedia?.title}</div>
+                                        <div>{`${currentMedia?.durationRaw} - ${currentMedia?.channel.name}`}</div>
+                                    </div>
+                                    <div className={`${styles.queue} ${styles.nextVideo} ${nextVideo?.isLast ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.loadVideoById(nextVideo!.id) }} >
+                                        {nextVideo && (
+                                            <>
+                                                <div className={styles.queueContainer}>
+                                                    <div className={styles.queueTitle}>{nextVideo.isLast ? "Last" : "Next"}</div>
+                                                    <div className={styles.queueVideoName}>{nextVideo.title}</div>
+                                                </div>
+                                                <div className={`${styles.gradient} ${styles.nextGradient}`} />
+                                                <img src={nextVideo.thumbnail.url} alt={nextVideo.title} />
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                            <div className={styles.about}>
-                                <div className={`${styles.queue} ${styles.previousVideo} ${nextVideo?.isFirst ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.loadVideoById(previousVideo!.id) }} >
-                                    {previousVideo && (
-                                        <>
-                                            <div className={styles.queueContainer}>
-                                                <div className={styles.queueTitle}>{previousVideo.isFirst ? "First" : "Previous"}</div>
-                                                <div className={styles.queueVideoName}>{previousVideo.title}</div>
-                                            </div>
-                                            <div className={`${styles.gradient} ${styles.previousGradient}`} />
-                                            <img src={previousVideo.thumbnail.url} alt={previousVideo.title} />
-                                        </>
-                                    )}
-                                </div>
-                                <div className={styles.videoInfo}>
-                                    <div className={styles.title}>{currentMedia?.title}</div>
-                                    <div>{`${currentMedia?.durationRaw} - ${currentMedia?.channel.name}`}</div>
-                                </div>
-                                <div className={`${styles.queue} ${styles.nextVideo} ${nextVideo?.isLast ? "" : styles.videoAvailable}`} onClick={() => { youtubeApi?.loadVideoById(nextVideo!.id) }} >
-                                    {nextVideo && (
-                                        <>
-                                            <div className={styles.queueContainer}>
-                                                <div className={styles.queueTitle}>{nextVideo.isLast ? "Last" : "Next"}</div>
-                                                <div className={styles.queueVideoName}>{nextVideo.title}</div>
-                                            </div>
-                                            <div className={`${styles.gradient} ${styles.nextGradient}`} />
-                                            <img src={nextVideo.thumbnail.url} alt={nextVideo.title} />
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={styles.categories}>
-                            <div className={styles.blank} />
-                            <div className={styles.category}>
-                                <div className={styles.top}>
-                                    <div className={styles.title}>{gallery[0].title}</div>
-                                    <div className={styles.description}>{gallery[0].description}</div>
-                                </div>
-                                <div className={styles.videos}>
-                                    {galleryData ? (
-                                        galleryData.videos.reverse().map(video => {
-                                            return (
-                                                <Link href={`/gallery?category=0&item=${video.id}`} key={video.id}>
-                                                    <div className={styles.video}>
-                                                        <img draggable={false} src={Util.youtubeThumbnail(video.id)} alt={video.title} />
-                                                        <div style={{
-                                                            backgroundImage: `linear-gradient(hsla(0, 0%, 0%, 30%), hsla(0, 0%, 0%, 30%)), url(${Util.youtubeThumbnail(video.id)})`
-                                                        }} className={styles.overlay}></div>
-                                                        <div className={styles.content}>
-                                                            <div className={styles.title}>{video.title}</div>
+                        ) : (
+                            <div className={styles.categories}>
+                                <div className={styles.blank} />
+                                <div className={styles.category}>
+                                    <div className={styles.top}>
+                                        <div className={styles.title}>{gallery[0].title}</div>
+                                        <div className={styles.description}>{gallery[0].description}</div>
+                                    </div>
+                                    <div className={styles.videos}>
+                                        {galleryData ? (
+                                            galleryData.videos.reverse().map(video => {
+                                                return (
+                                                    <Link href={`/gallery?category=0&item=${video.id}`} key={video.id}>
+                                                        <div className={styles.video}>
+                                                            <img draggable={false} src={Util.youtubeThumbnail(video.id)} alt={video.title} />
+                                                            <div style={{
+                                                                backgroundImage: `linear-gradient(hsla(0, 0%, 0%, 30%), hsla(0, 0%, 0%, 30%)), url(${Util.youtubeThumbnail(video.id)})`
+                                                            }} className={styles.overlay}></div>
+                                                            <div className={styles.content}>
+                                                                <div className={styles.title}>{video.title}</div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </Link>
-                                            )
-                                        })
-                                    ) : (
-                                        <Spinner text="Loading playlist..." />
-                                    )}
+                                                    </Link>
+                                                )
+                                            })
+                                        ) : (
+                                            <Spinner text="Loading playlist..." />
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 };
 

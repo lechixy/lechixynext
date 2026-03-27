@@ -256,6 +256,7 @@ const Universe: NextPage = () => {
         <>
             <Head>
                 <title>lechixy's website | universe</title>
+                <meta name="theme-color" content="#000000"></meta>
             </Head>
             <div className={styles.main}>
                 <Galaxy

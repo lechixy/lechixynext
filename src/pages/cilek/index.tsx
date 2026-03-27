@@ -28,6 +28,7 @@ const Cilek: NextPage = () => {
         <>
             <Head>
                 <title>🍓🩵</title>
+                <meta name="theme-color" content="#ff0062"></meta>
             </Head>
             <div className={`${styles.not_loaded} ${styles.main}`}>
                 <div className={styles.night}></div>

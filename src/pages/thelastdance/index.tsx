@@ -13,6 +13,7 @@ const TheLastDance: NextPage = () => {
         <>
             <Head>
                 <title>lechixy | the last dance...</title>
+                <meta name="theme-color" content="#000000"></meta>
             </Head>
             <div className={styles.main}>
                 <div className={styles.container}>

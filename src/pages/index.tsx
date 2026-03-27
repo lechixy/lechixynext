@@ -367,6 +367,7 @@ const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
     <div className={styles.main}>
       <Head>
         <title>lechixy's website | flawless</title>
+        <meta name="theme-color" content="#00fff8"></meta>
       </Head>
       <div className={styles.background} onClick={() => background.animated && changeVideoVolume()}>
         {background.animated ? (
