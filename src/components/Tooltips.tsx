@@ -3,7 +3,7 @@ import { NewTooltip } from "components/Tooltip"
 import { Util } from "utils/Util"
 import moment from "moment"
 import { ApiRespond, Github } from "utils/types"
-import { BgInfo } from "pages/index"
+import type { BgInfo } from "pages/old"
 
 import HomeStyles from "styles/main/Home.module.scss"
 import WatchStyles from "components/activity/Watch.module.scss"
@@ -13,7 +13,7 @@ import GameStyles from "components/activity/Game.module.scss"
 
 type TooltipsProps = {
     data: ApiRespond;
-    bgInfo: BgInfo;
+    bgInfo?: BgInfo;
 }
 
 const Tooltips: FC<TooltipsProps> = (props) => {
@@ -83,7 +83,7 @@ const Tooltips: FC<TooltipsProps> = (props) => {
                 anchorSelect={`.${HomeStyles.backgroundInfo}`}
                 id="bgInfo"
             >
-                {bgInfo.usingBackground === "bing" && (
+                {bgInfo?.usingBackground === "bing" && (
                     <a href={bgInfo.bingImage.images[0].copyrightlink} target="_blank" rel="noreferrer">
                         <span>{`${bgInfo.bingImage.images[0].title} • ${moment(bgInfo.bingImage.images[0].startdate).format("MMMM Do YYYY")}`}</span>
                         <span>{bgInfo.bingImage.images[0].copyright}</span>

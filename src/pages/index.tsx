@@ -1,480 +1,387 @@
-/* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from "react";
-import styles from "styles/main/Home.module.scss";
-import socials from "utils/socials";
-import { GetServerSidePropsResult, GetStaticPropsContext, NextPage } from "next";
-import Head from "next/head";
-import Discord from "components/Discord";
-import { WebSocketContext } from "utils/lanyard";
-import getIcon from "components/Icon";
-import { BingImageResponse, isMobile, Util } from "utils/Util";
-import { ApiRespond, Github } from "utils/types";
+import type { GetStaticProps, NextPage } from "next";
+import styles from "styles/main/New.module.scss";
+import Spacer from "components/Spacer";
+import { FaCode, FaInfoCircle, FaRegEnvelope } from "react-icons/fa";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import type { ApiRespond, Project } from "utils/types";
+import { Util } from "utils/Util";
+import { motion } from "motion/react";
+import StatusIndicator from "components/StatusIndicator";
+import PresenceOverview from "components/PresenceOverview";
+import Presence from "components/Presence";
 import { extractColors } from "extract-colors";
+import type { FinalColor } from "extract-colors/lib/types/Color";
+import SplitText from "components/reactbits/SplitText";
+import Spinner from "components/Spinner";
+import GradientText from "components/reactbits/GradientText";
 import { DynamicColorContext } from "utils/dynamicColor";
-import Link from "next/link";
-import { FaInfo, FaVolumeDown, FaVolumeMute } from "react-icons/fa";
 import Tooltips from "components/Tooltips";
-import KeyboardMovementContainer from "components/KeyboardMovement";
+import Projects from "components/Projects";
+import Skills from "components/Skills";
+import Starfield from "components/Starfield";
+import { getPinnedProjects, PROJECTS_REVALIDATE_SECONDS } from "utils/githubProjects";
+import ClickSpark from "@/src/components/reactbits/ClickSpark";
 
-type MainProps = {
-  background: {
-    src: string;
-    animated: boolean;
-  };
-  bingImage: BingImageResponse;
-  loadingText: string;
+type HomeProps = { projects: Project[] | null };
+
+const sectionLinks = [
+    { id: "presence", label: "Presence" },
+    { id: "projects", label: "Projects" },
+    { id: "skills", label: "Skills" },
+    { id: "contact", label: "Contact" },
+];
+
+const homePalettes = [
+    { primary: "#F7B8DC", secondary: "#D2C2FF", tertiary: "#AECFFF" },
+    { primary: "#B6D4FF", secondary: "#B9EBF5", tertiary: "#B8F1D8" },
+    { primary: "#FFCAA9", secondary: "#F8BCD3", tertiary: "#E1C4FC" },
+    { primary: "#C7EFA6", secondary: "#B1E9CC", tertiary: "#ABE1EF" },
+    { primary: "#FFD98F", secondary: "#FFC5A7", tertiary: "#F5BCD5" },
+];
+
+const developerColors = ["var(--home-primary)", "var(--home-secondary)", "var(--home-tertiary)"];
+
+function brightness({ red, green, blue }: FinalColor) {
+    return red * 0.2126 + green * 0.7152 + blue * 0.0722;
 }
 
-export type BgInfo = {
-  bingImage: BingImageResponse;
-  usingBackground: "bing" | "seasonal";
+function albumAccent(color: FinalColor) {
+    const lift = Math.round(Math.max(0, 1 - brightness(color) / 145) * 60);
+    return lift ? `color-mix(in oklab, ${color.hex}, white ${lift}%)` : color.hex;
 }
 
-const usingBackground: "bing" | "seasonal" = "bing";
+// In dark mode i use amoled black, in light mode i use white. I will add a toggle for dark mode later.
+// Only add dark mode when i type "dark" in the className of the div. I will add a toggle for dark mode later.
 
-const Main: NextPage<MainProps> = ({ background, loadingText, bingImage }) => {
+const New: NextPage<HomeProps> = ({ projects }) => {
+    const pageRef = useRef<HTMLDivElement>(null);
+    const infoRef = useRef<HTMLDetailsElement>(null);
+    const [loadingText, setLoadingText] = useState("Loading presence data...");
+    const [palette, setPalette] = useState(homePalettes[0]);
 
-  const [data, setData] = useState<ApiRespond | null>(null);
-  const [seasonEmojis, setSeasonEmojis] = useState("");
-
-  /**
-   * * Background Selection *
-   */
-  let bg: string = bingImage.images[0].url;
-  if (usingBackground === "bing") {
-    bg = bingImage.images[0].url;
-  } else if (usingBackground === "seasonal") {
-    bg = background.src;
-  }
-
-  let bgInfo: BgInfo = {
-    bingImage,
-    usingBackground,
-  }
-
-  async function getLastGithubCommit() {
-    const res = await fetch(
-      `https://api.github.com/repos/lechixy/lechixynext/commits?per_page=1`,
-      {
-        headers: {
-          "User-Agent": "lechixy.dev" // GitHub bunu ister
+    useEffect(() => {
+        setLoadingText(Util.getRandomLoadingText());
+        let index = Math.floor(Math.random() * homePalettes.length);
+        try {
+            const key = "lechixy:home-palette";
+            if (sessionStorage.getItem(key) === String(index)) {
+                index = (index + 1 + Math.floor(Math.random() * (homePalettes.length - 1))) % homePalettes.length;
+            }
+            sessionStorage.setItem(key, String(index));
+        } catch {
+            // The random palette still works when session storage is unavailable.
         }
-      }
-    );
-    if (!res.ok) {
-      console.error("Failed to fetch last commit date from GitHub API");
-      return;
-    }
+        setPalette(homePalettes[index]);
+    }, []);
 
-    const data = await res.json();
+    useEffect(() => {
+        const closeOnOutsidePress = (event: PointerEvent) => {
+            const info = infoRef.current;
+            if (info?.open && event.target instanceof Node && !info.contains(event.target)) info.open = false;
+        };
 
-    let githubRawData = {
-      last_updated: data[0].commit.committer.date,
-      last_commit_url: `https://github.com/lechixy/lechixynext/commits/main/`
-    };
-    //setGithub(githubRawData);
-    console.log("Last github commit:", githubRawData);
-  }
+        document.addEventListener("pointerdown", closeOnOutsidePress);
+        return () => document.removeEventListener("pointerdown", closeOnOutsidePress);
+    }, []);
 
-  useEffect(() => {
-    //getLastGithubCommit();
-  }, []);
+    useEffect(() => {
+        const page = pageRef.current;
+        if (!page) return;
 
-  let season = Util.getSeasonName();
-  const [videoMuted, setVideoMuted] = useState(true);
-  const [dynamicColor, setDynamicColor] = useState(`var(--${season})`);
+        let trackedHash = "";
+        let reachedSection = false;
+        const updateSectionHash = () => {
+            const { hash, pathname, search } = window.location;
+            if (hash !== trackedHash) {
+                trackedHash = hash;
+                reachedSection = false;
+            }
+            if (!hash) return;
 
-  useEffect(() => {
-    //console.log(data)
-    if (data && data.spotify) {
-      extractColors(data.spotify.album_art_url, {
-        crossOrigin: "anonymous",
-        pixels: 100000,
-        colorValidator: (r, g, b, a = 255) => a > 200,
-        distance: 0.15,
-      })
-        .then(colors => {
-          //console.log(colors)
-          //let newColors = colors.length >= 3 ? `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}` : `${colors[0].hex}, ${colors[1].hex}`;
-          let newColors = `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}`
-          setDynamicColor(newColors)
-          let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
-          stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
+            const section = document.getElementById(hash.slice(1));
+            if (section?.parentElement !== page || section.tagName !== "SECTION") return;
 
-          let stuffsHeaderContainer = document.querySelector(`.${styles.stuffHeaderContainer}`) as HTMLDivElement;
-          stuffsHeaderContainer.style.setProperty("--stuff-color-1", colors[0].hex);
+            const center = page.getBoundingClientRect().top + page.clientHeight / 2;
+            const { top, bottom } = section.getBoundingClientRect();
+            if (top <= center && center < bottom) {
+                reachedSection = true;
+            } else if (reachedSection) {
+                window.history.replaceState(window.history.state, "", pathname + search);
+                trackedHash = "";
+                reachedSection = false;
+            }
+        };
 
-          let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
-          bottomText.style.background = `linear-gradient(to right, ${newColors})`;
+        updateSectionHash();
+        page.addEventListener("scroll", updateSectionHash, { passive: true });
+        window.addEventListener("hashchange", updateSectionHash);
+        return () => {
+            page.removeEventListener("scroll", updateSectionHash);
+            window.removeEventListener("hashchange", updateSectionHash);
+        };
+    }, []);
 
-          let isWhiteOrBlack = Util.handleTextColor(colors[1]);
-          let stuffs_header_text = document.querySelector(`.${styles.stuffHeaderText}`) as HTMLDivElement;
-          stuffs_header_text.style.color = isWhiteOrBlack;
-        })
-        .catch(console.error);
-    } else {
+    const [data, setData] = useState<ApiRespond | null>(null);
+    const albumArtUrl = data?.listening_to_spotify ? data.spotify?.album_art_url : undefined;
+    const [albumPalette, setAlbumPalette] = useState<FinalColor[] | null>(null);
+    const activeAlbum = albumArtUrl ? albumPalette : null;
+    const albumColors = activeAlbum?.map(color => color.hex) ?? null;
+    const dynamicColor = albumColors?.join(", ") ?? `var(--${Util.getSeasonName()})`;
+    const darkestAlbumColor = activeAlbum?.reduce((darkest, color) => brightness(color) < brightness(darkest) ? color : darkest);
+    const backdrop = darkestAlbumColor
+        ? `color-mix(in srgb, ${darkestAlbumColor.hex} ${Math.round(34 - brightness(darkestAlbumColor) / 14)}%, #090b13)`
+        : `color-mix(in srgb, ${palette.primary} 13%, #090b13)`;
+    const [primary, secondary, tertiary] = activeAlbum?.map(albumAccent) ?? [palette.primary, palette.secondary, palette.tertiary];
 
-      extractColors(bg, {
-        crossOrigin: "anonymous",
-      })
-        .then(colors => {
-          //console.log(colors)
-          //let newColors = colors.length >= 3 ? `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}` : `${colors[0].hex}, ${colors[1].hex}`;
-          let newColors = `${colors[0].hex}, ${colors[1].hex}, ${colors[2].hex}`
-          setDynamicColor(newColors)
-          let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
-          stuffs_header.style.background = `linear-gradient(to right, ${newColors})`;
+    useEffect(() => {
+        if (!albumArtUrl) {
+            setAlbumPalette(null);
+            return;
+        }
 
-          let stuffsHeaderContainer = document.querySelector(`.${styles.stuffHeaderContainer}`) as HTMLDivElement;
-          stuffsHeaderContainer.style.setProperty("--stuff-color-1", colors[0].hex);
+        let current = true;
+        extractColors(albumArtUrl, {
+            crossOrigin: "anonymous",
+            pixels: 100000,
+            colorValidator: (_r, _g, _b, a = 255) => a > 200,
+            distance: 0.09,
+        }).then(colors => {
+            if (!current) return;
+            const significant = colors.filter(color => color.area >= 0.025);
+            const swatches = significant.length ? significant : colors;
+            setAlbumPalette(swatches.length ? [0, 1, 2].map(index => swatches[index % swatches.length]) : null);
+        }).catch(error => {
+            if (current) {
+                setAlbumPalette(null);
+                console.error(error);
+            }
+        });
 
-          let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
-          bottomText.style.background = `linear-gradient(to right, ${newColors})`;
+        return () => { current = false; };
+    }, [albumArtUrl]);
 
-          let isWhiteOrBlack = Util.handleTextColor(colors[1]);
-          let stuffs_header_text = document.querySelector(`.${styles.stuffHeaderText}`) as HTMLDivElement;
-          stuffs_header_text.style.color = isWhiteOrBlack;
-        })
-        .catch(console.error);
-      // setDynamicColor(`var(--${season})`)
-      // Util.log("No data from Spotify, using seasonal color...");
-      // let stuffs_header = document.querySelector(`.${styles.stuff_header}`) as HTMLDivElement;
-      // stuffs_header.style.background = `linear-gradient(to right, var(--${season}))`;
+    useEffect(() => {
+        // * WebSocket Connection *
+        let interval: NodeJS.Timeout;
+        let intervalTime: number;
+        let ws: WebSocket;
 
-      // let bottom_text = document.querySelector(`.${styles.bottom_text}`) as HTMLDivElement;
-      // bottom_text.style.background = `linear-gradient(to right, var(--${season}))`;
-    }
+        const connectToWebSocket = () => {
+            Util.websocketlog("Trying to connect websocket...");
+            ws = new WebSocket("wss://api.lanyard.rest/socket");
+            let number = 1;
 
-  }, [data])
+            ws.addEventListener("open", () => {
+                Util.websocketlog("Connected to websocket!");
+            });
+            ws.addEventListener("message", (message) => {
+                let jsConvert = JSON.parse(message.data);
+                switch (jsConvert.op) {
+                    // Opcode 1: Hello
+                    case 1:
+                        // Opcode 2: Initialize
+                        let op2 = {
+                            op: 2,
+                            d: {
+                                subscribe_to_id: "391511241786654721",
+                            },
+                        };
 
-  useEffect(() => {
-    function updateMousePosition(e: MouseEvent, element: HTMLAnchorElement) {
-      const rect = element.getBoundingClientRect();
-      const x = Math.floor(((e.clientX - rect.left) / rect.width) * 100);
-      const y = Math.floor(((e.clientY - rect.top) / rect.height) * 100);
+                        intervalTime = jsConvert.d.heartbeat_interval;
+                        ws.send(JSON.stringify(op2));
 
-      element.style.setProperty('--mouse-x', `${x}%`);
-      element.style.setProperty('--mouse-y', `${y}%`);
-    }
-
-    // Tüm hover efektli elementleri seç
-    const hoverElements = document.querySelectorAll(`.${styles.social}`) as NodeListOf<HTMLAnchorElement>;
-
-    hoverElements.forEach(element => {
-      element.addEventListener('mousemove', (e) => {
-        updateMousePosition(e, element);
-      });
-    });
+                        interval = setInterval(sendHeartbeat, intervalTime);
+                        break;
 
 
+                    case 0:
+                        Util.websocketlog(`${number++}. data received from discord, updating... `);
+                        let discordData: ApiRespond = jsConvert.d;
+                        //discordData.github = github;
+                        setData(discordData);
+                        console.log(discordData)
+                        break;
+                }
+            });
+            ws.addEventListener("close", (close) => {
+                if (close.code === 1000) {
+                    connectToWebSocket();
+                    return;
+                }
 
-    // * WebSocket Connection *
-    let interval: NodeJS.Timeout;
-    let intervalTime: number;
-    let ws: WebSocket;
+                Util.websocketlog(`Closed websocket connection: [${close?.code}] ${close?.reason}`);
+            });
+            ws.addEventListener("error", (error) => {
+                clearInterval(interval);
+                ws.close(1000);
+                Util.websocketlog(`An error occurred while websocket connection:`);
+                console.log(error);
+            });
 
-    const connectToWebSocket = () => {
-      Util.websocketlog("Trying to connect websocket...");
-      ws = new WebSocket("wss://api.lanyard.rest/socket");
-      let number = 1;
+            return ws;
+        };
+        const sendHeartbeat = () => {
+            Util.websocketlog("Sending heartbeat interval...");
 
-      ws.addEventListener("open", () => {
-        Util.websocketlog("Connected to websocket!");
-      });
-      ws.addEventListener("message", (message) => {
-        let jsConvert = JSON.parse(message.data);
-        switch (jsConvert.op) {
-          // Opcode 1: Hello
-          case 1:
-            // Opcode 2: Initialize
-            let op2 = {
-              op: 2,
-              d: {
-                subscribe_to_id: "391511241786654721",
-              },
+            if (ws.readyState === ws.CONNECTING) {
+                Util.websocketlog("Still trying to connect to websocket, passing heartbeat interval");
+                setData(null);
+                return;
+            }
+            else if (ws.readyState === ws.CLOSED) {
+                setData(null);
+                Util.websocketlog("No websocket connection, trying to reconnect...");
+                clearInterval(interval)
+                ws = connectToWebSocket();
+                return;
+            }
+
+            let op3 = {
+                op: 3,
             };
+            ws.send(JSON.stringify(op3));
+        };
 
-            intervalTime = jsConvert.d.heartbeat_interval;
-            ws.send(JSON.stringify(op2));
-
-            interval = setInterval(sendHeartbeat, intervalTime);
-            break;
-
-
-          case 0:
-            Util.websocketlog(`${number++}. data received from discord, updating... `);
-            let discordData: ApiRespond = jsConvert.d;
-            //discordData.github = github;
-            setData(discordData);
-            console.log(discordData)
-            break;
-        }
-      });
-      ws.addEventListener("close", (close) => {
-        if (close.code === 1000) {
-          connectToWebSocket();
-          return;
-        }
-
-        Util.websocketlog(`Closed websocket connection: [${close?.code}] ${close?.reason}`);
-      });
-      ws.addEventListener("error", (error) => {
-        clearInterval(interval);
-        ws.close(1000);
-        Util.websocketlog(`An error occurred while websocket connection:`);
-        console.log(error);
-      });
-
-      return ws;
-    };
-    const sendHeartbeat = () => {
-      Util.websocketlog("Sending heartbeat interval...");
-
-      if (ws.readyState === ws.CONNECTING) {
-        Util.websocketlog("Still trying to connect to websocket, passing heartbeat interval");
-        setData(null);
-        return;
-      }
-      else if (ws.readyState === ws.CLOSED) {
-        setData(null);
-        Util.websocketlog("No websocket connection, trying to reconnect...");
-        clearInterval(interval)
         ws = connectToWebSocket();
-        return;
-      }
+        // window.addEventListener('load', () => {
+        //   const preloader = document.querySelector(`.${styles.preloader}`)
+        //   preloader?.classList.add('disappear')
+        //   setTimeout(() => {
+        //     preloader?.remove()
+        //   }, 1000)
+        // })
 
-      let op3 = {
-        op: 3,
-      };
-      ws.send(JSON.stringify(op3));
-    };
+        return () => {
+            ws.close(1000);
+            clearInterval(interval);
+        };
+    }, []);
 
-    ws = connectToWebSocket();
-    // window.addEventListener('load', () => {
-    //   const preloader = document.querySelector(`.${styles.preloader}`)
-    //   preloader?.classList.add('disappear')
-    //   setTimeout(() => {
-    //     preloader?.remove()
-    //   }, 1000)
-    // })
+    return (
+        <ClickSpark
+            sparkColor="#ffffff"
+            sparkSize={10}
+            sparkRadius={15}
+            sparkCount={8}
+            duration={400}
+            scrollContainerRef={pageRef}
+        >
+            <div ref={pageRef} className={styles.page} style={{
+                "--home-primary": primary,
+                "--home-secondary": secondary,
+                "--home-tertiary": tertiary,
+                "--home-backdrop": backdrop,
+            } as CSSProperties}>
+                <Starfield palette={palette} albumColors={albumColors} />
+                <details ref={infoRef} className={styles.siteInfo} onKeyDown={event => {
+                    if (event.key === "Escape" && event.currentTarget.open) {
+                        event.currentTarget.open = false;
+                        event.currentTarget.querySelector("summary")?.focus();
+                    }
+                }}>
+                    <summary aria-label="Website information">
+                        <FaInfoCircle aria-hidden="true" />
+                    </summary>
+                    <div className={styles.siteInfoPanel} role="dialog" aria-label="Website information">
+                        <a href="https://github.com/lechixy/lechixynext/commits/main/" target="_blank" rel="noreferrer">
+                            <strong>Check project on GitHub</strong>
+                            <span>Last updated on March 27th 2026, 10:34 pm</span>
+                        </a>
+                    </div>
+                </details>
+                {/* Overview */}
+                <section className={`${styles.section} ${styles.overviewSection}`} id="overview">
+                    <motion.div
+                        layout
+                        initial={{ scale: 0 }} animate={{ scale: 1 }}
 
-    return () => {
-      ws.close(1000);
-      clearInterval(interval);
-    };
-  }, []);
+                        className={styles.overviewContent}>
+                        <motion.div className={styles.overviewImage} layout>
+                            <img src="https://avatars.githubusercontent.com/u/51778131?v=4" className="rounded-full aspect-square" draggable={false} />
+                            <div className={styles.statusIndicator}>
+                                <StatusIndicator status={data?.discord_status || "offline"} />
+                            </div>
+                        </motion.div>
+                        <motion.div className={styles.overviewAbout} layout>
+                            <h2 className="text-4xl text-gray-500">Hi, I'm</h2>
+                            <SplitText
+                                text="Melih"
+                                className="text-6xl font-semibold text-center"
+                                delay={100}
+                                duration={1.25}
+                                ease="power3.out"
+                                splitType="chars"
+                                from={{ opacity: 0, y: 40 }}
+                                to={{ opacity: 1, y: 0 }}
+                                threshold={0.1}
+                                textAlign="left"
+                            />
+                            <div className={styles.developerLabel}>
+                                <FaCode aria-hidden="true" />
+                                <GradientText colors={developerColors} animationSpeed={4}>
+                                    <p className="text-3xl font-semibold">Developer</p>
+                                </GradientText>
+                            </div>
+                            <Spacer height={20} />
+                            <PresenceOverview data={data} />
+                        </motion.div>
+                    </motion.div>
 
-  useEffect(() => {
-    let layerContainer = document.querySelector(`.${styles.layerContainer}`);
-
-    const season = Util.getSeasonName();
-    //const season = "summer"
-    const seasonContent = Util.getSeasonContent(season);
-
-    //Season Theme
-    let bottomText = document.querySelector(`.${styles.bottomText}`) as HTMLDivElement;
-    let bottomTextSpan = bottomText.querySelector(`span`) as HTMLSpanElement;
-    bottomTextSpan.textContent = seasonContent.seasonEmojis
-
-    setSeasonEmojis(season.charAt(0).toUpperCase() + season.slice(1).toLowerCase());
-
-    let interval: NodeJS.Timeout | null = null;
-
-    if (seasonContent.renderParticle) {
-      let spawnEvery = isMobile(navigator) ? 450 : 200;
-      interval = setInterval(() => {
-        createParticles();
-      }, spawnEvery);
-    }
-
-    function createParticles() {
-      let particle_div = document.createElement("div");
-      particle_div.innerHTML = seasonContent.seasonParticle;
-      particle_div.classList.add(styles.particle, styles[season]);
-
-      /**
-       * ! Particle Values
-       */
-
-      // Time
-      let life_time = Math.floor(Math.random() * 10) + 4250;
-      // Scale
-      let spawn_scale = Math.random() * 0.6 + 0.5;
-      let end_scale = Math.random() * 0.25 + spawn_scale;
-      // Position
-      let spawn_x = Math.floor(Math.random() * window.innerWidth);
-      let end_x = Math.floor(Math.random() * window.innerWidth);
-      let end_y = 102;
-      // Opacity
-      let spawn_opacity = Math.random() * 1 + 0.65;
-      let end_opacity = Math.abs(Math.random() * spawn_opacity);
-      // Rotation
-      let rotate_start = Math.floor(Math.random() * 270) + 90;
-      let rotate_end = Math.floor(Math.random() * (360 * 3));
-      // Depth
-      let depth = Math.round(Math.random() * 1);
-      particle_div.style.zIndex = depth.toString();
-
-      // If site in mobile version
-      if (window.innerWidth < 650) {
-        end_y = end_y + 100;
-      }
-
-      particle_div.animate(
-        [
-          {
-            transform: `translateY(-2vh) translateX(${spawn_x}px) rotateZ(${rotate_start}deg) scale(${spawn_scale})`,
-            opacity: spawn_opacity.toString(),
-          },
-          {
-            transform: `translateY(${end_y}vh) translateX(${end_x}px) rotateZ(${rotate_end}deg) scale(${end_scale})`,
-            opacity: end_opacity.toString(),
-          },
-        ],
-        {
-          duration: life_time,
-          fill: "forwards",
-          easing: "linear",
-        }
-      );
-
-      layerContainer?.append(particle_div);
-
-      let clear_timeout = setTimeout(() => {
-        particle_div.remove();
-        clearTimeout(clear_timeout);
-      }, life_time);
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [data]);
-
-  function changeVideoVolume() {
-    let video = document.querySelector("video") as HTMLVideoElement;
-    video.volume = 0.25;
-    if (video.muted) {
-      setVideoMuted(false);
-    } else {
-      setVideoMuted(true);
-    }
-  }
-
-  return (
-    <div className={styles.main}>
-      <Head>
-        <title>lechixy's website | flawless</title>
-        <meta name="theme-color" content="#00fff8"></meta>
-      </Head>
-      <div className={styles.background} onClick={() => background.animated && changeVideoVolume()}>
-        {background.animated ? (
-          <>
-            <video src={background.src} controls={false} disablePictureInPicture loop autoPlay muted={videoMuted} />
-            <button className={styles.muteButton} onClick={() => changeVideoVolume()}
-            >
-              {videoMuted ? <FaVolumeMute /> : <FaVolumeDown />}
-            </button>
-          </>
-        ) : (
-          <>
-            <img src={bg} alt="background" />
-            {usingBackground === "bing" && (
-              <div className={styles.backgroundInfo}>
-                <FaInfo />
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      <WebSocketContext.Provider value={data}>
-        <DynamicColorContext.Provider value={dynamicColor}>
-          <KeyboardMovementContainer
-            moveDistance={100}
-          >
-            <div className={styles.stuff}>
-              <div>
-                <div className={styles.stuffHeaderSeason}>
-                  <img src={`/seasons/${Util.getSeasonName()}_header_1.png`} />
-                </div>
-                <div className={styles.stuff_header}>
-                  <div className={styles.stuffHeaderContainer}>
-                    <span className={styles.stuffHeaderText}>Stuffs</span>
-                    <span className={styles.stuffHeaderTextGlow}>Stuffs</span>
-                  </div>
-                </div>
-                <div className={styles.stuffApps}>
-                  {socials.map((social) => {
-                    if (social.value == "ig" || social.value == "dc") return null;
-                    let appHoverColorFirst = social.color.replace("1)", "0.3)");
-                    let appHoverColorSecond = social.color.replace("1)", "0.05)");
-                    return (
-                      <Link
-                        href={social.url}
-                        target={social.type && social.type != "_blank" ? social.type : "_blank"}
-                        className={`${styles.social} ${styles[`social_${social.value.toLowerCase()}`]}`}
-                        style={{
-                          ["--app-color" as any]: social.color,
-                          ["--app-hover-color-1" as any]: appHoverColorFirst,
-                          ["--app-hover-color-2" as any]: appHoverColorSecond
-                        }}
-                        key={social.name}
-                      >
-                        <div className={styles.socialIcon}>
-                          {getIcon(social.value, styles)}
+                    <nav aria-label="Page sections" className={styles.sectionNav}>
+                        {sectionLinks.map(({ id, label }, index) => (
+                            <span key={id}>
+                                {index > 0 && <span aria-hidden="true">·</span>}
+                                <a href={`#${id}`}>{label}</a>
+                            </span>
+                        ))}
+                    </nav>
+                </section>
+                {/* Presence */}
+                <section className={`${styles.section} ${styles.presenceSection}`} id="presence">
+                    <DynamicColorContext.Provider value={dynamicColor}>
+                        <h1 className="text-4xl font-bold text-white">Presence</h1>
+                        <div className={styles.presenceContent}>
+                            {data != null ? (
+                                <Presence info={data} />
+                            ) : <>
+                                <Spinner text={loadingText} />
+                            </>}
                         </div>
-                        <div className={styles.socialInfo}>
-                          <div className={styles.socialNameContainer}>
-                            <span className={styles.socialName}>{social.name}</span>
-                            <span className={styles.socialNameGlow}>{social.name}</span>
-                          </div>
-                          <div className={styles.socialDetails}>{social.details}</div>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                    </DynamicColorContext.Provider>
+                </section>
+                <Projects projects={projects} />
+                <Skills />
+                {/* Contact */}
+                <section className={`${styles.section} ${styles.contactSection}`} id="contact">
+                    <h1 className="text-4xl font-bold text-white">Contact</h1>
+                    <a className={`${styles.contactLink} ${styles.scrollReveal}`} href="mailto:lechixy@gmail.com">
+                        <FaRegEnvelope aria-hidden="true" />
+                        <span>lechixy@gmail.com</span>
+                    </a>
+                </section>
+                <div className={styles.layerContainer}>
+                    <div className={styles.layers}>
+                        {data && (
+                            <Tooltips data={data} />
+                        )}
+                    </div>
                 </div>
-              </div>
-              <div
-                className={styles.bottomText}
-              >
-                <span>this will change i guess</span>
-              </div>
             </div>
-            <div className={styles.discord}>
-              <Discord loadingText={loadingText} />
-            </div>
-          </KeyboardMovementContainer>
-        </DynamicColorContext.Provider>
-      </WebSocketContext.Provider>
-      <div className={styles.layerContainer}>
-        <div className={styles.layers}>
-          {data && (
-            <Tooltips data={data} bgInfo={bgInfo} />
-          )}
-        </div>
-      </div>
-      {/* <div className={styles.preloader} >
-        <Spinner />
-      </div> */}
-    </div>
-  );
+        </ClickSpark>
+    )
+}
+
+export const getStaticProps: GetStaticProps<HomeProps> = async ({ revalidateReason }) => {
+    let projects: Project[] | null = null;
+    try {
+        projects = await getPinnedProjects();
+    } catch (error) {
+        // A failed regeneration should leave the last good page in the ISR cache.
+        if (revalidateReason !== "build" && process.env.NODE_ENV !== "development") throw error;
+        console.warn("Could not load pinned projects:", error);
+    }
+
+    return { props: { projects }, revalidate: PROJECTS_REVALIDATE_SECONDS };
 };
 
-export async function getServerSideProps(context: GetStaticPropsContext): Promise<GetServerSidePropsResult<MainProps>> {
-  let bg = Util.getRandomSeasonalBackground();
-  let bing = await Util.getTodaysBingImage()
-  let loadingText = Util.getRandomLoadingText();
-
-  return {
-    props: {
-      background: bg,
-      bingImage: bing,
-      loadingText: loadingText
-    },
-  };
-}
-
-export default Main;
+export default New;

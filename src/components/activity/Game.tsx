@@ -1,101 +1,52 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useState } from 'react'
-import styles from 'components/activity/Game.module.scss'
-import { ApiRespond } from 'utils/types';
-import { useContext, WebSocketContext } from 'utils/lanyard';
-import moment from 'moment';
-import { Util } from 'utils/Util';
-import PresenceStyles from 'components/Presence.module.scss';
+import { useEffect, useState } from "react";
+import { Util } from "utils/Util";
+import PresenceStyles from "components/Presence.module.scss";
+import styles from "./Game.module.scss";
 
 type GameActivity = {
     application_id: string;
-    assets: {
-        large_image: string;
-        small_image: string;
-        large_text?: string;
-        small_text?: string;
-    }
-    buttons?: string[];
-    created_at: number;
-    details: string;
-    flags?: number;
-    id: string;
+    assets?: { large_image?: string };
+    details?: string;
     name: string;
-    platform?: string;
-    session_id?: string;
-    state: string;
-    timestamps: {
-        start: number;
-        end?: number;
-    }
-    type: number;
-}
+    state?: string;
+    timestamps?: { start?: number };
+};
 
-export const GameActivity: FC<{ activity: GameActivity }> = ({ activity }) => {
-
-    let activityStatus = activity;
-
-    let large_icon: string | null;
-    activityStatus?.assets?.large_image ? large_icon = Util.fixAsset(activityStatus, 'large') : large_icon = null;
-    let small_icon: string | null;
-    activityStatus?.assets?.small_image ? small_icon = Util.fixAsset(activityStatus, 'small') : small_icon = null;
-
-    let noicon = `/images/activityNotFound.png`
-    let game_name = activityStatus?.name ? `${activityStatus.name}` : undefined;
-
-    const [start, setStart] = useState<any>(null)
-
+export function GameActivity({ activity }: { activity: GameActivity }) {
+    const artwork = activity.assets?.large_image ? Util.fixAsset(activity, "large") : null;
+    const start = activity.timestamps?.start;
+    const [now, setNow] = useState<number | null>(null);
     useEffect(() => {
-        if (!activityStatus.timestamps) {
-            setStart(null)
-            return;
-        }
+        if (!start) return;
 
-        const interval = setInterval(() => {
-            //Elapsed
-            let elapsedMs = Date.now() - activityStatus!.timestamps?.start
-            let elapsedSec = moment.duration(elapsedMs).asSeconds()
+        const tick = () => setNow(Date.now());
+        tick();
+        const timer = window.setInterval(tick, 500);
+        return () => window.clearInterval(timer);
+    }, [start]);
 
-            //Elapsed timestamp
-            let length = Util.toTimestamp(Math.floor(elapsedSec));
-
-            setStart(length)
-        }, 500)
-
-        return () => clearInterval(interval)
-    }, [activityStatus]);
+    const elapsed = start && now !== null ? Util.toTimestamp(Math.max(0, Math.floor((now - start) / 1000))) : null;
 
     return (
-        <div className={`${styles.gameActivity} ${PresenceStyles.entryAnimation}`}>
+        <div className={`${styles.gameActivity} ${PresenceStyles.activityCard} ${PresenceStyles.entryAnimation}`}>
+            {artwork && <img className={`${PresenceStyles.activityArtwork} ${PresenceStyles.artworkFade}`} src={artwork} alt="" />}
             <div className={styles.header}>
-                <span title={`Playing a game`}>PLAYING {game_name?.toUpperCase()}</span>
+                <span title="Playing a game">PLAYING {activity.name.toUpperCase()}</span>
             </div>
             <div className={styles.game_activity}>
                 <div className={styles.activity_img}>
                     <div className={styles.activityLargeImg}>
                         <div>
-                            {large_icon ? (
-                                <img src={large_icon} height={100} width={100} alt={game_name} />
-                            ) : (
-                                <img src={noicon} height={100} width={100} alt={game_name} />
-                            )}
+                            <img src={artwork ?? "/images/activityNotFound.png"} height={100} width={100} alt={activity.name} />
                         </div>
                     </div>
-                    {/* {small_text && (
-                        <div className={styles.activity_img_tooltip}>
-                            <div className={styles.activity_img_tooltip_arrow}></div>
-                            <div>{small_text}</div>
-                        </div>
-                    )}
-                    {small_icon && (
-                        <img src={small_icon} className={styles.activity_small_img} height={30} width={30} alt={game_name} />
-                    )} */}
                 </div>
                 <div className={styles.activity_text}>
-                    <span className={styles.activity_text_title} title={game_name}>{game_name}</span>
-                    <span className={styles.activity_text_details} title={activityStatus?.details}>{activityStatus?.details}</span>
-                    <span className={styles.activity_text_state} title={activityStatus?.state}>{activityStatus?.state}</span>
-                    {start ? <span className={styles.activity_text_timestamp}>{start} elapsed</span> : null}
+                    <span className={styles.activity_text_title} title={activity.name}>{activity.name}</span>
+                    <span className={styles.activity_text_details} title={activity.details}>{activity.details}</span>
+                    <span className={styles.activity_text_state} title={activity.state}>{activity.state}</span>
+                    {elapsed && <span className={styles.activity_text_timestamp}>{elapsed} elapsed</span>}
                 </div>
             </div>
         </div>

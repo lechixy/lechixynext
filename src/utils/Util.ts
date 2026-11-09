@@ -1,5 +1,6 @@
 import { FinalColor } from "extract-colors/lib/types/Color";
 import { leaf, snowflake } from "./icons_svg";
+import githubLanguageColors from "data/github_lang_colors.json";
 
 export const gameIcons = {
     lol: "https://cdn.discordapp.com/app-icons/401518684763586560/2c1781b672e14e86b7bec677eee2fbde.png?size=160&keep_aspect_ratio=false"
@@ -180,7 +181,18 @@ export type BingImageResponse = {
     }[];
 }
 
+
 export class Util {
+
+    static getLanguageColor(language: string): string {
+        const languageColors = githubLanguageColors as Record<string, string>;
+        
+        if (languageColors[language]) {
+            return languageColors[language];
+        }
+        return "#000000"; // Default color if language is not found
+    }
+
     static hexToRgb(hex: string): { r: number; g: number; b: number } {
         // "#" karakterini kaldır ve küçük harfe çevir
         const cleanedHex = hex.replace(/^#/, '').toLowerCase();

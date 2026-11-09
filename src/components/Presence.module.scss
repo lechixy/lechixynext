@@ -40,6 +40,31 @@
     width: 100%;
 }
 
+.activityCard {
+    position: relative;
+    isolation: isolate;
+    padding: var(--activity-padding-block, 8px) clamp(18px, 4vw, 22px);
+}
+
+.artworkFade {
+    mask-image: linear-gradient(90deg, transparent, #000 var(--artwork-fade-left, 9%), #000 92%, transparent),
+        linear-gradient(180deg, transparent, #000 12%, #000 86%, transparent);
+    mask-composite: intersect;
+}
+
+.activityArtwork {
+    --artwork-fade-left: 55%;
+    position: absolute;
+    inset: 0 0 0 auto;
+    z-index: -1;
+    width: 70%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(8px) brightness(0.8);
+    opacity: 0.36;
+    pointer-events: none;
+}
+
 .offline {
     display: flex;
     justify-content: center;

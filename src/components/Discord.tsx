@@ -87,7 +87,7 @@ export const Discord: FC<DiscordProps> = ({ loadingText }) => {
                     </div>
 
                     <div className={styles.divider}></div>
-                    <Presence />
+                    <Presence info={info} />
                 </div>
             </div>
         );

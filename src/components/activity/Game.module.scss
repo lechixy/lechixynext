@@ -3,7 +3,6 @@
     width: 100%;
     flex-direction: column;
     justify-content: center;
-    padding: 0px 16px;
     .header {
         color: var(--header-secondary);
         text-shadow: 0px 0px 25px black;
@@ -16,6 +15,9 @@
         font-family: "Whitney";
         span {
             font-weight: bolder;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
     .game_activity {
@@ -24,6 +26,7 @@
         .activity_img {
             display: flex;
             flex-direction: row;
+            flex-shrink: 0;
             .activityLargeImg {
                 display: flex;
                 justify-content: center;
@@ -33,6 +36,11 @@
                     border-radius: var(--rad);
                     object-fit: cover;
                     display: block;
+
+                    @media (max-width: 560px) {
+                        width: 64px;
+                        height: 64px;
+                    }
                 }
 
                 &::after {
@@ -70,10 +78,16 @@
             margin-left: 10px;
             display: flex;
             flex-direction: column;
+            min-width: 0;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
             cursor: default;
+
+            > span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
             .activity_text_title {
                 color: white;
                 font-weight: 600;

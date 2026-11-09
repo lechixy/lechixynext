@@ -1,150 +1,38 @@
 /* eslint-disable @next/next/no-img-element */
-import moment from 'moment';
-import { FC, useState, useEffect } from 'react';
-import styles from 'components/activity/Spotify.module.scss';
-import { useContext, WebSocketContext } from 'utils/lanyard';
-import { Util } from 'utils/Util';
-import { DynamicColorContext } from 'utils/dynamicColor';
-import PresenceStyles from 'components/Presence.module.scss';
+import { useContext, useEffect, useState, type CSSProperties } from "react";
+import type { ApiRespond } from "utils/types";
+import { DynamicColorContext } from "utils/dynamicColor";
+import { Util } from "utils/Util";
+import PresenceStyles from "components/Presence.module.scss";
+import styles from "./Spotify.module.scss";
 
-type ApiRespond = {
-
-    spotify: {
-        track_id: string
-        timestamps: {
-            start: number;
-            end: number;
-        };
-        song: string;
-        artist: string;
-        album_art_url: string;
-        album: string;
-    };
-    listening_to_spotify: boolean;
-    discord_user: {
-        username: string;
-        public_flags: number;
-        id: string;
-        discriminator: string;
-        avatar: string;
-    }
-    discord_status: string;
-    activities: [any];
-    active_on_discord_web: boolean;
-    active_on_discord_mobile: boolean;
-    active_on_discord_desktop: boolean;
-}
-
-export const Spotify: FC = () => {
-
-    const info = useContext(WebSocketContext) as unknown as ApiRespond
-    const dynamicColor = useContext(DynamicColorContext);
-
-    let spotify = info.spotify
-
-    //Live values
-    let [percent, setPercent] = useState("0%")
-    let [timestamps, setTimestamps] = useState({ current: "0:00", length: "0:00" })
-
+export function Spotify({ info }: { info: ApiRespond }) {
+    const { spotify } = info;
+    const { start, end } = spotify.timestamps;
+    const duration = end > start ? end - start : 0;
+    const [now, setNow] = useState<number | null>(null);
     useEffect(() => {
-        const interval = setInterval(() => {
-            //Track length
-            let lengthMs = spotify.timestamps.end - spotify.timestamps.start
-            let lengthSec = moment.duration(lengthMs).asSeconds()
+        if (!duration) return;
 
-            //Current position
-            let currentMs = Date.now() - spotify.timestamps.start
-            let currentSec = moment.duration(currentMs).asSeconds()
+        const tick = () => setNow(Date.now());
+        tick();
+        const timer = window.setInterval(tick, 500);
+        return () => window.clearInterval(timer);
+    }, [start, duration]);
 
-            //Percentage
-            let percent = (currentSec / lengthSec) * 100
-
-            //Timestamps
-            let current = Util.toTimestamp(Math.floor(currentSec));
-            let length = Util.toTimestamp(Math.floor(lengthSec));
-
-            setPercent(`${percent}%`)
-            setTimestamps({ current, length })
-        }, 500);
-
-        return () => {
-            clearInterval(interval);
-        }
-    }, [spotify])
-
-
-    useEffect(() => {
-        // Selectors
-        let spotifyTextSongs = document.querySelectorAll(
-            `.${styles.spotifyTextSongContainer} .${styles.underline} span`) as NodeListOf<HTMLSpanElement>;
-        let spotifyStatusBar = document.querySelector(`.${styles.spotify_statusbar}`) as HTMLDivElement;
-
-        // * Shining song name effect
-        let dynamicFirstColor = dynamicColor.split(',')[0].trim();
-
-        function isWhiteColor(color: string) {
-            let rgb = Util.hexToRgb(color)
-            const minValue = Math.min(rgb.r, rgb.g, rgb.b);
-            const maxValue = Math.max(rgb.r, rgb.g, rgb.b);
-
-            return minValue >= 205 && (maxValue - minValue) <= 20;
-        }
-
-        let decidedDynamicColor = dynamicColor.split(',')[0]
-        if (isWhiteColor(dynamicFirstColor)) {
-            decidedDynamicColor = `#6d6d6d`;
-        }
-
-        spotifyTextSongs.forEach(text => {
-            text.style.setProperty('--dynamic-color', decidedDynamicColor);
-        })
-
-        // * Status bar color
-        let dynamicSecondColor = dynamicColor.split(',')[1].trim();
-        let dynamicThirdColor = dynamicColor.split(',')[2].trim();
-
-
-        // Rengin parlaklığını hesaplayan fonksiyon
-        function calculateBrightness(r: number, g: number, b: number) {
-            // W3C tarafından önerilen formül: (299*R + 587*G + 114*B) / 1000
-            return (299 * r + 587 * g + 114 * b) / 1000;
-        }
-
-        // Rengin cırtlak/parlak olup olmadığını kontrol eden fonksiyon
-        function isBrightColor(color: string) {
-            let rgb = Util.hexToRgb(color)
-
-            // Parlaklığı hesapla (0-255 arası)
-            const brightness = calculateBrightness(rgb.r, rgb.g, rgb.b);
-
-            // Parlaklık 140'tan büyükse cırtlak/parlak kabul et
-            return brightness > 135;
-        }
-
-        let decidedDynamicColorForStatusBar = dynamicColor
-        if (!isBrightColor(dynamicThirdColor)) {
-            decidedDynamicColorForStatusBar = `${dynamicFirstColor}, ${dynamicSecondColor}, white`;
-        }
-        spotifyStatusBar.style.background = `linear-gradient(45deg, ${decidedDynamicColorForStatusBar})`;
-    }, [dynamicColor])
-
-    // useEffect(() => {
-    //     let spotify_image = document.querySelector(`.${styles.spotify_img}`) as HTMLDivElement;
-    //     let center = getBoundingBox(spotify_image);
-
-    //     spotify_image.addEventListener('mouseover', () => {
-    //         console.log('mouse here')
-    //     })
-    //     spotify_image.addEventListener('mouseleave', () => {
-    //         console.log('mouse leaved')
-    //     })
-    // }, [])
+    const elapsed = Math.min(duration, Math.max(0, (now ?? start) - start));
+    const progress = duration ? elapsed / duration * 100 : 0;
+    const currentTime = Util.toTimestamp(Math.floor(elapsed / 1000));
+    const totalTime = Util.toTimestamp(Math.floor(duration / 1000));
+    const colors = useContext(DynamicColorContext);
+    const albumColor = colors.startsWith("var(") ? undefined : colors.split(",")[0].trim();
 
     return (
-        <div className={`${styles.spotifyActivity} ${PresenceStyles.entryAnimation}`}>
-            <div className={styles.background}>
+        <div className={`${styles.spotifyActivity} ${PresenceStyles.activityCard} ${PresenceStyles.entryAnimation}`}
+            style={{ "--dynamic-color": albumColor, "--spotify-progress": albumColor ? `linear-gradient(45deg, ${colors})` : undefined } as CSSProperties}>
+            <div className={`${styles.background} ${PresenceStyles.artworkFade}`} aria-hidden="true">
                 <div className={styles.background_container}>
-                    <img id="album_art" src={spotify.album_art_url} alt={`${spotify.album}`} />
+                    <img id="album_art" src={spotify.album_art_url} alt="" />
                 </div>
                 <div className={styles.background_gradient}></div>
             </div>
@@ -193,15 +81,13 @@ export const Spotify: FC = () => {
                     </div>
                 </div >
                 <div className={styles.bar}>
-                    <div className={styles.spotify_statusbar_bg}>
-                        <div style={{
-                            "width": `${percent}`
-                        }} className={styles.spotify_statusbar}>
-                        </div>
+                    <div className={styles.spotify_statusbar_bg} role="progressbar" aria-label="Spotify playback"
+                        aria-valuenow={Math.round(progress)} aria-valuetext={`${currentTime} of ${totalTime}`}>
+                        <div key={spotify.track_id} style={{ width: `${progress}%` }} className={styles.spotify_statusbar} />
                     </div>
                     <div className={styles.spotify_timestamp_area}>
-                        <span className={styles.spotify_timestamp}>{timestamps.current}</span>
-                        <span className={styles.spotify_timestamp}>{timestamps.length}</span>
+                        <span className={styles.spotify_timestamp}>{currentTime}</span>
+                        <span className={styles.spotify_timestamp}>{totalTime}</span>
                     </div>
                 </div>
             </div>

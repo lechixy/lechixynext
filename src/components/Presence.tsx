@@ -1,45 +1,32 @@
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
 import styles from 'components/Presence.module.scss';
-import { WebSocketContext, useContext } from 'utils/lanyard';
 import { ApiRespond } from 'utils/types';
 import { Spotify } from 'components/activity/Spotify';
 import { GameActivity } from 'components/activity/Game';
 import { WatchActivity } from './activity/Watch';
 
-export const Presence: FC = () => {
+export const Presence: FC<{ info: ApiRespond }> = ({ info }) => {
 
-    const info = useContext(WebSocketContext) as unknown as ApiRespond
-
-    const isListening = info.listening_to_spotify
+    const isListening = info.listening_to_spotify && Boolean(info.spotify)
     const playingActivities = info.activities.filter(x => x.type === 0)
     const isWatching = info.activities.find(x => x.type === 3)
     const isOffline = info.discord_status === "offline"
-    //We using this because we don't want Custom Status to be counted as an activity
-    const numberOfActivities = info.activities.find(x => x.type === 4) ?
-        info.activities.length - 1 : info.activities.length
-    const atLeastTwoActivities = numberOfActivities >= 2
+    const atLeastTwoActivities = info.activities.filter(activity => activity.type !== 4).length >= 2
+    const hasSpotifyAndGame = isListening && playingActivities.length > 0
     const noActivity = !playingActivities.length && !isOffline && !isListening && !isWatching
 
     return (
         <div className={`${styles.presence} ${noActivity || isOffline ? styles.noActivity : ""}`}>
-            {isListening && (
-                <Spotify />
-            )}
-            {atLeastTwoActivities && (
-                <div className={styles.blank} style={{ height: "10px" }}></div>
-            )}
-            {playingActivities.map((activity) => (
+            {isListening && <Spotify info={info} />}
+            {(hasSpotifyAndGame || atLeastTwoActivities) && <div className={styles.blank} style={{ height: hasSpotifyAndGame ? 4 : 10 }} />}
+            {playingActivities.map(activity => (
                 <GameActivity key={activity.id} activity={activity} />
             ))}
-            {atLeastTwoActivities && (
-                <div className={styles.blank} style={{ height: "10px" }}></div>
-            )}
+            {atLeastTwoActivities && <div className={styles.blank} style={{ height: "10px" }} />}
             {isWatching && (
-                <WatchActivity />
+                <WatchActivity info={info} />
             )}
-            {atLeastTwoActivities && (
-                <div className={styles.blank} style={{ height: "30px" }}></div>
-            )}
+            {atLeastTwoActivities && <div className={styles.blank} style={{ height: "30px" }} />}
             {noActivity && (
                 <div className={styles.offline}>
                     <span className={styles.offlineText}>Well... looks like things are quiet for now.</span>

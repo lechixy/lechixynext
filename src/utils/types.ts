@@ -40,3 +40,13 @@ export type ApiRespond = {
 } & Object;
 
 export type Season = "winter" | "autumn" | "spring" | "summer"
+
+export type Project = {
+    id: string;
+    name: string;
+    url: string;
+    description: string | null;
+    stargazerCount: number;
+    language: string | null;
+    bannerUrl: string | null;
+};

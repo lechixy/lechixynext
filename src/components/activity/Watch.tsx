@@ -31,9 +31,7 @@ type WatchActivity = {
     type: number;
 }
 
-export const WatchActivity: FC = () => {
-
-    const info = useContext(WebSocketContext) as unknown as ApiRespond
+export const WatchActivity: FC<{ info: ApiRespond }> = ({ info }) => {
 
     let activityStatus: WatchActivity = info.activities.find(x => x.type === 3);
     let largeIcon = activityStatus.assets.large_image &&
@@ -103,7 +101,8 @@ export const WatchActivity: FC = () => {
     }, [activityStatus]);
 
     return (
-        <div className={`${styles.watchActivity} ${PresenceStyles.entryAnimation}`}>
+        <div className={`${styles.watchActivity} ${PresenceStyles.activityCard} ${PresenceStyles.entryAnimation}`}>
+            {largeIcon && <img className={`${PresenceStyles.activityArtwork} ${PresenceStyles.artworkFade}`} src={largeIcon} alt="" />}
             <div className={styles.header}>
                 <span>WATCHING {activityStatus.name.toUpperCase()}</span>
             </div>

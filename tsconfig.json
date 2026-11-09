@@ -1,33 +1,39 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "resolveJsonModule": true,
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "noEmit": true,
-    "incremental": true,
+    "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
-    "isolatedModules": true
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"],
+      "components/*": ["./src/components/*"],
+      "utils/*": ["./src/utils/*"],
+      "styles/*": ["./src/styles/*"],
+      "pages/*": ["./src/pages/*"],
+      "data/*": ["./src/data/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src",
-    "public"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
