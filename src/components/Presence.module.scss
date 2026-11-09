@@ -65,58 +65,47 @@
     pointer-events: none;
 }
 
-.offline {
+.emptyState {
+    --empty-accent: var(--home-secondary, #aecfff);
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: rgba(181, 181, 181, 0.5);
-    animation: notActivityEntryAnimation 1s ease forwards;
-    height: 100%;
-    width: 100%;
-    position: relative;
+    gap: clamp(12px, 3vw, 18px);
+    width: min(100%, 420px);
+    padding: clamp(16px, 4vw, 24px);
+    border-radius: 14px;
+    background: radial-gradient(ellipse at top left, color-mix(in srgb, var(--empty-accent) 11%, transparent), transparent 78%),
+        rgba(255, 255, 255, 0.025);
+}
 
-    .offlineText {
-        position: absolute;
-        z-index: 2;
-    }
+.emptyIcon {
+    display: grid;
+    flex: 0 0 40px;
+    height: 40px;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--empty-accent) 12%, transparent);
 
-    .offlineGlow {
-        position: absolute;
-        z-index: 1;
-        opacity: var(--glow-text-gradient-opacity);
-        filter: blur(4px);
-    }
-
-    span {
-        font-weight: bold;
-        text-align: center;
-        background: linear-gradient(
-            120deg,
-            rgba(255, 255, 255, 0) 40%,
-            rgba(255, 255, 255, 0.8) 50%,
-            rgba(255, 255, 255, 0) 60%
-        );
-        background-size: 200% 100%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        animation: shine 7s linear infinite;
+    svg {
+        width: 16px;
+        height: 16px;
     }
 }
 
-@keyframes notActivityEntryAnimation {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+.emptyLabel {
+    color: var(--empty-accent);
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-@keyframes shine {
-    0% {
-        background-position: 100%;
-    }
-    100% {
-        background-position: -100%;
-    }
+.emptyTitle {
+    margin: 2px 0 4px;
+    color: #f3f4f6;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.emptyDescription {
+    color: #aeb8c7;
+    font-size: 0.875rem;
+    line-height: 1.5;
 }

@@ -1,22 +1,52 @@
 import type { FC } from 'react';
 import styles from 'components/Presence.module.scss';
-import { ApiRespond } from 'utils/types';
+import type { ApiRespond } from 'utils/types';
 import { Spotify } from 'components/activity/Spotify';
 import { GameActivity } from 'components/activity/Game';
 import { WatchActivity } from './activity/Watch';
+import StatusIndicator from 'components/StatusIndicator';
+
+const statusLabels = new Map([
+    ['online', 'Online'],
+    ['idle', 'Idle'],
+    ['dnd', 'Do not disturb'],
+    ['offline', 'Offline'],
+]);
 
 export const Presence: FC<{ info: ApiRespond }> = ({ info }) => {
 
     const isListening = info.listening_to_spotify && Boolean(info.spotify)
     const playingActivities = info.activities.filter(x => x.type === 0)
     const isWatching = info.activities.find(x => x.type === 3)
-    const isOffline = info.discord_status === "offline"
+    const status = info.discord_status
+    const isOffline = status === 'offline'
+    const hasActivity = isListening || playingActivities.length > 0 || Boolean(isWatching)
+
+    if (!hasActivity) {
+        const label = statusLabels.get(status);
+        return (
+            <div className={`${styles.presence} ${styles.noActivity}`}>
+                <div className={styles.emptyState} role="status">
+                    <div className={styles.emptyIcon} aria-hidden="true">
+                        <StatusIndicator status={label ? status : 'offline'} />
+                    </div>
+                    <div>
+                        <span className={styles.emptyLabel}>{label ?? 'Presence'}</span>
+                        <p className={styles.emptyTitle}>{isOffline ? 'Currently offline' : 'Quiet for now'}</p>
+                        <p className={styles.emptyDescription}>
+                            {isOffline ? 'Live activity will appear here when I’m back.' : 'Music, games, and streams will appear here when shared.'}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     const atLeastTwoActivities = info.activities.filter(activity => activity.type !== 4).length >= 2
     const hasSpotifyAndGame = isListening && playingActivities.length > 0
-    const noActivity = !playingActivities.length && !isOffline && !isListening && !isWatching
 
     return (
-        <div className={`${styles.presence} ${noActivity || isOffline ? styles.noActivity : ""}`}>
+        <div className={styles.presence}>
             {isListening && <Spotify info={info} />}
             {(hasSpotifyAndGame || atLeastTwoActivities) && <div className={styles.blank} style={{ height: hasSpotifyAndGame ? 4 : 10 }} />}
             {playingActivities.map(activity => (
@@ -27,18 +57,6 @@ export const Presence: FC<{ info: ApiRespond }> = ({ info }) => {
                 <WatchActivity info={info} />
             )}
             {atLeastTwoActivities && <div className={styles.blank} style={{ height: "30px" }} />}
-            {noActivity && (
-                <div className={styles.offline}>
-                    <span className={styles.offlineText}>Well... looks like things are quiet for now.</span>
-                    <span className={styles.offlineGlow}>Well... looks like things are quiet for now.</span>
-                </div>
-            )}
-            {isOffline && (
-                <div className={styles.offline}>
-                    <span className={styles.offlineText}>Currently offline... so nothing to see right now.</span>
-                    <span className={styles.offlineGlow}>Currently offline... so nothing to see right now.</span>
-                </div>
-            )}
         </div>
     )
 }
