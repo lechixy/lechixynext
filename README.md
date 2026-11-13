@@ -1,7 +1,7 @@
 # 🩵 lechixynext
 personal website repository
 
-✨ if you want to see live: https://lechixy.dev ✨
+✨ if you want to see live: https://lechixy.netlify.app ✨
 
 some url's in the site...
 - [Universe](https://lechixy.dev/universe)
