@@ -19,8 +19,7 @@ export default function Starfield({ palette, albumColors }: {
     albumColors: string[] | null;
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const homeTint = useRef<number[][] | null>(null);
-    const albumTint = useRef<number[][] | null>(null);
+    const targetTint = useRef<number[][] | null>(null);
     const redrawStatic = useRef<(() => void) | null>(null);
 
     useEffect(() => {
@@ -30,7 +29,6 @@ export default function Starfield({ palette, albumColors }: {
         if (!canvas || !context || !scrollContainer) return;
 
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        const presence = scrollContainer.querySelector("#presence");
         const layers = starLayers.map(layer => ({
             ...layer,
             tint: [...layer.color],
@@ -43,11 +41,8 @@ export default function Starfield({ palette, albumColors }: {
         let scroll = scrollContainer.scrollTop;
         let previousFrame: number | undefined;
         let frame = 0;
-        let inPresence = false;
-        let presenceObserver: IntersectionObserver | undefined;
-
         const blendColors = (amount: number) => {
-            const targets = (inPresence ? albumTint.current : null) ?? homeTint.current;
+            const targets = targetTint.current;
             layers.forEach((layer, index) => {
                 const target = targets?.[index] ?? layer.color;
                 for (let channel = 0; channel < 3; channel++) {
@@ -90,16 +85,6 @@ export default function Starfield({ palette, albumColors }: {
             canvas.height = Math.round(height * pixelRatio);
             context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
             draw();
-
-            if (presence && typeof IntersectionObserver !== "undefined") {
-                presenceObserver?.disconnect();
-                const margin = Math.round(scrollContainer.clientHeight * 0.42);
-                presenceObserver = new IntersectionObserver(([entry]) => {
-                    inPresence = entry.isIntersecting;
-                    updateStaticColors();
-                }, { root: scrollContainer, rootMargin: `-${margin}px 0px` });
-                presenceObserver.observe(presence);
-            }
         };
 
         const animate = (now: number) => {
@@ -126,7 +111,6 @@ export default function Starfield({ palette, albumColors }: {
 
         return () => {
             cancelAnimationFrame(frame);
-            presenceObserver?.disconnect();
             redrawStatic.current = null;
             window.removeEventListener("resize", resize);
             reducedMotion.removeEventListener("change", syncMotion);
@@ -134,14 +118,10 @@ export default function Starfield({ palette, albumColors }: {
     }, []);
 
     useEffect(() => {
-        homeTint.current = [palette.primary, palette.secondary, palette.tertiary].map(color => starTint(color));
+        const colors = albumColors ?? [palette.primary, palette.secondary, palette.tertiary];
+        targetTint.current = colors.map(color => starTint(color, albumColors ? 0.31 : 0));
         redrawStatic.current?.();
-    }, [palette]);
-
-    useEffect(() => {
-        albumTint.current = albumColors?.map(color => starTint(color, 0.31)) ?? null;
-        redrawStatic.current?.();
-    }, [albumColors]);
+    }, [albumColors, palette]);
 
     return <canvas aria-hidden="true" ref={canvasRef} className={styles.starfield} />;
 }

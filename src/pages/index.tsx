@@ -1,8 +1,7 @@
 import type { GetStaticProps, NextPage } from "next";
 import styles from "styles/main/New.module.scss";
-import Spacer from "components/Spacer";
-import { FaCode, FaGithub, FaInfoCircle, FaRegEnvelope } from "react-icons/fa";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { FaCode, FaGithub, FaRegEnvelope } from "react-icons/fa";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import type { ApiRespond, Project } from "utils/types";
 import { Util } from "utils/Util";
 import { motion } from "motion/react";
@@ -21,6 +20,7 @@ import Skills from "components/Skills";
 import Starfield from "components/Starfield";
 import { getPinnedProjects, PROJECTS_REVALIDATE_SECONDS } from "utils/githubProjects";
 import ClickSpark from "@/src/components/reactbits/ClickSpark";
+import Head from "next/head";
 
 type HomeProps = { projects: Project[] | null };
 
@@ -30,6 +30,12 @@ const sectionLinks = [
     { id: "skills", label: "Skills" },
     { id: "contact", label: "Contact" },
 ];
+
+const lastCommitDate = process.env.SITE_LAST_COMMIT_DATE;
+const lastUpdated = lastCommitDate && new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeZone: "Europe/Istanbul",
+}).format(new Date(lastCommitDate));
 
 type Palette = { primary: string; secondary: string; tertiary: string };
 
@@ -56,9 +62,9 @@ function generatePalette(baseHue: number = rand(0, 360)): Palette {
     const light = () => rand(80, 88);
 
     return {
-        primary:   hslToHex(baseHue, sat(), light()),
+        primary: hslToHex(baseHue, sat(), light()),
         secondary: hslToHex(baseHue + direction * step, sat(), light()),
-        tertiary:  hslToHex(baseHue + direction * step * 2, sat(), light()),
+        tertiary: hslToHex(baseHue + direction * step * 2, sat(), light()),
     };
 }
 
@@ -94,7 +100,6 @@ function albumAccent(color: FinalColor) {
 
 const New: NextPage<HomeProps> = ({ projects }) => {
     const pageRef = useRef<HTMLDivElement>(null);
-    const infoRef = useRef<HTMLDetailsElement>(null);
     const [loadingText, setLoadingText] = useState("Loading presence data...");
     const [palette, setPalette] = useState(homePalettes[0]);
 
@@ -111,16 +116,6 @@ const New: NextPage<HomeProps> = ({ projects }) => {
             // The random palette still works when session storage is unavailable.
         }
         setPalette(homePalettes[index]);
-    }, []);
-
-    useEffect(() => {
-        const closeOnOutsidePress = (event: PointerEvent) => {
-            const info = infoRef.current;
-            if (info?.open && event.target instanceof Node && !info.contains(event.target)) info.open = false;
-        };
-
-        document.addEventListener("pointerdown", closeOnOutsidePress);
-        return () => document.removeEventListener("pointerdown", closeOnOutsidePress);
     }, []);
 
     useEffect(() => {
@@ -164,7 +159,7 @@ const New: NextPage<HomeProps> = ({ projects }) => {
     const albumArtUrl = data?.listening_to_spotify ? data.spotify?.album_art_url : undefined;
     const [albumPalette, setAlbumPalette] = useState<FinalColor[] | null>(null);
     const activeAlbum = albumArtUrl ? albumPalette : null;
-    const albumColors = activeAlbum?.map(color => color.hex) ?? null;
+    const albumColors = useMemo(() => activeAlbum?.map(color => color.hex) ?? null, [activeAlbum]);
     const dynamicColor = albumColors?.join(", ") ?? `var(--${Util.getSeasonName()})`;
     const darkestAlbumColor = activeAlbum?.reduce((darkest, color) => brightness(color) < brightness(darkest) ? color : darkest);
     const backdrop = darkestAlbumColor
@@ -297,120 +292,124 @@ const New: NextPage<HomeProps> = ({ projects }) => {
     }, []);
 
     return (
-        <ClickSpark
-            sparkColor="#ffffff"
-            sparkSize={10}
-            sparkRadius={15}
-            sparkCount={8}
-            duration={400}
-            scrollContainerRef={pageRef}
-        >
-            <div ref={pageRef} className={styles.page} style={{
-                "--home-primary": primary,
-                "--home-secondary": secondary,
-                "--home-tertiary": tertiary,
-                "--home-backdrop": backdrop,
-            } as CSSProperties}>
-                <Starfield palette={palette} albumColors={albumColors} />
-                <details ref={infoRef} className={styles.siteInfo} onKeyDown={event => {
-                    if (event.key === "Escape" && event.currentTarget.open) {
-                        event.currentTarget.open = false;
-                        event.currentTarget.querySelector("summary")?.focus();
-                    }
-                }}>
-                    <summary aria-label="Website information">
-                        <FaInfoCircle aria-hidden="true" />
-                    </summary>
-                    <div className={styles.siteInfoPanel} role="dialog" aria-label="Website information">
-                        <a href="https://github.com/lechixy/lechixynext/commits/main/" target="_blank" rel="noreferrer">
-                            <strong>Check project on GitHub</strong>
-                            <span>Last updated on March 27th 2026, 10:34 pm</span>
-                        </a>
-                    </div>
-                </details>
-                {/* Overview */}
-                <section className={`${styles.section} ${styles.overviewSection}`} id="overview">
-                    <motion.div
-                        layout
-                        initial={{ scale: 0 }} animate={{ scale: 1 }}
+        <>
+            <Head>
+                <title>lechixy's website | flawless</title>
+                <meta name="theme-color" content="#00fff8"></meta>
+            </Head>
+            <ClickSpark
+                sparkColor="#ffffff"
+                sparkSize={10}
+                sparkRadius={15}
+                sparkCount={8}
+                duration={400}
+                scrollContainerRef={pageRef}
+            >
+                <div ref={pageRef} className={styles.page} style={{
+                    "--home-primary": primary,
+                    "--home-secondary": secondary,
+                    "--home-tertiary": tertiary,
+                    "--home-backdrop": backdrop,
+                } as CSSProperties}>
+                    <Starfield palette={palette} albumColors={albumColors} />
+                    {/* Overview */}
+                    <section className={`${styles.section} ${styles.overviewSection}`} id="overview">
+                        <motion.div
+                            layout="position"
+                            initial={{ scale: 0 }} animate={{ scale: 1 }}
 
-                        className={styles.overviewContent}>
-                        <motion.div className={styles.overviewImage} layout>
-                            <img src="https://avatars.githubusercontent.com/u/51778131?v=4" className="rounded-full aspect-square" draggable={false} />
-                            <div className={styles.statusIndicator}>
-                                <StatusIndicator status={data?.discord_status || "offline"} />
-                            </div>
-                        </motion.div>
-                        <motion.div className={styles.overviewAbout} layout>
-                            <h2 className="text-4xl text-gray-500">Hi, I'm</h2>
-                            <SplitText
-                                text="Melih"
-                                className="text-6xl font-semibold text-center"
-                                delay={100}
-                                duration={1.25}
-                                ease="power3.out"
-                                splitType="chars"
-                                from={{ opacity: 0, y: 40 }}
-                                to={{ opacity: 1, y: 0 }}
-                                threshold={0.1}
-                                textAlign="left"
-                            />
-                            <div className={styles.developerLabel}>
-                                <FaCode aria-hidden="true" />
-                                <GradientText colors={developerColors} animationSpeed={4}>
-                                    <p className="text-3xl font-semibold">Developer</p>
-                                </GradientText>
-                            </div>
-                            <Spacer height={20} />
+                            className={styles.overviewContent}>
+                            <motion.div className={styles.overviewProfile} layout="position">
+                                <div className={styles.overviewImage}>
+                                    <img src="https://avatars.githubusercontent.com/u/51778131?v=4" className="rounded-full aspect-square" draggable={false} />
+                                    <div className={styles.statusIndicator}>
+                                        <StatusIndicator status={data?.discord_status || "offline"} />
+                                    </div>
+                                </div>
+                                <div className={styles.overviewAbout}>
+                                    <h2 className="text-4xl text-gray-500">Hi, I'm</h2>
+                                    <SplitText
+                                        text="Melih"
+                                        className="text-6xl font-semibold text-center"
+                                        delay={100}
+                                        duration={1.25}
+                                        ease="power3.out"
+                                        splitType="chars"
+                                        from={{ opacity: 0, y: 40 }}
+                                        to={{ opacity: 1, y: 0 }}
+                                        threshold={0.1}
+                                        textAlign="left"
+                                    />
+                                    <div className={styles.developerLabel}>
+                                        <FaCode aria-hidden="true" />
+                                        <GradientText colors={developerColors} animationSpeed={4}>
+                                            <p className="text-3xl font-semibold">Developer</p>
+                                        </GradientText>
+                                    </div>
+                                </div>
+                            </motion.div>
                             <PresenceOverview data={data} />
                         </motion.div>
-                    </motion.div>
 
-                    <nav aria-label="Page sections" className={styles.sectionNav}>
-                        {sectionLinks.map(({ id, label }, index) => (
-                            <span key={id}>
-                                {index > 0 && <span aria-hidden="true">·</span>}
-                                <a href={`#${id}`}>{label}</a>
-                            </span>
-                        ))}
-                    </nav>
-                </section>
-                {/* Presence */}
-                <section className={`${styles.section} ${styles.presenceSection}`} id="presence">
-                    <DynamicColorContext.Provider value={dynamicColor}>
-                        <h1 className="text-4xl font-bold text-white">Presence</h1>
-                        <div className={styles.presenceContent}>
-                            {data != null ? (
-                                <Presence info={data} />
-                            ) : <>
-                                <Spinner text={loadingText} />
-                            </>}
+                        <nav aria-label="Page sections" className={styles.sectionNav}>
+                            {sectionLinks.map(({ id, label }, index) => (
+                                <span key={id}>
+                                    {index > 0 && <span aria-hidden="true">·</span>}
+                                    <a href={`#${id}`}>{label}</a>
+                                </span>
+                            ))}
+                        </nav>
+                    </section>
+                    {/* Presence */}
+                    <section className={`${styles.section} ${styles.presenceSection}`} id="presence">
+                        <DynamicColorContext.Provider value={dynamicColor}>
+                            <h1 className="text-4xl font-bold text-white">Presence</h1>
+                            <div className={styles.presenceContent}>
+                                {data != null ? (
+                                    <Presence info={data} />
+                                ) : <>
+                                    <Spinner text={loadingText} />
+                                </>}
+                            </div>
+                        </DynamicColorContext.Provider>
+                    </section>
+                    <Projects projects={projects} />
+                    <Skills />
+                    {/* Contact */}
+                    <section className={`${styles.section} ${styles.contactSection}`} id="contact">
+                        <div className={styles.contactContent}>
+                            <h1 className="text-4xl font-bold text-white">Contact</h1>
+                            <a className={`${styles.contactLink} ${styles.scrollReveal}`} href="mailto:lechixy@gmail.com">
+                                <FaRegEnvelope aria-hidden="true" />
+                                <span>lechixy@gmail.com</span>
+                            </a>
+                            <a className={`${styles.contactLink} ${styles.scrollReveal}`} href="https://github.com/lechixy" target="_blank" rel="noopener noreferrer">
+                                <FaGithub aria-hidden="true" />
+                                <span>@lechixy</span>
+                            </a>
                         </div>
-                    </DynamicColorContext.Provider>
-                </section>
-                <Projects projects={projects} />
-                <Skills />
-                {/* Contact */}
-                <section className={`${styles.section} ${styles.contactSection}`} id="contact">
-                    <h1 className="text-4xl font-bold text-white">Contact</h1>
-                    <a className={`${styles.contactLink} ${styles.scrollReveal}`} href="mailto:lechixy@gmail.com">
-                        <FaRegEnvelope aria-hidden="true" />
-                        <span>lechixy@gmail.com</span>
-                    </a>
-                    <a className={`${styles.contactLink} ${styles.scrollReveal}`} href="https://github.com/lechixy" target="_blank" rel="noopener noreferrer">
-                        <FaGithub aria-hidden="true" />
-                        <span>@lechixy</span>
-                    </a>
-                </section>
-                <div className={styles.layerContainer}>
-                    <div className={styles.layers}>
-                        {data && (
-                            <Tooltips data={data} />
-                        )}
+                        <footer className={styles.siteInfo}>
+                            {lastUpdated && (
+                                <>
+                                    <span>Last updated <time dateTime={lastCommitDate}>{lastUpdated}</time></span>
+                                    <span aria-hidden="true">·</span>
+                                </>
+                            )}
+                            <a href="https://github.com/lechixy/lechixynext/commits/main/" target="_blank" rel="noreferrer">
+                                GitHub
+                            </a>
+                        </footer>
+                    </section>
+                    <div className={styles.layerContainer}>
+                        <div className={styles.layers}>
+                            {data && (
+                                <Tooltips data={data} />
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </ClickSpark>
+            </ClickSpark>
+        </>
     )
 }
 

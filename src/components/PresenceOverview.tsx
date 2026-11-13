@@ -28,8 +28,8 @@ export default function PresenceOverview({ data }: { data: ApiRespond | null }) 
                             <rect x="20" y="11" width="3" height="9" rx="1.5" />
                         </svg>
                         <span className={styles.activityTitle} title={song}>
-                            <ShinyText text={song} className={styles.shinyActivityTitle} speed={3} color="var(--color-gray-300)"
-                                shineColor="var(--spotify-shimmer, #fff)" direction="left" disabled={Boolean(reduceMotion)} underline glow />
+                            <ShinyText text={song} className={styles.shinyActivityTitle} speed={3} color="currentColor"
+                                shineColor="var(--spotify-shimmer, #fff)" direction="left" disabled={Boolean(reduceMotion)} underline />
                         </span>
                     </motion.a>
                 )}
