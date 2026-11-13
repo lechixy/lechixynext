@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from "next";
 import styles from "styles/main/New.module.scss";
 import Spacer from "components/Spacer";
-import { FaCode, FaInfoCircle, FaRegEnvelope } from "react-icons/fa";
+import { FaCode, FaGithub, FaInfoCircle, FaRegEnvelope } from "react-icons/fa";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { ApiRespond, Project } from "utils/types";
 import { Util } from "utils/Util";
@@ -31,12 +31,51 @@ const sectionLinks = [
     { id: "contact", label: "Contact" },
 ];
 
-const homePalettes = [
-    { primary: "#F7B8DC", secondary: "#D2C2FF", tertiary: "#AECFFF" },
-    { primary: "#B6D4FF", secondary: "#B9EBF5", tertiary: "#B8F1D8" },
-    { primary: "#FFCAA9", secondary: "#F8BCD3", tertiary: "#E1C4FC" },
-    { primary: "#C7EFA6", secondary: "#B1E9CC", tertiary: "#ABE1EF" },
-    { primary: "#FFD98F", secondary: "#FFC5A7", tertiary: "#F5BCD5" },
+type Palette = { primary: string; secondary: string; tertiary: string };
+
+const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+function hslToHex(h: number, s: number, l: number): string {
+    h = ((h % 360) + 360) % 360;
+    s /= 100;
+    l /= 100;
+    const k = (n: number) => (n + h / 30) % 12;
+    const a = s * Math.min(l, 1 - l);
+    const f = (n: number) =>
+        l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+    const toHex = (x: number) =>
+        Math.round(x * 255).toString(16).padStart(2, "0");
+    return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`.toUpperCase();
+}
+
+function generatePalette(baseHue: number = rand(0, 360)): Palette {
+    const direction = Math.random() < 0.5 ? 1 : -1;
+    const step = rand(25, 45);
+
+    const sat = () => rand(70, 95);
+    const light = () => rand(80, 88);
+
+    return {
+        primary:   hslToHex(baseHue, sat(), light()),
+        secondary: hslToHex(baseHue + direction * step, sat(), light()),
+        tertiary:  hslToHex(baseHue + direction * step * 2, sat(), light()),
+    };
+}
+
+function generatePalettes(count: number): Palette[] {
+    const offset = rand(0, 360);
+    return Array.from({ length: count }, (_, i) =>
+        generatePalette(offset + (i * 360) / count + rand(-10, 10))
+    );
+}
+
+const homePalettes: Palette[] = [
+    // { primary: "#F7B8DC", secondary: "#D2C2FF", tertiary: "#AECFFF" },
+    // { primary: "#B6D4FF", secondary: "#B9EBF5", tertiary: "#B8F1D8" },
+    // { primary: "#FFCAA9", secondary: "#F8BCD3", tertiary: "#E1C4FC" },
+    // { primary: "#C7EFA6", secondary: "#B1E9CC", tertiary: "#ABE1EF" },
+    // { primary: "#FFD98F", secondary: "#FFC5A7", tertiary: "#F5BCD5" },
+    ...generatePalettes(15),
 ];
 
 const developerColors = ["var(--home-primary)", "var(--home-secondary)", "var(--home-tertiary)"];
@@ -357,6 +396,10 @@ const New: NextPage<HomeProps> = ({ projects }) => {
                     <a className={`${styles.contactLink} ${styles.scrollReveal}`} href="mailto:lechixy@gmail.com">
                         <FaRegEnvelope aria-hidden="true" />
                         <span>lechixy@gmail.com</span>
+                    </a>
+                    <a className={`${styles.contactLink} ${styles.scrollReveal}`} href="https://github.com/lechixy" target="_blank" rel="noopener noreferrer">
+                        <FaGithub aria-hidden="true" />
+                        <span>@lechixy</span>
                     </a>
                 </section>
                 <div className={styles.layerContainer}>
