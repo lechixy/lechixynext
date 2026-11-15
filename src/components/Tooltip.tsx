@@ -1,8 +1,37 @@
-import { useRouter } from "next/router";
-import { FC } from "react";
-import { PlacesType, Tooltip } from "react-tooltip";
+import type { FC } from "react";
+import { Tooltip, type PlacesType } from "react-tooltip";
 import styles from "styles/main/Home.module.scss";
-import NewHomeStyles from "styles/main/New.module.scss";
+import tooltipStyles from "./Tooltip.module.scss";
+
+const presenceTooltipId = "home-presence-tooltip";
+
+export function presenceTooltipAnchor(label?: string) {
+    const content = label?.trim();
+    return content ? {
+        "data-tooltip-id": presenceTooltipId,
+        "data-tooltip-content": content,
+    } : {};
+}
+
+export function PresenceTooltip() {
+    return (
+        <Tooltip
+            id={presenceTooltipId}
+            className={tooltipStyles.presenceTooltip}
+            positionStrategy="fixed"
+            place="top"
+            offset={10}
+            arrowSize={8}
+            border="1px solid var(--tooltip-border)"
+            delayShow={160}
+            delayHide={90}
+            clickable
+            openEvents={{ mouseenter: true, focus: true, click: true }}
+            closeEvents={{ mouseleave: true, blur: true }}
+            globalCloseEvents={{ escape: true, clickOutsideAnchor: true }}
+        />
+    );
+}
 
 type DiscordProps = {
     children: React.ReactNode;
@@ -12,19 +41,15 @@ type DiscordProps = {
 }
 
 export const NewTooltip: FC<DiscordProps> = (props) => {
-
-    const isNewHome = useRouter().pathname === "/";
-    const HomeStyle = isNewHome ? NewHomeStyles : styles;
-
     return (
         <Tooltip
-            className={`${HomeStyle.newTooltip} ${styles[props.id || ""]}`}
+            className={`${styles.newTooltip} ${styles[props.id || ""]}`}
             anchorSelect={props.anchorSelect}
             clickable
             openEvents={{ click: true, mouseover: true }}
             closeEvents={{ click: true, mouseleave: true }}
             afterShow={() => {
-                document.querySelector(`.${HomeStyle.newTooltip}`)?.classList.add(HomeStyle.active);
+                document.querySelector(`.${styles.newTooltip}`)?.classList.add(styles.active);
             }}
             place={props.place || "top"}
         >

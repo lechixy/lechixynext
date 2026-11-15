@@ -4,6 +4,7 @@ import type { ApiRespond } from "utils/types";
 import { DynamicColorContext } from "utils/dynamicColor";
 import { Util } from "utils/Util";
 import PresenceStyles from "components/Presence.module.scss";
+import { presenceTooltipAnchor } from "components/Tooltip";
 import styles from "./Spotify.module.scss";
 
 export function Spotify({ info }: { info: ApiRespond }) {
@@ -47,7 +48,8 @@ export function Spotify({ info }: { info: ApiRespond }) {
                     </svg>
                 </div>
                 <div className={styles.spotify}>
-                    <a className='album_cover' href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`} target="_blank" rel="noreferrer">
+                    <a className='album_cover' href={`https://open.spotify.com/search/${encodeURIComponent(spotify.album)}`}
+                        target="_blank" rel="noreferrer" {...presenceTooltipAnchor(spotify.album)}>
                         <div className={styles.spotifyLargeImg}>
                             <img crossOrigin='anonymous' src={spotify.album_art_url} alt={`${spotify.album}`} />
                         </div>

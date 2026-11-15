@@ -1,37 +1,44 @@
-.layers .newTooltip {
-    background: black;
-    border-radius: var(--rad);
-    color: white;
-    padding: 8px 12px;
-    z-index: 999;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
-    padding: 8px 12px;
-    box-sizing: border-box;
-    display: flex;
-    width: auto;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: var(--discord-elevation-high);
-    transition: var(--animation-1);
-    transition-property: opacity, transform, scale;
-    transform: translateY(30px) scale(0) translateX(-30px);
-    transform-origin: right;
-    a {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        color: white;
-        text-decoration: none;
-        &:hover {
-            text-decoration: underline;
-        }
+.presenceTooltip:global(.react-tooltip) {
+    --tooltip-accent: var(--home-primary, #d2c2ff);
+    --tooltip-border: color-mix(in srgb, var(--tooltip-accent) 36%, #182033);
+    --rt-color-dark: color-mix(in srgb, var(--tooltip-accent) 9%, var(--home-backdrop, #111525));
+    --rt-color-white: color-mix(in srgb, var(--tooltip-accent) 16%, #fff);
+    --rt-opacity: 1;
+
+    z-index: 1000;
+    max-width: min(19rem, calc(100vw - 24px));
+    padding: 7px 11px;
+    border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.42);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    overflow-wrap: anywhere;
+    transform: translateY(4px) scale(0.96);
+    transform-origin: center bottom;
+    transition: opacity 120ms ease-in, transform 120ms ease-in;
+
+    &:global(.react-tooltip__place-bottom) {
+        transform: translateY(-4px) scale(0.96);
+        transform-origin: center top;
     }
 
-    &.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0px) scale(1) translateX(0px);
+    &:global(.react-tooltip__show) {
+        transform: translateY(0) scale(1);
+        transition: opacity 170ms ease-out, transform 190ms cubic-bezier(0.2, 0.75, 0.25, 1);
+    }
+
+    &:global(.react-tooltip__closing) {
+        pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &,
+        &:global(.react-tooltip__place-bottom),
+        &:global(.react-tooltip__show) {
+            transform: none;
+            transition: opacity 80ms ease;
+        }
     }
 }

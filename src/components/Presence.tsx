@@ -4,14 +4,7 @@ import type { ApiRespond } from 'utils/types';
 import { Spotify } from 'components/activity/Spotify';
 import { GameActivity } from 'components/activity/Game';
 import { WatchActivity } from './activity/Watch';
-import StatusIndicator from 'components/StatusIndicator';
-
-const statusLabels = new Map([
-    ['online', 'Online'],
-    ['idle', 'Idle'],
-    ['dnd', 'Do not disturb'],
-    ['offline', 'Offline'],
-]);
+import StatusIndicator, { statusLabels } from 'components/StatusIndicator';
 
 export const Presence: FC<{ info: ApiRespond }> = ({ info }) => {
 

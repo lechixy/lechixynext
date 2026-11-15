@@ -6,12 +6,13 @@ import { useContext, WebSocketContext } from 'utils/lanyard';
 import moment from 'moment';
 import { Util } from 'utils/Util';
 import PresenceStyles from 'components/Presence.module.scss';
+import { presenceTooltipAnchor } from 'components/Tooltip';
 
 type WatchActivity = {
     application_id: string;
-    assets: {
-        large_image: string;
-        small_image: string;
+    assets?: {
+        large_image?: string;
+        small_image?: string;
         large_text?: string;
         small_text?: string;
     }
@@ -34,10 +35,12 @@ type WatchActivity = {
 export const WatchActivity: FC<{ info: ApiRespond }> = ({ info }) => {
 
     let activityStatus: WatchActivity = info.activities.find(x => x.type === 3);
-    let largeIcon = activityStatus.assets.large_image &&
+    let largeIcon = activityStatus.assets?.large_image &&
         `https://${activityStatus.assets.large_image.split("https/")[1]}`
-    let smallIcon = activityStatus.assets.small_image &&
+    let smallIcon = activityStatus.assets?.small_image &&
         `https://${activityStatus.assets.small_image.split("https/")[1]}`
+    const largeLabel = activityStatus.assets?.large_text?.trim() || activityStatus.name;
+    const smallLabel = activityStatus.assets?.small_text?.trim();
     //let small_icon = gamestatus?.assets?.small_image && Util.decideContent(gamestatus, 'small')
     let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
     //let small_text = gamestatus?.assets?.small_text ? `${gamestatus.assets.small_text}` : undefined;
@@ -115,14 +118,15 @@ export const WatchActivity: FC<{ info: ApiRespond }> = ({ info }) => {
                                 <div className={`tooltip_text`}>{largeText}</div>
                             </div>
                         )} */}
-                        {largeIcon ? (
-                            <img src={largeIcon} height={100} width={100} />
-                        ) : (
-                            <img src={noicon} height={100} width={100} />
+                        <img src={largeIcon || noicon} height={100} width={100}
+                            alt={largeLabel} tabIndex={0} {...presenceTooltipAnchor(largeLabel)} />
+                        {smallIcon && (
+                            <div className={styles.activitySmallImg} tabIndex={smallLabel ? 0 : undefined}
+                                {...presenceTooltipAnchor(smallLabel)}>
+                                <img className={styles.activitySmallImgElement} src={smallIcon}
+                                    height={30} width={30} alt={smallLabel ?? ""} />
+                            </div>
                         )}
-                        <div className={styles.activitySmallImg}>
-                            <img className={styles.activitySmallImgElement} src={smallIcon} height={30} width={30} />
-                        </div>
                     </div>
                     {/* {small_text && (
                         <div className={styles.activity_img_tooltip}>

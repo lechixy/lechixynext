@@ -2,9 +2,10 @@ import { FinalColor } from "extract-colors/lib/types/Color";
 import { leaf, snowflake } from "./icons_svg";
 import githubLanguageColors from "data/github_lang_colors.json";
 
-export const gameIcons = {
-    lol: "https://cdn.discordapp.com/app-icons/401518684763586560/2c1781b672e14e86b7bec677eee2fbde.png?size=160&keep_aspect_ratio=false"
-}
+export const gameIcons: Partial<Record<string, string>> = {
+    "401518684763586560": "https://cdn.discordapp.com/app-icons/401518684763586560/2c1781b672e14e86b7bec677eee2fbde.png?size=160&keep_aspect_ratio=false",
+    "1158877933042143272": "https://cdn.discordapp.com/app-icons/1158877933042143272/558f5a26ecb3b17c3dea3d15c1df537a.png?size=160&keep_aspect_ratio=false",
+};
 
 export function isMobile(navigator: Navigator): boolean {
     return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

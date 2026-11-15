@@ -5,7 +5,8 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import type { ApiRespond, Project } from "utils/types";
 import { Util } from "utils/Util";
 import { motion } from "motion/react";
-import StatusIndicator from "components/StatusIndicator";
+import StatusIndicator, { statusLabels } from "components/StatusIndicator";
+import DiscordCustomStatus from "components/DiscordCustomStatus";
 import PresenceOverview from "components/PresenceOverview";
 import Presence from "components/Presence";
 import { extractColors } from "extract-colors";
@@ -14,7 +15,7 @@ import SplitText from "components/reactbits/SplitText";
 import Spinner from "components/Spinner";
 import GradientText from "components/reactbits/GradientText";
 import { DynamicColorContext } from "utils/dynamicColor";
-import Tooltips from "components/Tooltips";
+import { PresenceTooltip, presenceTooltipAnchor } from "components/Tooltip";
 import Projects from "components/Projects";
 import Skills from "components/Skills";
 import Starfield from "components/Starfield";
@@ -156,6 +157,8 @@ const New: NextPage<HomeProps> = ({ projects }) => {
     }, []);
 
     const [data, setData] = useState<ApiRespond | null>(null);
+    const discordStatus = data?.discord_status ?? "offline";
+    const discordStatusLabel = statusLabels.get(discordStatus);
     const albumArtUrl = data?.listening_to_spotify ? data.spotify?.album_art_url : undefined;
     const [albumPalette, setAlbumPalette] = useState<FinalColor[] | null>(null);
     const activeAlbum = albumArtUrl ? albumPalette : null;
@@ -322,8 +325,10 @@ const New: NextPage<HomeProps> = ({ projects }) => {
                             <motion.div className={styles.overviewProfile} layout="position">
                                 <div className={styles.overviewImage}>
                                     <img src="https://avatars.githubusercontent.com/u/51778131?v=4" className="rounded-full aspect-square" draggable={false} />
-                                    <div className={styles.statusIndicator}>
-                                        <StatusIndicator status={data?.discord_status || "offline"} />
+                                    <div className={styles.statusIndicator} role="img"
+                                        aria-label={`Discord status: ${discordStatusLabel ?? "Offline"}`}
+                                        tabIndex={0} {...presenceTooltipAnchor(discordStatusLabel ?? "Offline")}>
+                                        <StatusIndicator status={discordStatusLabel ? discordStatus : "offline"} />
                                     </div>
                                 </div>
                                 <div className={styles.overviewAbout}>
@@ -346,6 +351,7 @@ const New: NextPage<HomeProps> = ({ projects }) => {
                                             <p className="text-3xl font-semibold">Developer</p>
                                         </GradientText>
                                     </div>
+                                    <DiscordCustomStatus data={data} />
                                 </div>
                             </motion.div>
                             <PresenceOverview data={data} />
@@ -400,13 +406,7 @@ const New: NextPage<HomeProps> = ({ projects }) => {
                             </a>
                         </footer>
                     </section>
-                    <div className={styles.layerContainer}>
-                        <div className={styles.layers}>
-                            {data && (
-                                <Tooltips data={data} />
-                            )}
-                        </div>
-                    </div>
+                    <PresenceTooltip />
                 </div>
             </ClickSpark>
         </>

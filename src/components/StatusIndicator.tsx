@@ -1,3 +1,10 @@
+export const statusLabels = new Map([
+    ["online", "Online"],
+    ["idle", "Idle"],
+    ["dnd", "Do not disturb"],
+    ["offline", "Offline"],
+]);
+
 const StatusIndicator = ({ status }: { status: string }) => {
     return (
         <>
