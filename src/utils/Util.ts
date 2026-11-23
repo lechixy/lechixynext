@@ -379,19 +379,17 @@ export class Util {
         return `${this.formatTime(hour)}:${this.formatTime(min)}:${this.formatTime(sec)}`;
     }
 
-    static fixAsset(status: any, type: 'large' | 'small') {
-        if (type === 'large') {
-            if (status.assets.large_image.startsWith('mp:external')) {
-                return "https://media.discordapp.net/external/" + status.assets.large_image.split('mp:external/')[1];
-            } else {
-                return `https://cdn.discordapp.com/app-assets/${status.application_id}/${status.assets?.large_image}.png`
-            }
-        } else {
-             if (status.assets.small_image.startsWith('mp:external')) {
-                return "https://media.discordapp.net/external/" + status.assets.small_image.split('mp:external/')[1];
-            } else {
-                return `https://cdn.discordapp.com/app-assets/${status.application_id}/${status.assets?.small_image}.png`
-            }
+    static fixAsset(activity: { application_id?: string; assets?: { large_image?: string; small_image?: string } }, type: 'large' | 'small') {
+        const asset = activity.assets?.[`${type}_image`];
+        if (!asset) return undefined;
+
+        if (asset.startsWith('mp:external/')) {
+            const path = asset.slice('mp:'.length).replace(/^(external\/[^/]+\/https?):\/\//, '$1/');
+            return `https://media.discordapp.net/${path}`;
+        }
+
+        if (activity.application_id) {
+            return `https://cdn.discordapp.com/app-assets/${activity.application_id}/${asset}.png`;
         }
     }
 

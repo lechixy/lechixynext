@@ -1,4 +1,5 @@
 .presence {
+    --activity-gutter: clamp(18px, 4vw, 22px);
     width: 100%;
     overflow-y: scroll;
     & > .entryAnimation:nth-child(1) {
@@ -29,8 +30,8 @@
 .presence.noActivity {
     display: flex;
     align-items: center;
-    justify-content: center;
     height: 100%;
+    padding-inline: var(--activity-gutter);
 }
 .presence::-webkit-scrollbar {
     display: none;
@@ -43,7 +44,62 @@
 .activityCard {
     position: relative;
     isolation: isolate;
-    padding: var(--activity-padding-block, 8px) clamp(18px, 4vw, 22px);
+    padding: var(--activity-padding-block, 8px) var(--activity-gutter);
+}
+
+.activityImages {
+    position: relative;
+    flex: none;
+    width: 100px;
+    aspect-ratio: 1;
+
+    @media (max-width: 560px) {
+        width: 64px;
+    }
+
+    &:has(.activitySmallImage) .activityImage {
+        mask-image: radial-gradient(circle closest-side at 84% 84%, transparent 118%, #000 124%);
+    }
+}
+
+.activityImage,
+.activitySmallImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.activityImage {
+    border-radius: var(--rad, 10px);
+    transition: var(--animation-1);
+
+    &:hover {
+        filter: brightness(calc(1 - var(--largeimg-opacity, 0)));
+    }
+}
+
+.activitySmallImage {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 32%;
+    height: 32%;
+    border-radius: 50%;
+}
+
+.activityElapsed {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--home-primary, #dcddde);
+    font-variant-numeric: tabular-nums;
+
+    svg {
+        flex: none;
+        width: 1em;
+        height: 1em;
+    }
 }
 
 .artworkFade {
@@ -70,7 +126,7 @@
     display: flex;
     align-items: center;
     gap: clamp(12px, 3vw, 18px);
-    width: min(100%, 420px);
+    width: 100%;
     padding: clamp(16px, 4vw, 24px);
     border-radius: 14px;
     background: radial-gradient(ellipse at top left, color-mix(in srgb, var(--empty-accent) 11%, transparent), transparent 78%),

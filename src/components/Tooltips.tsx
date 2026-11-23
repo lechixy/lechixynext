@@ -1,15 +1,12 @@
 import { FC, useEffect, useState } from "react"
-import { NewTooltip } from "components/Tooltip"
+import { NewTooltip, PresenceTooltip } from "components/Tooltip"
 import { Util } from "utils/Util"
 import moment from "moment"
 import { ApiRespond, Github } from "utils/types"
 import type { BgInfo } from "pages/old"
 
 import HomeStyles from "styles/main/Home.module.scss"
-import WatchStyles from "components/activity/Watch.module.scss"
-import SpotifyStyles from "components/activity/Spotify.module.scss"
 import DiscordStyles from "components/Discord.module.scss"
-import GameStyles from "components/activity/Game.module.scss"
 
 type TooltipsProps = {
     data: ApiRespond;
@@ -66,10 +63,6 @@ const Tooltips: FC<TooltipsProps> = (props) => {
     let seasonText = `${moment().format("MMMM")} • ${Util.getSeasonName().charAt(0).toUpperCase() + Util.getSeasonName().slice(1).toLowerCase()} of ${moment().format("YYYY")}`;
     let seasonText2 = `Last updated on ${moment(github?.last_updated).format("MMMM Do YYYY, h:mm a")}`;
 
-    let watchSmallText = data.activities.find(activity => activity.type === 3)?.assets?.small_text;
-
-    let gameLargeText = data.activities.find(activity => activity.type === 0)?.assets?.large_text;
-
     // Custom Status
     let customStatus = data.activities.find((x) => x.type === 4);
     let customStatusEmoji = customStatus?.emoji?.name;
@@ -116,34 +109,7 @@ const Tooltips: FC<TooltipsProps> = (props) => {
                     )}
                 </div>
             </NewTooltip>
-            <NewTooltip
-                anchorSelect={`.${WatchStyles.activitySmallImg}`}
-                id="activitySmallImage"
-                place="bottom"
-            >
-                {watchSmallText}
-            </NewTooltip>
-            <NewTooltip
-                anchorSelect={`.${SpotifyStyles.spotifyLargeImg}`}
-                id="activityLargeImage"
-                place="bottom"
-            >
-                {data.spotify?.album}
-            </NewTooltip>
-            <NewTooltip
-                anchorSelect={`.${WatchStyles.activityLargeImg}`}
-                id="activityLargeImage"
-                place="bottom"
-            >
-                {data.activities.find(activity => activity.type === 3)?.name}
-            </NewTooltip>
-            <NewTooltip
-                anchorSelect={`.${GameStyles.activityLargeImg}`}
-                id="activityLargeImage"
-                place="bottom"
-            >
-                {gameLargeText}
-            </NewTooltip>
+            <PresenceTooltip />
             <NewTooltip
                 anchorSelect={`.${DiscordStyles.customStatusDiscordEmoji}`}
                 id="customStatusDiscordEmoji"

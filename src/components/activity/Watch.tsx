@@ -2,11 +2,12 @@
 import { FC, useEffect, useState } from 'react'
 import styles from 'components/activity/Watch.module.scss'
 import { ApiRespond } from 'utils/types';
-import { useContext, WebSocketContext } from 'utils/lanyard';
 import moment from 'moment';
 import { Util } from 'utils/Util';
 import PresenceStyles from 'components/Presence.module.scss';
 import { presenceTooltipAnchor } from 'components/Tooltip';
+import { ActivityElapsed } from './ActivityElapsed';
+import { ActivitySmallImage } from './ActivitySmallImage';
 
 type WatchActivity = {
     application_id: string;
@@ -34,19 +35,15 @@ type WatchActivity = {
 
 export const WatchActivity: FC<{ info: ApiRespond }> = ({ info }) => {
 
-    let activityStatus: WatchActivity = info.activities.find(x => x.type === 3);
-    let largeIcon = activityStatus.assets?.large_image &&
-        `https://${activityStatus.assets.large_image.split("https/")[1]}`
-    let smallIcon = activityStatus.assets?.small_image &&
-        `https://${activityStatus.assets.small_image.split("https/")[1]}`
+    const activityStatus: WatchActivity = info.activities.find(x => x.type === 3);
+    const largeIcon = Util.fixAsset(activityStatus, 'large');
+    const smallIcon = Util.fixAsset(activityStatus, 'small');
+    const [failedArtwork, setFailedArtwork] = useState<string | null>(null);
+    const visibleArtwork = largeIcon === failedArtwork ? undefined : largeIcon;
     const largeLabel = activityStatus.assets?.large_text?.trim() || activityStatus.name;
-    const smallLabel = activityStatus.assets?.small_text?.trim();
-    //let small_icon = gamestatus?.assets?.small_image && Util.decideContent(gamestatus, 'small')
-    let noicon = `https://cdn.discordapp.com/attachments/919634721628127232/999978421323042916/undefined_activity.png`
-    //let small_text = gamestatus?.assets?.small_text ? `${gamestatus.assets.small_text}` : undefined;
-    //let game_name = gamestatus?.name ? `${gamestatus.name}` : undefined;
+    const smallLabel = activityStatus.assets?.small_text?.trim() || activityStatus.name;
 
-    const [start, setStart] = useState<any>(null)
+    const [start, setStart] = useState<string | null>(null)
     let [percent, setPercent] = useState("0%")
     let [timestamps, setTimestamps] = useState({ current: "0:00", length: "1:00" })
 
@@ -65,7 +62,7 @@ export const WatchActivity: FC<{ info: ApiRespond }> = ({ info }) => {
                 let elapsedSec = moment.duration(elapsedMs).asSeconds()
 
                 //Elapsed timestamp
-                let length = Util.toTimestamp(Math.floor(elapsedSec));
+                let length = Util.toTimestamp(Math.max(0, Math.floor(elapsedSec)));
 
                 setStart(length)
             }, 500)
@@ -105,44 +102,23 @@ export const WatchActivity: FC<{ info: ApiRespond }> = ({ info }) => {
 
     return (
         <div className={`${styles.watchActivity} ${PresenceStyles.activityCard} ${PresenceStyles.entryAnimation}`}>
-            {largeIcon && <img className={`${PresenceStyles.activityArtwork} ${PresenceStyles.artworkFade}`} src={largeIcon} alt="" />}
+            {visibleArtwork && <img className={`${PresenceStyles.activityArtwork} ${PresenceStyles.artworkFade}`} src={visibleArtwork} alt="" />}
             <div className={styles.header}>
                 <span>WATCHING {activityStatus.name.toUpperCase()}</span>
             </div>
             <div className={styles.activityContainer}>
-                <div className={styles.activityAssets}>
-                    <div className={styles.activityLargeImg}>
-                        {/* {largeText && (
-                            <div className={`tooltip ${styles.activity_large_tooltip}`}>
-                                <div className={`tooltip_arrow ${styles.activity_large_tooltip_arrow}`}></div>
-                                <div className={`tooltip_text`}>{largeText}</div>
-                            </div>
-                        )} */}
-                        <img src={largeIcon || noicon} height={100} width={100}
-                            alt={largeLabel} tabIndex={0} {...presenceTooltipAnchor(largeLabel)} />
-                        {smallIcon && (
-                            <div className={styles.activitySmallImg} tabIndex={smallLabel ? 0 : undefined}
-                                {...presenceTooltipAnchor(smallLabel)}>
-                                <img className={styles.activitySmallImgElement} src={smallIcon}
-                                    height={30} width={30} alt={smallLabel ?? ""} />
-                            </div>
-                        )}
-                    </div>
-                    {/* {small_text && (
-                        <div className={styles.activity_img_tooltip}>
-                            <div className={styles.activity_img_tooltip_arrow}></div>
-                            <div>{small_text}</div>
-                        </div>
-                    )}
-                    {small_icon && (
-                        <img src={small_icon} className={styles.activity_small_img} height={30} width={30} alt={game_name} />
-                    )} */}
+                <div className={PresenceStyles.activityImages}>
+                    <img className={PresenceStyles.activityImage} src={visibleArtwork ?? "/images/activityNotFound.png"}
+                        alt={largeLabel} tabIndex={0}
+                        onError={visibleArtwork ? () => setFailedArtwork(visibleArtwork) : undefined}
+                        {...presenceTooltipAnchor(largeLabel)} />
+                    {smallIcon && <ActivitySmallImage key={smallIcon} src={smallIcon} label={smallLabel} />}
                 </div>
                 <div className={styles.activityContent}>
                     <span className={styles.activityContentName}>{activityStatus.name}</span>
                     <span className={styles.activityContentDetails}>{activityStatus.details}</span>
                     <span className={styles.activityContentState}>{activityStatus.state}</span>
-                    {start ? <span className={styles.activityContentTimestamp}>{start} elapsed</span> : null}
+                    {start && <ActivityElapsed elapsed={start} />}
                     {timestamps.current == "0:00" && timestamps.length == "0:00" ? null : (
                         <div className={styles.activityBar}>
                             <span className={styles.activityTimestamp}>{timestamps.current}</span>

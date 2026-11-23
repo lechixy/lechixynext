@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { gameIcons, Util } from "utils/Util";
 import PresenceStyles from "components/Presence.module.scss";
 import { presenceTooltipAnchor } from "components/Tooltip";
+import { ActivityElapsed } from "./ActivityElapsed";
+import { ActivitySmallImage } from "./ActivitySmallImage";
 import styles from "./Game.module.scss";
 
 type GameActivity = {
     application_id?: string;
-    assets?: { large_image?: string; large_text?: string };
+    assets?: { large_image?: string; large_text?: string; small_image?: string; small_text?: string };
     details?: string;
     name: string;
     state?: string;
@@ -15,7 +17,8 @@ type GameActivity = {
 };
 
 export function GameActivity({ activity }: { activity: GameActivity }) {
-    const richPresenceArtwork = activity.assets?.large_image ? Util.fixAsset(activity, "large") : null;
+    const richPresenceArtwork = Util.fixAsset(activity, "large");
+    const smallArtwork = Util.fixAsset(activity, "small");
     const appIcon = activity.application_id ? gameIcons[activity.application_id] : undefined;
     const artwork = richPresenceArtwork ?? appIcon;
     const [failedArtwork, setFailedArtwork] = useState<string | null>(null);
@@ -37,23 +40,22 @@ export function GameActivity({ activity }: { activity: GameActivity }) {
         <div className={`${styles.gameActivity} ${PresenceStyles.activityCard} ${PresenceStyles.entryAnimation}`}>
             {visibleArtwork && <img className={`${PresenceStyles.activityArtwork} ${PresenceStyles.artworkFade}`} src={visibleArtwork} alt="" />}
             <div className={styles.header}>
-                <span title="Playing a game">PLAYING {activity.name.toUpperCase()}</span>
+                <span title="Playing">PLAYING</span>
             </div>
             <div className={styles.game_activity}>
-                <div className={styles.activity_img}>
-                    <div className={styles.activityLargeImg} tabIndex={0}
-                        {...presenceTooltipAnchor(activity.assets?.large_text?.trim() || activity.name)}>
-                        <div>
-                            <img src={visibleArtwork ?? "/images/activityNotFound.png"} height={100} width={100}
-                                alt={activity.name} onError={visibleArtwork ? () => setFailedArtwork(visibleArtwork) : undefined} />
-                        </div>
-                    </div>
+                <div className={PresenceStyles.activityImages}>
+                    <img className={PresenceStyles.activityImage}
+                        src={visibleArtwork ?? "/images/activityNotFound.png"} alt={activity.name} tabIndex={0}
+                        onError={visibleArtwork ? () => setFailedArtwork(visibleArtwork) : undefined}
+                        {...presenceTooltipAnchor(activity.assets?.large_text?.trim() || activity.name)} />
+                    {smallArtwork && <ActivitySmallImage key={smallArtwork} src={smallArtwork}
+                        label={activity.assets?.small_text?.trim() || activity.name} />}
                 </div>
                 <div className={styles.activity_text}>
                     <span className={styles.activity_text_title} title={activity.name}>{activity.name}</span>
                     <span className={styles.activity_text_details} title={activity.details}>{activity.details}</span>
                     <span className={styles.activity_text_state} title={activity.state}>{activity.state}</span>
-                    {elapsed && <span className={styles.activity_text_timestamp}>{elapsed} elapsed</span>}
+                    {elapsed && <ActivityElapsed elapsed={elapsed} />}
                 </div>
             </div>
         </div>
