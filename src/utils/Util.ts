@@ -2,9 +2,20 @@ import { FinalColor } from "extract-colors/lib/types/Color";
 import { leaf, snowflake } from "./icons_svg";
 import githubLanguageColors from "data/github_lang_colors.json";
 
-export const gameIcons: Partial<Record<string, string>> = {
-    "401518684763586560": "https://cdn.discordapp.com/app-icons/401518684763586560/2c1781b672e14e86b7bec677eee2fbde.png?size=160&keep_aspect_ratio=false",
-    "1158877933042143272": "https://cdn.discordapp.com/app-icons/1158877933042143272/558f5a26ecb3b17c3dea3d15c1df537a.png?size=160&keep_aspect_ratio=false",
+const leagueOfLegendsArtwork = {
+    icon: "https://cdn.discordapp.com/app-icons/1402418696126992445/7c99428541032ac02ec6981d88b78fb7.png?size=160&keep_aspect_ratio=false",
+    headerIcon: "/images/league-of-legends-logo.svg",
+};
+
+export const gameArtwork: Partial<Record<string, { icon: string; headerIcon?: string }>> = {
+    "401518684763586560": {
+        icon: "https://cdn.discordapp.com/app-icons/401518684763586560/2c1781b672e14e86b7bec677eee2fbde.png?size=160&keep_aspect_ratio=false",
+    },
+    "1158877933042143272": {
+        icon: "https://cdn.discordapp.com/app-icons/1158877933042143272/558f5a26ecb3b17c3dea3d15c1df537a.png?size=160&keep_aspect_ratio=false",
+    },
+    "1402418696126992445": leagueOfLegendsArtwork,
+    "1443349464290168976": leagueOfLegendsArtwork,
 };
 
 export function isMobile(navigator: Navigator): boolean {

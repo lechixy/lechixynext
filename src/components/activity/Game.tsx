@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
-import { gameIcons, Util } from "utils/Util";
+import { gameArtwork, Util } from "utils/Util";
 import PresenceStyles from "components/Presence.module.scss";
 import { presenceTooltipAnchor } from "components/Tooltip";
 import { ActivityElapsed } from "./ActivityElapsed";
@@ -9,6 +9,7 @@ import styles from "./Game.module.scss";
 
 type GameActivity = {
     application_id?: string;
+    official_game_id?: string;
     assets?: { large_image?: string; large_text?: string; small_image?: string; small_text?: string };
     details?: string;
     name: string;
@@ -19,10 +20,13 @@ type GameActivity = {
 export function GameActivity({ activity }: { activity: GameActivity }) {
     const richPresenceArtwork = Util.fixAsset(activity, "large");
     const smallArtwork = Util.fixAsset(activity, "small");
-    const appIcon = activity.application_id ? gameIcons[activity.application_id] : undefined;
-    const artwork = richPresenceArtwork ?? appIcon;
-    const [failedArtwork, setFailedArtwork] = useState<string | null>(null);
-    const visibleArtwork = artwork === failedArtwork ? undefined : artwork;
+    const appArtwork = activity.application_id ? gameArtwork[activity.application_id] : undefined;
+    const officialArtwork = activity.official_game_id ? gameArtwork[activity.official_game_id] : undefined;
+    const headerIcon = appArtwork?.headerIcon ?? officialArtwork?.headerIcon;
+    const [failedArtwork, setFailedArtwork] = useState<string[]>([]);
+    const visibleArtwork = [richPresenceArtwork, appArtwork?.icon, officialArtwork?.icon].find(
+        src => src && !failedArtwork.includes(src)
+    );
     const start = activity.timestamps?.start;
     const [now, setNow] = useState<number | null>(null);
     useEffect(() => {
@@ -41,12 +45,16 @@ export function GameActivity({ activity }: { activity: GameActivity }) {
             {visibleArtwork && <img className={`${PresenceStyles.activityArtwork} ${PresenceStyles.artworkFade}`} src={visibleArtwork} alt="" />}
             <div className={styles.header}>
                 <span title="Playing">PLAYING</span>
+                {headerIcon && (
+                    <span className={styles.headerIcon} role="img" aria-label={activity.name} title={activity.name}
+                        style={{ maskImage: `url("${headerIcon}")` }} />
+                )}
             </div>
             <div className={styles.game_activity}>
                 <div className={PresenceStyles.activityImages}>
                     <img className={PresenceStyles.activityImage}
                         src={visibleArtwork ?? "/images/activityNotFound.png"} alt={activity.name} tabIndex={0}
-                        onError={visibleArtwork ? () => setFailedArtwork(visibleArtwork) : undefined}
+                        onError={visibleArtwork ? () => setFailedArtwork(failed => [...failed, visibleArtwork]) : undefined}
                         {...presenceTooltipAnchor(activity.assets?.large_text?.trim() || activity.name)} />
                     {smallArtwork && <ActivitySmallImage key={smallArtwork} src={smallArtwork}
                         label={activity.assets?.small_text?.trim() || activity.name} />}

@@ -11,6 +11,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        gap: 6px;
         cursor: default;
         font-family: "Whitney";
         span {
@@ -19,6 +20,13 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+    }
+    .headerIcon {
+        flex: none;
+        width: 16px;
+        height: 16px;
+        background-color: currentColor;
+        mask: center / contain no-repeat;
     }
     .game_activity {
         display: flex;

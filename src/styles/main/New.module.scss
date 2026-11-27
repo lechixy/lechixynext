@@ -185,7 +185,7 @@
     align-self: flex-start;
     gap: 7px;
     min-width: 0;
-    max-width: min(100%, 20rem);
+    max-width: 100%;
     margin-top: 8px;
     padding: 4px 10px;
     border: 1px solid color-mix(in srgb, var(--home-primary) 22%, transparent);
@@ -213,6 +213,7 @@
 .customStatusText {
     min-width: 0;
     overflow-wrap: anywhere;
+    text-wrap: balance;
 }
 
 .presenceOverviewContainer {
